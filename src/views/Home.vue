@@ -3,31 +3,52 @@
     <header-tab></header-tab>
     <div class="main-banner">
       <div class="advertisement"></div>
-      <div class="news-recomd"></div>
+      <div class="bannerShow_right">
+        <h1>
+          <i class="icon01"></i>
+          <span>新品推荐</span>
+        </h1>
+        <div class="tpic_show">
+          <em class="jingxi"></em>
+          <div class="imgContainer">
+            <img
+              v-bind:src="newRecomment.Goods_imgPath"
+              
+            />
+          </div>
+          <h4>{{newRecomment.Goods_disName}}</h4>
+          <p>
+            <em>秒杀价：</em>
+            <b>￥<i>{{newRecomment.Goods_price}}</i></b><i>{{newRecomment.Unit}}</i>
+          </p>
+          <a href="javascript:;" data-goodsid="22106" class="qg">立即抢购</a>
+        </div>
+      </div>
     </div>
     <div class="limit-buy">
       <div class="limit-buy-left">
+        <span class="limintBg"></span>
         <ul class="model01">
-          <li v-for="item in 4">
-            <model-div></model-div>
+          <li v-for="(item,index) in limitList" :key="index">
+            <model-div :item="item"></model-div>
           </li>
         </ul>
       </div>
       <div class="limit-buy-right">
         <div class="tabchange">
-          <span class="current">热门排行</span>
-          <span>畅销排行</span>
+          <span  v-bind:class="{'current':currentFlag}" v-on:click="tabchangebat('热门排行')" >热门排行</span>
+          <span v-bind:class="{'current':!currentFlag}" v-on:click="tabchangebat('畅销排行')" >畅销排行</span>
         </div>
         <ol>
-          <li v-for="(item,index) in 4" :key="index">
+          <li v-for="(item,index) in rankList" :key="index">
             <div class="img-left">
-              <img src="../assets/img02.jpg" alt />
+              <img v-bind:src="item.Goods_imgPath" alt />
             </div>
             <div class="infor-right">
-              <h2>2局特技福利-超划算</h2>
+              <h2>{{item.Goods_disName}}</h2>
               <p>
                 价格:
-                <em>￥1.00/2局</em>
+                <em><i>{{item.Goods_price}}</i><i>{{item.Unit}}</i></em>
               </p>
             </div>
           </li>
@@ -38,8 +59,8 @@
     <div class="dota">
       <h1>Dota推荐商品</h1>
       <ul class="model01">
-        <li v-for="(item,index) in 5" :key="index" v-bind:class="index == 4 ?'current':''">
-          <model-div></model-div>
+        <li v-for="(item,index) in dotaList" :key="index" v-bind:class="index == 4 ?'current':''">
+          <model-div :item="item"></model-div>
         </li>
       </ul>
     </div>
@@ -47,13 +68,16 @@
     <div class="rpg">
       <h1>RPG推荐商品</h1>
       <ul>
-        <li v-for="(item,index) in 8" :key="index" v-bind:class="(index+1)%4 == 0 ?'current':''">
-          <img src="../assets/img02.jpg" class="imgShow" />
+        <li
+          v-for="(item,index) in rpgList"
+          :key="index"
+          v-bind:class="(index+1)%4 == 0 ?'current':''"
+        >
+          <img v-bind:src="item.Goods_imgPath" class="imgShow" />
           <div class="rpg-left">
-            <p>守卫剑阁守卫剑阁</p>
+            <p>{{item.Name}}</p>
             <div class="typeName">
-              <span class="lf">防守类</span>
-              <span class="rt">10件</span>
+              <span class="lf">{{item.type}}</span>
             </div>
             <div class="enterShop">进入商店</div>
           </div>
@@ -64,19 +88,170 @@
     <div class="dota">
       <h1>平台推荐服务</h1>
       <ul class="model01">
-        <li v-for="(item,index) in 5" :key="index" v-bind:class="index == 4 ?'current':''">
-          <model-div></model-div>
+        <li
+          v-for="(item,index) in ptserviceData"
+          :key="index"
+          v-bind:class="index == 4 ?'current':''"
+        >
+          <model-div :item="item"></model-div>
         </li>
       </ul>
     </div>
   </div>
 </template>
-
 <script>
 import Header from "../components/header";
 import model01 from "../components/model01";
+import $ from "jquery";
 export default {
   name: "Home",
+  data() {
+    return {
+      ptserviceData: [],
+      dotaList: [],
+      rpgList: [],
+      limitList:[],
+      newRecomment:"",
+      rankList:[],
+      currentFlag:true
+    };
+  },
+  mounted() {
+    this.goodsByFlag();
+    this.paningBuying();
+    this.ptservice();
+    this.dotaRecomment();
+    this.rpg();
+
+    this.rank4();
+  },
+  methods: {
+    //新品推荐
+    goodsByFlag() {
+      this.$axios(
+        "get",
+        `${
+          this.$ports.home.QueryWebGoodsByFlagTopN
+        }?classid=${0}&flag=${1}&topN=${1}`
+      )
+        .then(res => {
+         // console.log(res);
+          if(res.code == 0){
+            this.newRecomment=res.data.list[0];
+          }else{
+            this.newRecomment="";
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //限时抢购
+    paningBuying() {
+      this.$axios(
+        "get",
+        `${
+          this.$ports.home.QueryWebGoodsByFlagTopN
+        }?classid=${0}&flag=${2}&topN=${4}`
+      )
+        .then(res => {
+          if(res.code == 0){
+            this.limitList=res.data.list;
+          }else{
+            this.limitList=[];
+          }
+          //console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //平台服务
+    ptservice() {
+      this.$axios(
+        "get",
+        `${
+          this.$ports.home.QueryWebGoodsByFlagTopN
+        }?classid=${1}&flag=${4}&topN=${5}`
+      )
+        .then(res => {
+         // console.log(res);
+          if (res.code == 0) {
+            this.ptserviceData = res.data.list;
+          } else {
+            this.ptserviceData = [];
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //dota推荐商品
+    dotaRecomment() {
+      this.$axios(
+        "get",
+        `${
+          this.$ports.home.QueryWebGoodsByFlagTopN
+        }?classid=${3}&flag=${4}&topN=${5}`
+      )
+        .then(res => {
+        // console.log(res);
+          if (res.code == 0) {
+            this.dotaList = res.data.list;
+          } else {
+            this.dotaList = [];
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    //rpg推荐
+    rpg() {
+      var _that=this;
+      $.getScript("http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js", function() {
+        _that.rpgList=rpgObj.data;
+      });
+    },
+    //畅销排行
+    HotRank(){
+  var _that=this;
+      $.getScript("http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js", function() {
+        console.log('121')
+        console.log(HotRank)
+        _that.rankList=HotRank.data.list;
+      });
+    },
+    //热门排行
+    rank4(){
+       this.$axios(
+        "get",
+        `${
+          this.$ports.home.hot
+        }?topN=${4}`
+      )
+        .then(res => {
+        // console.log(res);
+          if (res.code == 0) {
+            this.rankList = res.data.list;
+          } else {
+            this.rankList = [];
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    tabchangebat(val){
+      if(val == "热门排行"){
+            this.rank4();
+            this.currentFlag=true;
+      }else if(val == "畅销排行"){
+         this.HotRank();
+         this.currentFlag=false;
+      }
+    }
+  },
   components: {
     "header-tab": Header,
     "model-div": model01
@@ -101,13 +276,112 @@ export default {
   float: left;
   background-color: #000;
 }
-.news-recomd {
+.bannerShow_right {
   width: 278px;
   height: 358px;
   background-color: #fff;
   float: right;
   border: 1px solid #dbdbdb;
 }
+
+.bannerShow_right h1 {
+  width: 258px;
+  height: 34px;
+  border-bottom: 1px solid #f2f2f2;
+  padding-left: 20px;
+}
+
+.bannerShow_right h1 i.icon01 {
+  width: 20px;
+  height: 20px;
+  background: url(../assets/icon.png);
+
+  float: left;
+  margin-top: 7px;
+}
+
+.bannerShow_right h1 span {
+  float: left;
+  font-size: 14px;
+  color: #2bb8aa;
+  margin-top: 7px;
+  margin-left: 14px;
+}
+
+.tpic_show {
+  width: 278px;
+  overflow: hidden;
+  zoom: 1;
+  padding-top: 19px;
+  position: relative;
+}
+
+.jingxi {
+  width: 24px;
+  height: 66px;
+  background: url(../assets/jingxi.png);
+  display: block;
+  position: absolute;
+  top: -1px;
+  right: 20px;
+}
+
+.imgContainer {
+  width: 158px;
+  height: 158px;
+  margin: 0 auto;
+  position: relative;
+  /*border:1px solid #1dab9d;*/
+}
+
+.imgContainer img {
+  width: 158px;
+  height: 158px;
+  display: block;
+}
+
+.tpic_show h4 {
+  text-align: center;
+  color: #3d3d3d;
+  font-size: 16px;
+  margin-top: 9px;
+}
+
+.tpic_show p {
+  font-size: 12px;
+  color: #333;
+  text-align: center;
+  margin-top: 25px;
+}
+
+.tpic_show em {
+  color: #666666;
+}
+
+.tpic_show b {
+  color: #f74a4a;
+  font-size: 18px;
+  font-family: Arial;
+}
+
+.tpic_show .qg {
+  width: 238px;
+  height: 30px;
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  line-height: 30px;
+  background-color: #ff6633;
+  border: 1px solid #ea450e;
+  color: #fff;
+  font-size: 14px;
+  margin-top: 18px;
+}
+
+.tpic_show .qg:hover {
+  background-color: #ea450e;
+}
+
 .limit-buy {
   width: 1080px;
   height: 320px;
@@ -121,6 +395,15 @@ export default {
   float: left;
   padding-top: 14px;
   padding-left: 16px;
+  position: relative;
+}
+.limintBg {
+  width: 92px;
+  height: 24px;
+  background: url(../assets/limint.png);
+  position: absolute;
+  top: 3px;
+  left: 6px;
 }
 .limit-buy-right {
   width: 243px;

@@ -1,5 +1,6 @@
 export default {
-    gifts: {
-        GetGamePkg: '/King/GetGamePkg'
+    home: {
+        QueryWebGoodsByFlagTopN: 'query/QueryWebGoodsByFlagTopN',
+        hot: 'Query/QueryWebGoodsRankingBySalesVolumeTopN'
     }
 }

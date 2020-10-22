@@ -16,7 +16,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.interceptors.request.use(
         config => {
             // debugger;
-            Indicator.open('玩命加载中...');
+            // Indicator.open('玩命加载中...');
             return config;
         },
         error => {

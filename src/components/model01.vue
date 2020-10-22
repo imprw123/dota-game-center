@@ -1,17 +1,16 @@
 <template>
   <div class="model">
     <div>
-      <img src="../assets/img.jpg" alt />
+      <img v-bind:src="item.Goods_imgPath" />
       <div class="money">
         ￥
-        <b>9999</b>
+        <b>{{item.Goods_price}}</b>
         <span>
-          /
-          <em>3000个</em>
+          <em>{{item.Unit}}</em>
         </span>
       </div>
-      <div class="name">S8竞技场准入券（83）</div>
-      <div class="detail-type">S8史诗印记传说</div>
+      <div class="name">{{item.Goods_disName}}</div>
+      <div class="detail-type">{{item.Tag}}</div>
       <div class="action">
         <span class="shopcar">+ 购物车</span>
         <span class="send">赠送</span>
@@ -20,7 +19,7 @@
       <div class="xian"></div>
       <div class="mapName">
         <i></i>
-        <span>绿色循环全</span>
+        <span>{{item.Class_name}}</span>
       </div>
     </div>
   </div>
@@ -28,7 +27,10 @@
 
 <script>
 export default {
-  name: "Model"
+  name: "Model",
+  props: {
+		item: Object
+	}
 };
 </script>
 <style>
