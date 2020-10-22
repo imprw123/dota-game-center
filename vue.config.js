@@ -1,4 +1,12 @@
 module.exports = {
+    chainWebpack: config => {
+        config
+            .plugin('html')
+            .tap(args => {
+                args[0].title = "商城"
+                return args
+            })
+    },
     /* 部署生产环境和开发环境下的URL：可对当前环境进行区分，baseUrl 从 Vue CLI 3.3 起已弃用，要使用publicPath */
     /* baseUrl: process.env.NODE_ENV === 'production' ? './' : '/' */
     publicPath: process.env.NODE_ENV === 'production' ? './' : './',
