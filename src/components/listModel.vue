@@ -62,8 +62,8 @@
       <div class="action-search">
         <div class="action-search-left">
           <div class="inpt-search">
-            <input type="text" />
-            <div class="sou"></div>
+            <input type="text"  v-model="val"/>
+            <div class="sou" v-on:click="searchlistInpt"></div>
           </div>
         </div>
         <div class="action-search-right">
@@ -172,7 +172,9 @@ export default {
       msg: false,
       current: this.pageIndex, // 当前页码
       showItem: this.pageSize, // 最少显示5个页码
-      allpageLists: this.allpage // 总共的
+      allpageLists: this.allpage, // 总共的
+      shopFlag:0,
+      val:'',
     };
   },
   watch: {
@@ -273,6 +275,24 @@ export default {
         this.typeTagStr = "uptime";
         this.$emit("changeTag", this.typeTagStr);
       }
+    },
+    searchlistInpt(){
+       this.$axios(
+        "get",
+        `${
+          this.$ports.dota.QueryWebGoodsBySeachFlagPager
+        }?classid=${this.id}&flag=${this.shopFlag}&search=${escape(this.val)}&sort=${this.typeTagStr}&pi=${
+          1
+        }&ps=${10}`
+      )
+        .then(res => {
+          console.log(res);
+          this.searchlistContainer = res.data.list;
+          this.allpageLists = Math.ceil(res.data.count / 10);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   components: {
