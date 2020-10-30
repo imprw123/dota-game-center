@@ -67,21 +67,23 @@
           </div>
         </div>
         <div class="action-search-right">
-          <span class="weightChange current">
+          <span class="weightChange" v-bind:class="{'current':typeTagStr == 'weight'}" @click="typeTagchangeBtn('综合')">
             综合
-            <i class="current"></i>
+            <i v-bind:class="{'current':typeTagStr == 'weight'}"></i>
           </span>
-          <span class="Sales">
+          <span class="Sales" v-bind:class="{'current':typeTagStr == 'sale'}" @click="typeTagchangeBtn('销量')">
             销量
-            <i></i>
+            <i v-bind:class="{'current':typeTagStr == 'sale'}"></i>
           </span>
-          <span class="price">
+          <span class="price" @click="typeTagchangeBtn('价格')" v-bind:class="{'current':typeTagStr == 'priceup' || typeTagStr == 'pricedown' }">
             价格
-            <i></i>
+            <i
+              v-bind:class="{'currentUp':typeTagStr == 'priceup','currentDown':typeTagStr == 'pricedown'}"
+            ></i>
           </span>
-          <span class="shelves">
+          <span class="shelves" v-bind:class="{'current':typeTagStr == 'uptime'}" @click="typeTagchangeBtn('上架时间')">
             上架时间
-            <i class="current"></i>
+            <i v-bind:class="{'current':typeTagStr == 'uptime'}"></i>
           </span>
         </div>
       </div>
@@ -96,7 +98,21 @@
           </li>
         </ul>
         <div class="pageCount">
-          
+          <span class="prev" v-show="current != 1" v-on:click="current-- && goto(current)">前一页</span>
+          <span class="first" v-on:click="firstPage">首页</span>
+          <a
+            v-for="index in pages"
+            v-on:click="goto(index)"
+            v-bind:class="{'current':current == index}"
+            :key="index"
+          >{{index}}</a>
+
+          <span class="next" v-on:click="lastPage">尾页</span>
+          <span
+            class="prev"
+            v-show="allpage != current && allpage != 0 "
+            v-on:click="current++ && goto(current++)"
+          >后一页</span>
         </div>
       </div>
     </div>
@@ -126,21 +142,91 @@ export default {
     classid: {
       type: Number,
       default: ""
+    },
+    pageIndex: {
+      type: Number | String,
+      default: 1
+    },
+    pageSize: {
+      type: Number | String,
+      default: 5
+    },
+    allpage: {
+      type: Number | String,
+      default: 10
+    },
+    typeTag: {
+      type: String,
+      default: "weight"
     }
   },
   data() {
     return {
       navname: this.nav,
-      modellistContainer: this.modelist01,
+      modellistContainer: [],
       isflag1: this.flag01,
-      searchlistContainer: this.searchlist,
-      modelobjContainer: this.modelobj,
+      searchlistContainer: [],
+      modelobjContainer: "",
       id: this.classid,
-      msg: false
+      typeTagStr: this.typeTag,
+      msg: false,
+      current: this.pageIndex, // 当前页码
+      showItem: this.pageSize, // 最少显示5个页码
+      allpageLists: this.allpage // 总共的
     };
   },
+  watch: {
+    searchlist: {
+      handler(newValue, oldValue) {
+        console.log(newValue);
+        this.searchlistContainer = newValue;
+      },
+      immediate: true,
+      deep: true
+    },
+    modelist01: {
+      handler(newValue, oldValue) {
+        console.log(newValue);
+        this.modellistContainer = newValue;
+      },
+      immediate: true,
+      deep: true
+    },
+    modelobj: {
+      handler(newValue, oldValue) {
+        console.log(newValue);
+        this.modelobjContainer = newValue;
+      },
+      immediate: true,
+      deep: true
+    }
+  },
+  computed: {
+    pages: function() {
+      var pag = [];
+      if (this.current < this.showItem) {
+        //如果当前的激活的项 小于要显示的条数
+        //总页数和要显示的条数那个大就显示多少条
+        var i = Math.min(this.showItem, this.allpageLists);
+        while (i) {
+          pag.unshift(i--);
+        }
+      } else {
+        //当前页数大于显示页数了
+        var middle = this.current - Math.floor(this.showItem / 2), //从哪里开始
+          i = this.showItem;
+        if (middle > this.allpageLists - this.showItem) {
+          middle = this.allpageLists - this.showItem + 1;
+        }
+        while (i--) {
+          pag.push(middle++);
+        }
+      }
+      return pag;
+    }
+  },
   mounted() {
-    console.log(this.id);
+    //console.log(this.id);
     var _that = this;
     this.modelobjContainer.Class_GoodsCount.forEach(function(obj, index) {
       if (obj.Flag == 128) {
@@ -150,7 +236,45 @@ export default {
       }
     });
   },
-  methods: {},
+  methods: {
+    goto: function(index) {
+      this.current = index;
+      this.$emit("pageIndexChange", index);
+    },
+    firstPage() {
+      this.current = 1;
+      this.$emit("pageIndexChange", 1);
+    },
+    lastPage() {
+      this.current = this.allpageLists;
+      this.$emit("pageIndexChange", this.current);
+    },
+    typeTagchangeBtn(name) {
+      if (name == '综合') {
+        this.typeTagStr = "weight";
+        this.$emit("changeTag", this.typeTagStr);
+      } else if (name == '销量') {
+        console.log('aa')
+        this.typeTagStr = "sale";
+        console.log(this.typeTagStr );
+        this.$emit("changeTag", this.typeTagStr);
+      } else if (name == '价格') {
+        if (this.typeTagStr != "priceup" && this.typeTagStr != "pricedown") {
+          this.typeTagStr = "priceup";
+          this.$emit("changeTag", this.typeTagStr);
+        } else if (this.typeTagStr == "priceup") {
+          this.typeTagStr = "pricedown";
+          this.$emit("changeTag", this.typeTagStr);
+        } else if (this.typeTagStr == "pricedown") {
+          this.typeTagStr = "priceup";
+          this.$emit("changeTag", this.typeTagStr);
+        }
+      } else if (name == '上架时间') {
+        this.typeTagStr = "uptime";
+        this.$emit("changeTag", this.typeTagStr);
+      }
+    }
+  },
   components: {
     "model-div": model01
   }
@@ -416,6 +540,10 @@ export default {
   overflow: hidden;
   zoom: 1;
 }
+.listContent ul.model01 {
+  overflow: hidden;
+  zoom: 1;
+}
 .listContent ul.model01 li {
   margin-right: 10px;
   margin-bottom: 10px;
@@ -440,6 +568,37 @@ export default {
   color: #5f94be;
 }
 .tabBox span.current {
+  color: #fff;
+}
+.pageCount {
+  width: 100%;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  font-size: 14px;
+  color: #a9aaaa;
+  font-family: "微软雅黑";
+  margin-top: 10px;
+}
+.pageCount span {
+  margin: 0 5px;
+  cursor: pointer;
+}
+.pageCount a {
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  display: inline-block;
+  text-align: center;
+  color: #474747;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  margin: 0 2px;
+  cursor: pointer;
+}
+.pageCount a.current {
+  background: #f74a4a;
+  border: 1px solid #e33232;
   color: #fff;
 }
 </style>

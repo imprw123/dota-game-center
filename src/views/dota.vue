@@ -1,7 +1,20 @@
 <template>
   <div class="dotaContainer">
     <header-tab></header-tab>
-    <list-model :nav="'DOTA'" :classid="id" :modelist01="dotaList" v-if="isFlag01 && isFlag02 && isFlag03" :searchlist="searchList" :modelobj="modelObj"></list-model>
+    <list-model
+      :nav="'DOTA'"
+      :classid="id"
+      :modelist01="dotaList"
+      :searchlist="searchList"
+      v-if="flag01 && flag02 && flag03"
+      :modelobj="modelObj"
+      v-bind:pageIndex="pi"
+      v-bind:pageSize="ps"
+      v-bind:allpage="all"
+      v-on:pageIndexChange="changeIndex($event)"
+      v-bind:typeTag="typeChange"
+      v-on:changeTag="changetagFn"
+    >></list-model>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed"></silderbar-tab>
     </div>
@@ -9,7 +22,6 @@
 </template>
 
 <script>
-// http://test.shop.5211game.com/query/QueryWebGoodsBySeachFlagPager?classid=6&flag=0&search=10&sort=sale&pi=1&ps=10
 import Header from "../components/header";
 import Silderbar from "../components/silderbar";
 import listModel from "../components/listModel";
@@ -19,16 +31,20 @@ export default {
     return {
       flag: false,
       dotaList: [],
-      isFlag01:false,
-      isFlag02:false,
-      isFlag03:false,
-      searchList:[],
-      modelObj:'',
-      id:3
+      searchList: [],
+      modelObj: "",
+      flag01: false,
+      flag02: false,
+      flag03: false,
+      id: 3,
+      pi: 1,
+      ps: 10,
+      all: 10,
+      typeChange: "weight"
     };
   },
   mounted() {
-   this.seachFlagPager();
+    this.seachFlagPager();
     this.dotaRecomment();
     this.ClassInfoByCid();
   },
@@ -41,24 +57,27 @@ export default {
     modelFixed(val) {
       this.flag = val;
     },
-    seachFlagPager(){
-         this.$axios(
+    seachFlagPager() {
+      this.$axios(
         "get",
         `${
           this.$ports.dota.QueryWebGoodsBySeachFlagPager
-        }?classid=${3}&flag=${0}&search=&sort=sale&pi=${1}&ps=${10}`
+        }?classid=${3}&flag=${0}&search=&sort=${this.typeChange}&pi=${
+          this.pi
+        }&ps=${this.ps}`
       )
         .then(res => {
-           this.isFlag02=true;
-         // console.log(res);
-          this.searchList=res.data.list;
-         
+          this.flag01 = true;
+          console.log(res);
+          this.searchList = res.data.list;
+
+          this.all = Math.ceil(res.data.count / 10);
         })
         .catch(error => {
           console.log(error);
         });
     },
-     //dota推荐商品
+    //dota推荐商品
     dotaRecomment() {
       this.$axios(
         "get",
@@ -67,11 +86,10 @@ export default {
         }?classid=${3}&flag=${4}&topN=${5}`
       )
         .then(res => {
-         //console.log(res);
-          this.isFlag01=true;
+          //console.log(res);
+          this.flag02 = true;
           if (res.code == 0) {
             this.dotaList = res.data.list;
-           
           } else {
             this.dotaList = [];
           }
@@ -81,25 +99,33 @@ export default {
         });
     },
     //商品内容
-    ClassInfoByCid(){
-       this.$axios(
+    ClassInfoByCid() {
+      this.$axios(
         "get",
-        `${
-          this.$ports.dota.QueryWebClassInfoByCid
-        }?classid=${3}`
+        `${this.$ports.dota.QueryWebClassInfoByCid}?classid=${3}`
       )
         .then(res => {
-         console.log(res);
-          this.isFlag03=true;
+          // console.log(res);
+          this.flag03 = true;
           if (res.code == 0) {
-            this.modelObj=res.data;
+            this.modelObj = res.data;
           } else {
-           this.modelObj='';
+            this.modelObj = "";
           }
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    changeIndex(val) {
+      console.log(val);
+      this.pi = val;
+      this.seachFlagPager();
+    },
+    changetagFn(val){
+      this.typeChange=val;
+      console.log(this.typeChange);
+       this.seachFlagPager();
     }
   }
 };
