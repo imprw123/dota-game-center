@@ -2,7 +2,7 @@
   <div class="container">
     <header-tab></header-tab>
     <div class="main-banner">
-      <div class="advertisement"></div>
+      <div class="advertisement" id="mydiv"></div>
       <div class="bannerShow_right">
         <h1>
           <i class="icon01"></i>
@@ -11,15 +11,16 @@
         <div class="tpic_show">
           <em class="jingxi"></em>
           <div class="imgContainer">
-            <img
-              v-bind:src="newRecomment.Goods_imgPath"
-              
-            />
+            <img v-bind:src="newRecomment.Goods_imgPath" />
           </div>
           <h4>{{newRecomment.Goods_disName}}</h4>
           <p>
             <em>秒杀价：</em>
-            <b>￥<i>{{newRecomment.Goods_price}}</i></b><i>{{newRecomment.Unit}}</i>
+            <b>
+              ￥
+              <i>{{newRecomment.Goods_price}}</i>
+            </b>
+            <i>{{newRecomment.Unit}}</i>
           </p>
           <a href="javascript:;" data-goodsid="22106" class="qg">立即抢购</a>
         </div>
@@ -36,8 +37,8 @@
       </div>
       <div class="limit-buy-right">
         <div class="tabchange">
-          <span  v-bind:class="{'current':currentFlag}" v-on:click="tabchangebat('热门排行')" >热门排行</span>
-          <span v-bind:class="{'current':!currentFlag}" v-on:click="tabchangebat('畅销排行')" >畅销排行</span>
+          <span v-bind:class="{'current':currentFlag}" v-on:click="tabchangebat('热门排行')">热门排行</span>
+          <span v-bind:class="{'current':!currentFlag}" v-on:click="tabchangebat('畅销排行')">畅销排行</span>
         </div>
         <ol>
           <li v-for="(item,index) in rankList" :key="index">
@@ -48,7 +49,10 @@
               <h2>{{item.Goods_disName}}</h2>
               <p>
                 价格:
-                <em><i>{{item.Goods_price}}</i><i>{{item.Unit}}</i></em>
+                <em>
+                  <i>{{item.Goods_price}}</i>
+                  <i>{{item.Unit}}</i>
+                </em>
               </p>
             </div>
           </li>
@@ -57,7 +61,12 @@
     </div>
     <!-- Dota推荐商品 -->
     <div class="dota">
-      <h1>Dota推荐商品</h1>
+      <h1>
+        <em>Dota推荐商品</em>
+        <router-link :to="'DOTA'"><span class="more">进入Dota商店</span></router-link>
+       
+      </h1>
+
       <ul class="model01">
         <li v-for="(item,index) in dotaList" :key="index" v-bind:class="index == 4 ?'current':''">
           <model-div :item="item"></model-div>
@@ -66,7 +75,10 @@
     </div>
     <!-- RPG推荐商品 -->
     <div class="rpg">
-      <h1>RPG推荐商品</h1>
+      <h1>
+        <em>RPG推荐地图</em>
+        <span class="more">进入RPG地图</span>
+      </h1>
       <ul>
         <li
           v-for="(item,index) in rpgList"
@@ -86,7 +98,10 @@
     </div>
     <!-- 平台推荐服务 -->
     <div class="dota">
-      <h1>平台推荐服务</h1>
+      <h1>
+        <em>平台推荐服务</em>
+        <span class="more">进入平台服务</span>
+      </h1>
       <ul class="model01">
         <li
           v-for="(item,index) in ptserviceData"
@@ -97,10 +112,15 @@
         </li>
       </ul>
     </div>
+     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+      <silderbar-tab v-on:FixedModel="modelFixed"></silderbar-tab>
+    </div>
   </div>
 </template>
 <script>
+import {YYAD} from "../api/YYAD";
 import Header from "../components/header";
+import Silderbar from "../components/silderbar";
 import model01 from "../components/model01";
 import $ from "jquery";
 export default {
@@ -110,10 +130,11 @@ export default {
       ptserviceData: [],
       dotaList: [],
       rpgList: [],
-      limitList:[],
-      newRecomment:"",
-      rankList:[],
-      currentFlag:true
+      limitList: [],
+      newRecomment: "",
+      rankList: [],
+      currentFlag: true,
+       flag: false
     };
   },
   mounted() {
@@ -122,8 +143,8 @@ export default {
     this.ptservice();
     this.dotaRecomment();
     this.rpg();
-
     this.rank4();
+    this._YYAD();
   },
   methods: {
     //新品推荐
@@ -135,11 +156,11 @@ export default {
         }?classid=${0}&flag=${1}&topN=${1}`
       )
         .then(res => {
-         // console.log(res);
-          if(res.code == 0){
-            this.newRecomment=res.data.list[0];
-          }else{
-            this.newRecomment="";
+          // console.log(res);
+          if (res.code == 0) {
+            this.newRecomment = res.data.list[0];
+          } else {
+            this.newRecomment = "";
           }
         })
         .catch(error => {
@@ -155,10 +176,10 @@ export default {
         }?classid=${0}&flag=${2}&topN=${4}`
       )
         .then(res => {
-          if(res.code == 0){
-            this.limitList=res.data.list;
-          }else{
-            this.limitList=[];
+          if (res.code == 0) {
+            this.limitList = res.data.list;
+          } else {
+            this.limitList = [];
           }
           //console.log(res);
         })
@@ -175,7 +196,7 @@ export default {
         }?classid=${1}&flag=${4}&topN=${5}`
       )
         .then(res => {
-         // console.log(res);
+          // console.log(res);
           if (res.code == 0) {
             this.ptserviceData = res.data.list;
           } else {
@@ -195,7 +216,7 @@ export default {
         }?classid=${3}&flag=${4}&topN=${5}`
       )
         .then(res => {
-        // console.log(res);
+          // console.log(res);
           if (res.code == 0) {
             this.dotaList = res.data.list;
           } else {
@@ -208,30 +229,31 @@ export default {
     },
     //rpg推荐
     rpg() {
-      var _that=this;
-      $.getScript("http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js", function() {
-        _that.rpgList=rpgObj.data;
-      });
+      var _that = this;
+      $.getScript(
+        "http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
+        function() {
+          _that.rpgList = rpgObj.data;
+        }
+      );
     },
     //畅销排行
-    HotRank(){
-  var _that=this;
-      $.getScript("http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js", function() {
-        console.log('121')
-        console.log(HotRank)
-        _that.rankList=HotRank.data.list;
-      });
+    HotRank() {
+      var _that = this;
+      $.getScript(
+        "http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
+        function() {
+          console.log("121");
+          console.log(HotRank);
+          _that.rankList = HotRank.data.list;
+        }
+      );
     },
     //热门排行
-    rank4(){
-       this.$axios(
-        "get",
-        `${
-          this.$ports.home.hot
-        }?topN=${4}`
-      )
+    rank4() {
+      this.$axios("get", `${this.$ports.home.hot}?topN=${4}`)
         .then(res => {
-        // console.log(res);
+          // console.log(res);
           if (res.code == 0) {
             this.rankList = res.data.list;
           } else {
@@ -242,19 +264,38 @@ export default {
           console.log(error);
         });
     },
-    tabchangebat(val){
-      if(val == "热门排行"){
-            this.rank4();
-            this.currentFlag=true;
-      }else if(val == "畅销排行"){
-         this.HotRank();
-         this.currentFlag=false;
+    tabchangebat(val) {
+      if (val == "热门排行") {
+        this.rank4();
+        this.currentFlag = true;
+      } else if (val == "畅销排行") {
+        this.HotRank();
+        this.currentFlag = false;
       }
+    },
+    //广告
+    _YYAD() {
+      var _that = this;
+       var script = document.createElement("script");
+          script.type = "text/javascript";
+          try {
+            console.log(YYAD.LoadAds(1436));
+            var jsCodeNode = document.createTextNode(`${YYAD.LoadAds(1436,null,null,"#mydiv")}`);
+            script.appendChild(jsCodeNode);
+          } catch (e) {
+            script.text = code;
+          }
+          document.getElementById('mydiv').appendChild(script);
+    },
+      modelFixed(val) {
+      console.log("aa");
+      this.flag = val;
     }
   },
   components: {
     "header-tab": Header,
-    "model-div": model01
+    "model-div": model01,
+    "silderbar-tab": Silderbar
   }
 };
 </script>
@@ -505,6 +546,7 @@ ul.model01 li img {
   height: 30px;
   line-height: 30px;
   font-weight: 500;
+  margin-bottom: 2px;
 }
 .rpg {
   width: 1080px;
@@ -519,6 +561,7 @@ ul.model01 li img {
   height: 30px;
   line-height: 30px;
   font-weight: 500;
+  margin-bottom: 2px;
 }
 .rpg ul li {
   width: 253px;
@@ -584,5 +627,25 @@ ul.model01 li img {
   font-size: 12px;
   text-align: center;
   line-height: 20px;
+}
+.more {
+  width: 131px;
+  height: 28px;
+  line-height: 28px;
+  background: url(../assets/more.png);
+  float: right;
+  font-size: 14px;
+  color: #fff;
+  font-family: "微软雅黑";
+  padding-left: 30px;
+}
+.siderBox {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  transition: 0.5s ease;
+}
+.siderBoxCurrent {
+  right: -300px;
 }
 </style>

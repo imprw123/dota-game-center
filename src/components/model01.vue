@@ -1,7 +1,7 @@
 <template>
   <div class="model">
     <div>
-      <img v-bind:src="item.Goods_imgPath" />
+      <img v-lazy="item.Goods_imgPath" />
       <div class="money">
         ￥
         <b>{{item.Goods_price}}</b>
@@ -9,7 +9,7 @@
           <em>{{item.Unit}}</em>
         </span>
       </div>
-      <div class="name">{{item.Goods_disName}}</div>
+      <div class="name" :title="item.Goods_disName">{{item.Goods_disName}}</div>
       <div class="detail-type">{{item.Tag}}</div>
       <div class="action">
         <span class="shopcar">+ 购物车</span>
@@ -29,12 +29,11 @@
 export default {
   name: "Model",
   props: {
-		item: Object
-	}
+    item: Object
+  }
 };
 </script>
 <style>
-
 .money {
   font-size: 12px;
   color: #f74a4a;
@@ -51,9 +50,14 @@ export default {
   font-family: "微软雅黑";
 }
 .name {
+  width:100%;
   font-size: 14px;
   font-family: "微软雅黑";
   color: #333333;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .detail-type {
   font-size: 12px;
