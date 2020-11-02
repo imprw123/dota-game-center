@@ -14,6 +14,8 @@
       v-on:pageIndexChange="changeIndex($event)"
       v-bind:typeTag="typeChange"
       v-on:changeTag="changetagFn"
+      v-on:searchDotaPf="dotaPf"
+      v-on:changeid="_changeclassid"
     >></list-model>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed"></silderbar-tab>
@@ -40,7 +42,9 @@ export default {
       pi: 1,
       ps: 10,
       all: 10,
-      typeChange: "weight"
+      typeChange: "weight",
+      searchName: "",
+      classid:3
     };
   },
   mounted() {
@@ -62,9 +66,9 @@ export default {
         "get",
         `${
           this.$ports.dota.QueryWebGoodsBySeachFlagPager
-        }?classid=${3}&flag=${0}&search=&sort=${this.typeChange}&pi=${
-          this.pi
-        }&ps=${this.ps}`
+        }?classid=${this.classid}&flag=${0}&search=${this.searchName}&sort=${
+          this.typeChange
+        }&pi=${this.pi}&ps=${this.ps}`
       )
         .then(res => {
           this.flag01 = true;
@@ -122,10 +126,22 @@ export default {
       this.pi = val;
       this.seachFlagPager();
     },
-    changetagFn(val){
-      this.typeChange=val;
+    changetagFn(val) {
+      this.typeChange = val;
       console.log(this.typeChange);
-       this.seachFlagPager();
+      this.pi = 1;
+      this.seachFlagPager();
+    },
+    dotaPf(val) {
+      this.searchName = val;
+      this.pi = 1;
+      this.seachFlagPager();
+    },
+    _changeclassid(val){
+       this.searchName = '';
+      this.pi = 1;
+      this.classid=val;
+      this.seachFlagPager();
     }
   }
 };

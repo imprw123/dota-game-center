@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios';
+import $ from 'jquery'
 import request from './api/api.js';
 import ports from './api/port.js'
 import VueLazyLoad from 'vue-lazyload'
