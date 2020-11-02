@@ -45,12 +45,21 @@
 
     <!-- tab页签 -->
     <div class="tab-change-model">
-      <div class="tabBox" v-if="msg">
-        <span class="current">普通商品</span>
-        <span>定制商品</span>
+      <div
+        class="tabBox"
+        v-if="msg"
+        v-bind:class="{'tabBoxCurrent01':shopFlag == 0,'tabBoxCurrent02':shopFlag == 128}"
+      >
+        <span @click="isCustomShop('普通商品')" v-bind:class="{'current01':shopFlag == 0}">普通商品</span>
+        <span @click="isCustomShop('定制商品')" v-bind:class="{'current02':shopFlag == 128}">定制商品</span>
       </div>
       <div class="in-tab-change-model" v-if="modelobjContainer.Class_GoodsInfo.length>0">
-        <span v-for=" (item,index) in modelobjContainer.Class_GoodsInfo" :key="index" v-bind:class="{'current':item.Class_id == id}" @click="changeClassId(item.Class_id)" >
+        <span
+          v-for=" (item,index) in modelobjContainer.Class_GoodsInfo"
+          :key="index"
+          v-bind:class="{'current':item.Class_id == id}"
+          @click="changeClassId(item.Class_id)"
+        >
           <i>{{item.Class_name}}</i>
           <em>{{`(${item.Goods_count})`}}</em>
         </span>
@@ -559,7 +568,7 @@ export default {
       id: this.classid,
       typeTagStr: this.typeTag,
       msg: false,
-      current: '', // 当前页码
+      current: "", // 当前页码
       showItem: this.pageSize, // 最少显示5个页码
       allpageLists: this.allpage, // 总共的
       shopFlag: 0,
@@ -666,69 +675,161 @@ export default {
     });
 
     $(document).on("click", ".in_boxHero ul li", function() {
-      _that.$emit("searchDotaPf", $(this).attr("data-id"));
+      this.$emit(
+        "childrenFn",
+        this.id,
+        this.shopFlag,
+        $(this).attr("data-id"),
+        this.typeTagStr,
+        1
+      );
     });
   },
   methods: {
     goto: function(index) {
       this.current = index;
-      this.$emit("pageIndexChange", index);
+      debugger;
+      this.$emit(
+        "childrenFn",
+        this.id,
+        this.shopFlag,
+        escape(this.val),
+        this.typeTagStr,
+        index
+      );
     },
     firstPage() {
       this.current = 1;
-      this.$emit("pageIndexChange", 1);
+      this.$emit(
+        "childrenFn",
+        this.id,
+        this.shopFlag,
+        escape(this.val),
+        this.typeTagStr,
+        1
+      );
     },
     lastPage() {
       this.current = this.allpageLists;
-      this.$emit("pageIndexChange", this.current);
+      this.$emit(
+        "childrenFn",
+        this.id,
+        this.shopFlag,
+        escape(this.val),
+        this.typeTagStr,
+        this.current
+      );
     },
     typeTagchangeBtn(name) {
       if (name == "综合") {
         this.typeTagStr = "weight";
-        this.$emit("changeTag", this.typeTagStr);
+        this.$emit(
+          "childrenFn",
+          this.id,
+          this.shopFlag,
+          escape(this.val),
+          this.typeTagStr,
+          this.current
+        );
       } else if (name == "销量") {
         console.log("aa");
         this.typeTagStr = "sale";
         console.log(this.typeTagStr);
-        this.$emit("changeTag", this.typeTagStr);
+        this.$emit(
+          "childrenFn",
+          this.id,
+          this.shopFlag,
+          escape(this.val),
+          this.typeTagStr,
+          this.current
+        );
       } else if (name == "价格") {
         if (this.typeTagStr != "priceup" && this.typeTagStr != "pricedown") {
           this.typeTagStr = "priceup";
-          this.$emit("changeTag", this.typeTagStr);
+          this.$emit(
+            "childrenFn",
+            this.id,
+            this.shopFlag,
+            escape(this.val),
+            this.typeTagStr,
+            this.current
+          );
         } else if (this.typeTagStr == "priceup") {
           this.typeTagStr = "pricedown";
-          this.$emit("changeTag", this.typeTagStr);
+          this.$emit(
+            "childrenFn",
+            this.id,
+            this.shopFlag,
+            escape(this.val),
+            this.typeTagStr,
+            this.current
+          );
         } else if (this.typeTagStr == "pricedown") {
           this.typeTagStr = "priceup";
-          this.$emit("changeTag", this.typeTagStr);
+          this.$emit(
+            "childrenFn",
+            this.id,
+            this.shopFlag,
+            escape(this.val),
+            this.typeTagStr,
+            this.current
+          );
         }
       } else if (name == "上架时间") {
         this.typeTagStr = "uptime";
-        this.$emit("changeTag", this.typeTagStr);
+        this.$emit(
+          "childrenFn",
+          this.id,
+          this.shopFlag,
+          escape(this.val),
+          this.typeTagStr,
+          this.current
+        );
       }
     },
     searchlistInpt() {
-      this.$axios(
-        "get",
-        `${this.$ports.dota.QueryWebGoodsBySeachFlagPager}?classid=${
-          this.id
-        }&flag=${this.shopFlag}&search=${escape(this.val)}&sort=${
-          this.typeTagStr
-        }&pi=${1}&ps=${10}`
-      )
-        .then(res => {
-          console.log(res);
-          this.searchlistContainer = res.data.list;
-          this.allpageLists = Math.ceil(res.data.count / 10);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      this.$emit(
+        "childrenFn",
+        this.id,
+        this.shopFlag,
+        escape(this.val),
+        this.typeTagStr,
+        1
+      );
     },
-    changeClassId(val){
-      console.log(val);
-      this.id=val;
-      this.$emit('changeid',val)
+    changeClassId(val) {
+      this.id = val;
+      this.$emit(
+        "childrenFn",
+        this.id,
+        this.shopFlag,
+        escape(this.val),
+        this.typeTagStr,
+        1
+      );
+    },
+    isCustomShop(val) {
+      if (val == "定制商品") {
+        this.shopFlag = 128;
+        this.$emit(
+          "childrenFn",
+          this.id,
+          this.shopFlag,
+          escape(this.val),
+          this.typeTagStr,
+          1
+        );
+      } else if (val == "普通商品") {
+        this.shopFlag = 0;
+        this.$emit(
+          "childrenFn",
+          this.id,
+          this.shopFlag,
+          escape(this.val),
+          this.typeTagStr,
+          1
+        );
+      }
     }
   },
   components: {
@@ -1007,7 +1108,6 @@ export default {
 .tabBox {
   width: 1080px;
   height: 33px;
-  background: url(../assets/tagbg01.png);
   margin-bottom: 10px;
 }
 .tabBox span {
@@ -1019,8 +1119,18 @@ export default {
   font-family: "微软雅黑";
   font-size: 18px;
   color: #5f94be;
+  cursor: pointer;
 }
-.tabBox span.current {
+.tabBoxCurrent01 {
+  background: url(../assets/tagbg01.png);
+}
+.tabBox span.current01 {
+  color: #fff;
+}
+.tabBoxCurrent02 {
+  background: url(../assets/tagbg02.png);
+}
+.tabBox span.current02 {
   color: #fff;
 }
 .pageCount {

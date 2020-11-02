@@ -77,7 +77,7 @@
     <div class="rpg">
       <h1>
         <em>RPG推荐地图</em>
-        <span class="more">进入RPG地图</span>
+         <router-link :to="'RPG'"><span class="more">进入RPG地图</span></router-link>
       </h1>
       <ul>
         <li
@@ -100,7 +100,7 @@
     <div class="dota">
       <h1>
         <em>平台推荐服务</em>
-        <span class="more">进入平台服务</span>
+         <router-link :to="'PT'"><span class="more">进入平台服务</span></router-link>
       </h1>
       <ul class="model01">
         <li

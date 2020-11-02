@@ -2,7 +2,7 @@
   <div class="dotaContainer">
     <header-tab></header-tab>
     <list-model
-      :nav="'DOTA'"
+      :nav="'RPG'"
       :classid="classid"
       :modelist01="dotaList"
       :searchlist="searchList"
@@ -25,7 +25,7 @@ import Header from "../components/header";
 import Silderbar from "../components/silderbar";
 import listModel from "../components/listModel";
 export default {
-  name: "DOAT",
+  name: "RPG",
   data() {
     return {
       flag: false,
@@ -41,7 +41,7 @@ export default {
       flagid: 0,
       typeChange: "weight",
       searchName: "",
-      classid: 3
+      classid: 6
     };
   },
   mounted() {
