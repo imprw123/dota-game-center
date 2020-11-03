@@ -570,7 +570,7 @@ export default {
       msg: false,
       current: "", // 当前页码
       showItem: this.pageSize, // 最少显示5个页码
-      allpageLists: this.allpage, // 总共的
+      allpageLists: "", // 总共的
       shopFlag: 0,
       val: "",
       pages: []
@@ -581,6 +581,26 @@ export default {
       handler(newValue, oldValue) {
         console.log(newValue);
         this.current = newValue;
+        var pag = [];
+        if (this.current < this.showItem) {
+          //如果当前的激活的项 小于要显示的条数
+          //总页数和要显示的条数那个大就显示多少条
+          var i = Math.min(this.showItem, this.allpageLists);
+          while (i) {
+            pag.unshift(i--);
+          }
+        } else {
+          //当前页数大于显示页数了
+          var middle = this.current - Math.floor(this.showItem / 2), //从哪里开始
+            i = this.showItem;
+          if (middle > this.allpageLists - this.showItem) {
+            middle = this.allpageLists - this.showItem + 1;
+          }
+          while (i--) {
+            pag.push(middle++);
+          }
+        }
+        this.pages = pag;
       },
       immediate: true,
       deep: true
@@ -611,19 +631,14 @@ export default {
     },
     allpage: {
       handler(newValue, oldValue) {
-        console.log(newValue);
-        this.pages = [];
+        var pag = [];
         this.allpageLists = newValue;
-        if (this.allpageLists <= 0) {
-          this.pages = [];
-        }
-        debugger;
         if (this.current < this.showItem) {
           //如果当前的激活的项 小于要显示的条数
           //总页数和要显示的条数那个大就显示多少条
           var i = Math.min(this.showItem, this.allpageLists);
           while (i) {
-            this.pages.unshift(i--);
+            pag.unshift(i--);
           }
         } else {
           //当前页数大于显示页数了
@@ -633,14 +648,16 @@ export default {
             middle = this.allpageLists - this.showItem + 1;
           }
           while (i--) {
-            this.pages.push(middle++);
+            pag.push(middle++);
           }
         }
+        this.pages = pag;
       },
       immediate: true,
       deep: true
     }
   },
+
   mounted() {
     //console.log(this.id);
     var _that = this;
@@ -688,7 +705,6 @@ export default {
   methods: {
     goto: function(index) {
       this.current = index;
-      debugger;
       this.$emit(
         "childrenFn",
         this.id,
