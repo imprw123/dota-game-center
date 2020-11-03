@@ -5,6 +5,7 @@ import DOTA from '../views/dota.vue'
 import PT from '../views/pt.vue'
 import RPG from '../views/rpg.vue'
 import IMBA from '../views/imba.vue'
+import DETAIL from '../views/detail.vue'
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,14 @@ const routes = [{
         path: '/imba',
         name: 'IMBA',
         component: IMBA,
+        meta: {
+            cheakIsLogin: true
+        }
+    },
+    {
+        path: '/detail',
+        name: 'DETAIL',
+        component: DETAIL,
         meta: {
             cheakIsLogin: true
         }

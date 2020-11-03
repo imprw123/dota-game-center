@@ -1,7 +1,7 @@
 <template>
   <div class="model">
     <div>
-      <img v-lazy="item.Goods_imgPath" />
+      <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}"><img v-lazy="item.Goods_imgPath" /></router-link>
       <div class="money">
         ￥
         <b>{{item.Goods_price}}</b>

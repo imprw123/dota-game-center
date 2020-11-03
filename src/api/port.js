@@ -6,5 +6,8 @@ export default {
     dota: {
         QueryWebGoodsBySeachFlagPager: 'query/QueryWebGoodsBySeachFlagPager',
         QueryWebClassInfoByCid: 'query/QueryWebClassInfoByCid'
+    },
+    detail: {
+        QueryGoodsById: 'Query/QueryGoodsById'
     }
 }
