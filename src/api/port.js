@@ -12,5 +12,8 @@ export default {
     },
     rpgMap: {
         QueryRPGBySearchPager: 'Query/QueryRPGBySearchPager'
+    },
+    shopCar: {
+        QueryUserWebCartGoods: 'Query/QueryUserWebCartGoods'
     }
 }

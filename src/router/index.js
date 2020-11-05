@@ -10,6 +10,7 @@ import RPGMAP from '../views/rpgMap.vue'
 import ORDER from '../views/order.vue'
 import MYMAP from '../views/myMap.vue'
 import SHOPCAR from '../views/shopCar.vue'
+import SEARCH from '../views/search.vue'
 
 Vue.use(VueRouter)
 
@@ -89,6 +90,14 @@ const routes = [{
         path: '/shopCar',
         name: 'SHOPCAR',
         component: SHOPCAR,
+        meta: {
+            cheakIsLogin: true
+        }
+    },
+    {
+        path: '/search',
+        name: 'SEARCH',
+        component: SEARCH,
         meta: {
             cheakIsLogin: true
         }

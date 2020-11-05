@@ -18,21 +18,21 @@
         <span style="width:208px">操作</span>
       </div>
       <div class="shopCarList">
-        <ul>
-          <li>
+        <ul v-if="shopCarBox.length > 0">
+          <li v-for="(item,index) in shopCarBox" :key="index">
             <div class="shopCar-row01" style="width:104px">
               <input type="checkbox" id="myCheck" />
             </div>
             <div class="shopCar-row02" style="width:230px">
-              <img src alt />
+              <img v-lazy="item.Goods_imgPath" />
               <div class="shopCar-row02-infor">
-                <h5>燃烧我的卡路里！</h5>
+                <h5>{{item.Goods_disName}}</h5>
                 <p>
                   所属分类:
-                  <em>军团战争</em>
+                  <em>{{item.Goods_profile}}</em>
                 </p>
                 <p>
-                  <em>￥100.00</em>（商品单价）
+                  <em>{{item.Goods_price}}</em>（商品单价）
                 </p>
               </div>
             </div>
@@ -68,6 +68,41 @@
 import Header from "../components/header";
 export default {
   name: "SHOPCAR",
+  data() {
+    return {
+      shopCarBox: [],
+      totalNumber: 0,
+      totalMoney: "￥0.00"
+    };
+  },
+  mounted() {
+    this._QueryUserWebCartGoods();
+  },
+  methods: {
+    _QueryUserWebCartGoods() {
+      this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
+        .then(res => {
+          console.log("购物车");
+          console.log(res);
+          if (res.code == 0) {
+            this.shopCarBox = res.data;
+          } else {
+            this.shopCarBox = [];
+          }
+          if (this.shopCarBox.length > 0) {
+            var _that = this;
+            this.shopCarBox.forEach(function(obj, index) {
+              _that.totalMoney += obj.Goods_price * obj.Goods_amount;
+              _that.totalNumber += obj.Goods_amount;
+            });
+            this.totalMoney = this.totalMoney.toFixed(2);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  },
   components: {
     "header-tab": Header
   }
@@ -263,7 +298,7 @@ export default {
 .shopCarBt p {
   font-size: 12px;
   color: #3d3d3d;
-  margin-bottom:5px;
+  margin-bottom: 5px;
 }
 .shopCarBt p b {
   font-size: 18px;

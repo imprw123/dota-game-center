@@ -5,9 +5,9 @@
       <em>></em>
       <span>{{navname}}</span>
     </div>
-    <div class="detailInfor" v-if="modelobjContainer.IsShow">
+    <div class="detailInfor" v-if="modelobjContainer != null && modelobjContainer.IsShow">
       <div class="detail-img">
-        <img v-bind:src="modelobjContainer.Class_imgPath" alt />
+        <img v-lazy="modelobjContainer.Class_imgPath" alt />
       </div>
       <div class="indetail-infor">
         <div class="detail-name">
@@ -27,9 +27,9 @@
       <div class="jryx"></div>
     </div>
     <!-- 热门推荐 -->
-    <div class="dota">
+    <div class="dota" v-if="modelobjContainer != null">
       <h1>
-        <em v-text="!modelobjContainer.IsRPG  == true?'热门推荐':'新手推荐'"></em>
+        <em v-text="modelobjContainer != null && !modelobjContainer.IsRPG  == true?'热门推荐':'新手推荐'"></em>
       </h1>
       <ul class="model01">
         <li
@@ -56,7 +56,7 @@
       </div>
       <div
         class="in-tab-change-model"
-        v-if="modelobjContainer.Class_GoodsInfo != null && modelobjContainer.Class_GoodsInfo.length>0  "
+        v-if="modelobjContainer != null && modelobjContainer.Class_GoodsInfo != null && modelobjContainer.Class_GoodsInfo.length>0  "
       >
         <span
           v-if="modelobjContainer.Class_GoodsInfo != null"

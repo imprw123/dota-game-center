@@ -2,17 +2,63 @@
   <div class="siderBar">
     <div class="silderBtn">
       <ul>
-        <li class="silder01" v-on:click="openFixed"></li>
-        <li class="silder02" v-on:click="openFixed"></li>
-        <li class="silder03" v-on:click="openFixed"></li>
-        <li class="silder04" v-on:click="openFixed"></li>
+        <li class="silder02" v-on:click="openFixed('购物车')"></li>
+        <li class="silder03" v-on:click="openFixed('搜索')"></li>
+        <li class="silder04" v-on:click="openFixed('搜藏')"></li>
       </ul>
     </div>
     <div class="siderHd">
       <div class="back" v-on:click="closeFixed"></div>
     </div>
+    <!-- 购物车 -->
+    <div class="siderBd" v-if="Flag01">
+      <div class="silder-shop" v-if="shopCarBox.length > 0">
+        <ul>
+          <li v-for="(item,index) in shopCarBox" :key="index">
+            <div class="shop-left">
+              <img v-lazy="item.Goods_imgPath" />
+            </div>
+            <div class="shop-right">
+              <h4>{{item.Goods_disName}}</h4>
+              <p>
+                <b>{{item.Goods_price}}</b>
+              </p>
+              <p>
+                <em>{{item.Goods_profile}}</em>
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="totalBox">
+        <div class="totalBox-left">
+          <p>
+            <em>{{totalNumber}}</em>
+            件商品
+          </p>
+          <p>
+            共计
+            <b>{{totalMoney}}</b>
+          </p>
+        </div>
+        <div class="totalBox-right">
+          <router-link :to="'shopCar'">去购物车结算</router-link>
+        </div>
+      </div>
+    </div>
+    <!-- 购物车 -->
+
+    <!-- 搜索 -->
+    <div class="siderBd" v-if="Flag02">
+      <input type="text" class="pageSearch" v-model="val1" placeholder="请输入你想要查找的道具名称" />
+      <div class="quickSearch">
+        <router-link :to="{name:'SEARCH',query:{searchName:val}}">进入商店</router-link>
+      </div>
+    </div>
+    <!-- 搜索 -->
+
     <!-- 搜藏 -->
-    <div class="siderBd" style="display:none;">
+    <div class="siderBd" v-if="Flag03">
       <div class="sider-rpg">
         <ul>
           <li v-for="item in 4">
@@ -45,41 +91,6 @@
       </div>
     </div>
     <!-- 搜藏 -->
-    <!-- 购物车 -->
-    <div class="siderBd">
-      <div class="silder-shop">
-        <ul>
-          <li  v-for="item in 4">
-            <div class="shop-left">
-              <img
-                src="http://img.5211game.com/5211/shop/Goods/Basic/17372.jpg?rand=637388729297809734"
-              />
-            </div>
-            <div class="shop-right">
-                <h4>燃烧我的卡路里！</h4>
-                <p><b>￥189.98</b><em/永久</em></p>
-                <p><em>军团战争V</em></p>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="totalBox">
-        <div class="totalBox-left">
-          <p>
-            <em>4</em>
-            件商品
-          </p>
-          <p>
-            共计
-            <b>￥400.00</b>
-          </p>
-        </div>
-        <div class="totalBox-right">
-          <router-link :to="'shopCar'">去购物车结算</router-link>
-        </div>
-      </div>
-    </div>
-    <!-- 购物车 -->
   </div>
 </template>
 
@@ -88,15 +99,70 @@
 export default {
   name: "",
   data() {
-    return {};
+    return {
+      Flag01: false,
+      Flag02: false,
+      Flag03: false,
+      val1: "",
+      shopCarBox: [],
+      totalNumber: 0,
+      totalMoney: "￥0.00"
+    };
+  },
+  computed: {
+    val() {
+      return escape(this.val1);
+    }
+  },
+  mounted() {
+    this._QueryUserWebCartGoods();
   },
   methods: {
-    openFixed() {
-      console.log("nn");
+    openFixed(val) {
+      if (val == "购物车") {
+        this.Flag01 = true;
+        this.Flag02 = false;
+        this.Flag03 = false;
+        this._QueryUserWebCartGoods();
+      } else if (val == "搜索") {
+        this.Flag01 = false;
+        this.Flag02 = true;
+        this.Flag03 = false;
+      } else if (val == "搜藏") {
+        this.Flag01 = false;
+        this.Flag02 = false;
+        this.Flag03 = true;
+      }
       this.$emit("FixedModel", true);
     },
     closeFixed() {
+      this.Flag01 = false;
+      this.Flag02 = false;
+      this.Flag03 = false;
       this.$emit("FixedModel", false);
+    },
+    _QueryUserWebCartGoods() {
+      this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
+        .then(res => {
+          console.log("购物车");
+          console.log(res);
+          if (res.code == 0) {
+            this.shopCarBox = res.data;
+          } else {
+            this.shopCarBox = [];
+          }
+          if (this.shopCarBox.length > 0) {
+            var _that=this;
+            this.shopCarBox.forEach(function(obj,index) {
+              _that.totalMoney += obj.Goods_price*obj.Goods_amount;
+              _that.totalNumber+=obj.Goods_amount;
+            });
+            this.totalMoney=this.totalMoney.toFixed(2);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
@@ -266,25 +332,61 @@ export default {
   width: 66px;
   height: 66px;
 }
-.shop-right{
-    width:196px;
-    height: 66px;
-    float: left;
+.shop-right {
+  width: 196px;
+  height: 66px;
+  float: left;
 }
-.shop-right h4{
-    font-size: 14px;
-    color:#3a3f4a;
-    font-weight: normal;
-    font-family:'微软雅黑';
-    margin-bottom:5px;
+.shop-right h4 {
+  font-size: 14px;
+  color: #3a3f4a;
+  font-weight: normal;
+  font-family: "微软雅黑";
+  margin-bottom: 5px;
 }
-.shop-right p b{
-    color:#ff0808;
+.shop-right p b {
+  color: #ff0808;
 }
-.shop-right p{
-    color: #a9a9a9;
-    font-size:12px;
-   font-family:'微软雅黑';
-   margin-bottom: 5px;
+.shop-right p {
+  color: #a9a9a9;
+  font-size: 12px;
+  font-family: "微软雅黑";
+  margin-bottom: 5px;
+}
+.pageSearch {
+  width: 274px;
+  height: 32px;
+  line-height: 32px;
+  display: block;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 4px;
+  margin-top: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  color: #a9a9a9;
+  font-family: "微软雅黑";
+  font-size: 14px;
+  text-align: center;
+}
+.quickSearch {
+  width: 102px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+  font-family: "微软雅黑";
+  background-color: #7799c2;
+  margin: 0 auto;
+  margin-top: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.quickSearch a {
+  color: #fff;
+  font-family: "微软雅黑";
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 </style>
