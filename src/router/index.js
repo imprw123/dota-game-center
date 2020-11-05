@@ -6,6 +6,10 @@ import PT from '../views/pt.vue'
 import RPG from '../views/rpg.vue'
 import IMBA from '../views/imba.vue'
 import DETAIL from '../views/detail.vue'
+import RPGMAP from '../views/rpgMap.vue'
+import ORDER from '../views/order.vue'
+import MYMAP from '../views/myMap.vue'
+import SHOPCAR from '../views/shopCar.vue'
 
 Vue.use(VueRouter)
 
@@ -56,7 +60,40 @@ const routes = [{
         meta: {
             cheakIsLogin: true
         }
+    },
+    {
+        path: '/rpgMap',
+        name: 'RPGMAP',
+        component: RPGMAP,
+        meta: {
+            cheakIsLogin: true
+        }
+    },
+    {
+        path: '/order',
+        name: 'ORDER',
+        component: ORDER,
+        meta: {
+            cheakIsLogin: true
+        }
+    },
+    {
+        path: '/myMap',
+        name: 'MYMAP',
+        component: MYMAP,
+        meta: {
+            cheakIsLogin: true
+        }
+    },
+    {
+        path: '/shopCar',
+        name: 'SHOPCAR',
+        component: SHOPCAR,
+        meta: {
+            cheakIsLogin: true
+        }
     }
+
 ]
 
 const router = new VueRouter({

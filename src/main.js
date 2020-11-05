@@ -8,7 +8,8 @@ import request from './api/api.js';
 import ports from './api/port.js'
 import VueLazyLoad from 'vue-lazyload'
 Vue.use(VueLazyLoad, {
-    loading: require("./assets/default.jpg")
+    loading: require("./assets/default.jpg"),
+    error: 'https://img.5211game.com/5211/shop/RPG/85.jpg'
 
 })
 Vue.config.productionTip = false

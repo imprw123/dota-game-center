@@ -14,11 +14,11 @@
         <router-link :to="'IMBA'">IMBA</router-link>
       </span>
       <span>
-        <router-link :to="'RPG'">RPG商店</router-link>
+        <router-link :to="'RPGMAP'">RPG商店</router-link>
       </span>
     </div>
     <div class="my-order">
-      <span>我的订单</span>
+      <span> <router-link :to="'ORDER'">我的订单</router-link></span>
     </div>
   </div>
 </template>
@@ -64,7 +64,7 @@ export default {
   text-align: right;
   padding-right: 50px;
 }
-.my-order {
+.my-order span a{
   color: #dfdfdf;
   font-size: 18px;
   font-family: "微软雅黑";

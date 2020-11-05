@@ -41,13 +41,15 @@ export default {
       flagid: 0,
       typeChange: "weight",
       searchName: "",
-      classid: 6
+      classid: this.$route.query.rpgId
     };
   },
   mounted() {
-    this.seachFlagPager();
-    this.dotaRecomment();
-    this.ClassInfoByCid();
+    // this.classid = this.$route.query.rpgId;
+   // console.log(this.$route.query.rpgId);
+     this.seachFlagPager();
+      this.dotaRecomment();
+      this.ClassInfoByCid();
   },
   components: {
     "header-tab": Header,
@@ -65,8 +67,12 @@ export default {
       )
         .then(res => {
           this.flag01 = true;
-          console.log(res);
-          this.searchList = res.data.list;
+          //console.log(res);
+          if (res && res.data != null) {
+            this.searchList = res.data.list;
+          } else {
+            this.searchList = [];
+          }
 
           this.all = Math.ceil(res.data.count / 10);
         })
@@ -74,18 +80,19 @@ export default {
           console.log(error);
         });
     },
-    //dota推荐商品
+    //新手推荐
     dotaRecomment() {
       this.$axios(
         "get",
         `${this.$ports.home.QueryWebGoodsByFlagTopN}?classid=${
           this.classid
-        }&flag=${4}&topN=${5}`
+        }&flag=${256}&topN=${5}`
       )
         .then(res => {
           //console.log(res);
+   
           this.flag02 = true;
-          if (res.code == 0) {
+          if (res && res.code == 0) {
             this.dotaList = res.data.list;
           } else {
             this.dotaList = [];
@@ -102,9 +109,10 @@ export default {
         `${this.$ports.dota.QueryWebClassInfoByCid}?classid=${this.classid}`
       )
         .then(res => {
-          // console.log(res);
+
+         // console.log(res);
           this.flag03 = true;
-          if (res.code == 0) {
+          if (res && res.code == 0) {
             this.modelObj = res.data;
           } else {
             this.modelObj = "";

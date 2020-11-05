@@ -33,6 +33,7 @@
       </h1>
       <ul class="model01">
         <li
+          v-if=" modellistContainer != null"
           v-for="(item,index) in modellistContainer"
           :key="index"
           v-bind:class="index == 4 ?'current':''"
@@ -53,8 +54,12 @@
         <span @click="isCustomShop('普通商品')" v-bind:class="{'current01':shopFlag == 0}">普通商品</span>
         <span @click="isCustomShop('定制商品')" v-bind:class="{'current02':shopFlag == 128}">定制商品</span>
       </div>
-      <div class="in-tab-change-model" v-if="modelobjContainer.Class_GoodsInfo.length>0">
+      <div
+        class="in-tab-change-model"
+        v-if="modelobjContainer.Class_GoodsInfo != null && modelobjContainer.Class_GoodsInfo.length>0  "
+      >
         <span
+          v-if="modelobjContainer.Class_GoodsInfo != null"
           v-for=" (item,index) in modelobjContainer.Class_GoodsInfo"
           :key="index"
           v-bind:class="{'current':item.Class_id == id}"
@@ -495,7 +500,7 @@
             <model-div :item="item"></model-div>
           </li>
         </ul>
-        <div class="pageCount" v-if="pages.length != 0">
+        <div class="pageCount" v-if="pages !== null && pages.length != 0 ">
           <span class="prev" v-show="current != 1" v-on:click="current-- && goto(current)">前一页</span>
           <span class="first" v-on:click="firstPage">首页</span>
           <a
@@ -508,7 +513,7 @@
           <span class="next" v-on:click="lastPage">尾页</span>
           <span
             class="prev"
-            v-show="allpage != current && allpage != 0 "
+            v-show="allpageLists != current && allpageLists != 0 "
             v-on:click="current++ && goto(current++)"
           >后一页</span>
         </div>
@@ -527,18 +532,18 @@ export default {
     nav: String,
     modelist01: {
       type: Array,
-      default: []
+      default: () => []
     },
     searchlist: {
       type: Array,
-      default: []
+      default: () => []
     },
     modelobj: {
       type: Object,
-      default: null
+      default: () => null
     },
     classid: {
-      type: Number,
+      type: Number | String,
       default: ""
     },
     pageIndex: {
@@ -565,7 +570,7 @@ export default {
       isflag1: this.flag01,
       searchlistContainer: [],
       modelobjContainer: "",
-      id: this.classid,
+      id: "",
       typeTagStr: this.typeTag,
       msg: false,
       current: "", // 当前页码
@@ -577,6 +582,13 @@ export default {
     };
   },
   watch: {
+    classid: {
+      handler(newValue, oldValue) {
+        this.id = newValue;
+      },
+      immediate: true,
+      deep: true
+    },
     pageIndex: {
       handler(newValue, oldValue) {
         console.log(newValue);
@@ -659,15 +671,18 @@ export default {
   },
 
   mounted() {
-    //console.log(this.id);
+    console.log(this.modelobjContainer);
     var _that = this;
-    this.modelobjContainer.Class_GoodsCount.forEach(function(obj, index) {
-      if (obj.Flag == 128) {
-        _that.msg = true;
-      } else {
-        _that.msg = false;
-      }
-    });
+    if (this.modelobjContainer) {
+      this.modelobjContainer.Class_GoodsCount.forEach(function(obj, index) {
+        if (obj.Flag == 128) {
+          _that.msg = true;
+        } else {
+          _that.msg = false;
+        }
+      });
+    }
+
     $(document).on("mouseenter", ".boxHero", function() {
       $(this)
         .children(".in_boxHero")

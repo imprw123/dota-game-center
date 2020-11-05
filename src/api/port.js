@@ -9,5 +9,8 @@ export default {
     },
     detail: {
         QueryGoodsById: 'Query/QueryGoodsById'
+    },
+    rpgMap: {
+        QueryRPGBySearchPager: 'Query/QueryRPGBySearchPager'
     }
 }

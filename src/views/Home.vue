@@ -63,8 +63,9 @@
     <div class="dota">
       <h1>
         <em>Dota推荐商品</em>
-        <router-link :to="'DOTA'"><span class="more">进入Dota商店</span></router-link>
-       
+        <router-link :to="'DOTA'">
+          <span class="more">进入Dota商店</span>
+        </router-link>
       </h1>
 
       <ul class="model01">
@@ -77,7 +78,9 @@
     <div class="rpg">
       <h1>
         <em>RPG推荐地图</em>
-         <router-link :to="'RPG'"><span class="more">进入RPG地图</span></router-link>
+        <router-link :to="'rpgMap'">
+          <span class="more">进入RPG地图</span>
+        </router-link>
       </h1>
       <ul>
         <li
@@ -86,12 +89,15 @@
           v-bind:class="(index+1)%4 == 0 ?'current':''"
         >
           <img v-bind:src="item.Goods_imgPath" class="imgShow" />
+
           <div class="rpg-left">
             <p>{{item.Name}}</p>
             <div class="typeName">
               <span class="lf">{{item.type}}</span>
             </div>
-            <div class="enterShop">进入商店</div>
+            <div class="enterShop">
+              <router-link :to="{name:'RPG',query:{rpgId:item.id}}">进入商店</router-link>
+            </div>
           </div>
         </li>
       </ul>
@@ -100,7 +106,9 @@
     <div class="dota">
       <h1>
         <em>平台推荐服务</em>
-         <router-link :to="'PT'"><span class="more">进入平台服务</span></router-link>
+        <router-link :to="'PT'">
+          <span class="more">进入平台服务</span>
+        </router-link>
       </h1>
       <ul class="model01">
         <li
@@ -112,13 +120,13 @@
         </li>
       </ul>
     </div>
-     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+    <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed"></silderbar-tab>
     </div>
   </div>
 </template>
 <script>
-import {YYAD} from "../api/YYAD";
+import { YYAD } from "../api/YYAD";
 import Header from "../components/header";
 import Silderbar from "../components/silderbar";
 import model01 from "../components/model01";
@@ -134,7 +142,7 @@ export default {
       newRecomment: "",
       rankList: [],
       currentFlag: true,
-       flag: false
+      flag: false
     };
   },
   mounted() {
@@ -234,6 +242,7 @@ export default {
         "http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
         function() {
           _that.rpgList = rpgObj.data;
+          console.log(_that.rpgList);
         }
       );
     },
@@ -276,18 +285,20 @@ export default {
     //广告
     _YYAD() {
       var _that = this;
-       var script = document.createElement("script");
-          script.type = "text/javascript";
-          try {
-            console.log(YYAD.LoadAds(1436));
-            var jsCodeNode = document.createTextNode(`${YYAD.LoadAds(1436,null,null,"#mydiv")}`);
-            script.appendChild(jsCodeNode);
-          } catch (e) {
-            script.text = code;
-          }
-          document.getElementById('mydiv').appendChild(script);
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      try {
+        console.log(YYAD.LoadAds(1436));
+        var jsCodeNode = document.createTextNode(
+          `${YYAD.LoadAds(1436, null, null, "#mydiv")}`
+        );
+        script.appendChild(jsCodeNode);
+      } catch (e) {
+        script.text = code;
+      }
+      document.getElementById("mydiv").appendChild(script);
     },
-      modelFixed(val) {
+    modelFixed(val) {
       console.log("aa");
       this.flag = val;
     }
@@ -627,6 +638,12 @@ ul.model01 li img {
   font-size: 12px;
   text-align: center;
   line-height: 20px;
+}
+.enterShop a {
+  width: 100%;
+  height: 100%;
+  font-family: "微软雅黑";
+  color: #aa2828;
 }
 .more {
   width: 131px;
