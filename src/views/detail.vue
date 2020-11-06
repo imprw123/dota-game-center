@@ -46,7 +46,7 @@
           </p>
           <p>
             <a href="javascript:;" class="back_Gm">立即购买</a>
-            <a href="javascript:;" data-goodsid="17342" class="sure_Gm">加入购物车</a>
+            <a href="javascript:;"  class="sure_Gm" @click="AddWebCartGoods()">加入购物车</a>
             <a href="javascript:;" class="sure_Zs">赠送</a>
           </p>
         </div>
@@ -54,9 +54,10 @@
     </div>
     <div class="detailInforMation">
       <div class="detailInforMation-name">详情介绍</div>
-      <div v-html="detailObj.Goods_details">
-
-      </div>
+      <div v-html="detailObj.Goods_details"></div>
+    </div>
+    <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
   </div>
 </template>
@@ -64,12 +65,14 @@
 
 <script>
 import Header from "../components/header";
+import Silderbar from "../components/silderbar";
 export default {
   name: "DETAIL",
   data() {
     return {
       goodsid: this.$route.query.goodsId,
-      detailObj: ""
+      detailObj: "",
+      flag: false
     };
   },
   mounted() {
@@ -92,10 +95,29 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    modelFixed(val) {
+      this.flag = val;
+    },
+    AddWebCartGoods() {
+      debugger;
+      this.$axios(
+        "get",
+        `${this.$ports.shopCar.AddWebCartGoods}?goodsId=${this.goodsid}&count=${1}`
+      )
+        .then(res => {
+          console.log(res);
+          this.addFlag = true;
+          this.$refs.mychild.parentHandleclick();
+        })
+        .catch(error => {
+          this.addFlag = true;
+        });
     }
   },
   components: {
-    "header-tab": Header
+    "header-tab": Header,
+    "silderbar-tab": Silderbar
   }
 };
 </script>
@@ -107,6 +129,16 @@ export default {
   overflow: hidden;
   zoom: 1;
   margin: 0 auto;
+}
+.siderBox {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  transition: 0.5s ease;
+}
+.siderBoxCurrent {
+  right: -300px;
+  transition: 0.5s ease;
 }
 .nav-tab {
   width: 1080px;
@@ -423,6 +455,7 @@ a.sure_Zs {
   left: 46px;
   border: 1px solid #cccccc;
   margin-left: 15px;
+  margin-top:0px;
 }
 
 .UserCation p .changeNum em.leftBtn {

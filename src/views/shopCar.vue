@@ -12,9 +12,9 @@
           <input type="checkbox" id="myCheck" v-model="isAllTrue" @click="isFalse" />
         </span>
         <span style="width:230px">商品信息</span>
-        <span style="width:206px">单价(通宝)</span>
+        <span style="width:206px">单价(人民币)</span>
         <span style="width:120px">数量</span>
-        <span style="width:210px">小计(通宝)</span>
+        <span style="width:210px">小计(人民币)</span>
         <span style="width:208px">操作</span>
       </div>
       <div class="shopCarList">
@@ -32,11 +32,11 @@
                   <em v-bind:title="item.Goods_profile">{{item.Goods_profile}}</em>
                 </p>
                 <p>
-                  <em>{{item.Goods_price}}</em>（商品单价）
+                  <em>{{`￥${item.Goods_price}`}}</em>（商品单价）
                 </p>
               </div>
             </div>
-            <div class="shopCar-row03" style="width:206px">{{item.Goods_price}}</div>
+            <div class="shopCar-row03" style="width:206px">{{`￥${item.Goods_price}`}}</div>
             <div class="shopCar-row04" style="width:120px">
               <span class="changeNum">
                 <em class="leftBtn" @click="leftBtn(index)">-</em>
@@ -45,7 +45,7 @@
               </span>
             </div>
             <div class="shopCar-row05" style="width:210px">
-              <span>{{item.Goods_price}}</span>
+              <span>{{`￥${item.Goods_price*item.Goods_amount}`}}</span>
             </div>
             <div class="shopCar-row06" style="width:208px">
               <span @click="RemoveWebCartGoods(item.Goods_id)">删除</span>
@@ -55,7 +55,7 @@
       </div>
       <div class="shopCarBt">
         <p>
-          总价:
+          选取商品总价:
           <b>{{`￥${totalMoney}`}}</b>
         </p>
         <div class="gmBtn">立即购买</div>
