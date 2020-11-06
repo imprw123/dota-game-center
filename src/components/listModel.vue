@@ -682,7 +682,7 @@ export default {
         }
       });
     }
-
+    var _that = this;
     $(document).on("mouseenter", ".boxHero", function() {
       $(this)
         .children(".in_boxHero")
@@ -707,12 +707,12 @@ export default {
     });
 
     $(document).on("click", ".in_boxHero ul li", function() {
-      this.$emit(
+      _that.$emit(
         "childrenFn",
-        this.id,
-        this.shopFlag,
+        _that.id,
+        _that.shopFlag,
         $(this).attr("data-id"),
-        this.typeTagStr,
+        _that.typeTagStr,
         1
       );
     });
@@ -1179,8 +1179,7 @@ export default {
   cursor: pointer;
 }
 .pageCount a {
-  width: 26px;
-  height: 26px;
+  padding: 0px 8px;
   line-height: 26px;
   display: inline-block;
   text-align: center;

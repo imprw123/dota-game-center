@@ -44,10 +44,21 @@ export default {
       classid: 0
     };
   },
+  watch: {
+     $route: {
+      handler(newValue, oldValue) {
+          console.log('aa');
+        this.searchName = newValue.query.searchName;
+        this.seachFlagPager();
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   mounted() {
     this.seachFlagPager();
-   // this.dotaRecomment();
-   // this.ClassInfoByCid();
+    // this.dotaRecomment();
+    // this.ClassInfoByCid();
   },
   components: {
     "header-tab": Header,

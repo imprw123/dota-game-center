@@ -21,10 +21,10 @@
             <div class="shop-right">
               <h4>{{item.Goods_disName}}</h4>
               <p>
-                <b>{{item.Goods_price}}</b>
+                <b>{{`￥${item.Goods_price}`}}</b>
               </p>
               <p>
-                <em>{{item.Goods_profile}}</em>
+                <em v-bind:title="item.Goods_profile">{{item.Goods_profile}}</em>
               </p>
             </div>
           </li>
@@ -38,7 +38,7 @@
           </p>
           <p>
             共计
-            <b>{{totalMoney}}</b>
+            <b>{{`￥${totalMoney}`}}</b>
           </p>
         </div>
         <div class="totalBox-right">
@@ -52,7 +52,7 @@
     <div class="siderBd" v-if="Flag02">
       <input type="text" class="pageSearch" v-model="val1" placeholder="请输入你想要查找的道具名称" />
       <div class="quickSearch">
-        <router-link :to="{name:'SEARCH',query:{searchName:val}}">进入商店</router-link>
+        <router-link :to="{name:'SEARCH',query:{searchName:val1}}">进入商店</router-link>
       </div>
     </div>
     <!-- 搜索 -->
@@ -109,11 +109,16 @@ export default {
       totalMoney: "￥0.00"
     };
   },
-  computed: {
-    val() {
-      return escape(this.val1);
+  watch: {
+    val1: {
+      handler(newValue, oldValue) {
+        this.val1 = newValue;
+      },
+      immediate: true,
+      deep: true
     }
   },
+
   mounted() {
     this._QueryUserWebCartGoods();
   },
@@ -142,6 +147,8 @@ export default {
       this.$emit("FixedModel", false);
     },
     _QueryUserWebCartGoods() {
+       this.totalNumber=0;
+       this.totalMoney=0;
       this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
         .then(res => {
           console.log("购物车");
@@ -152,17 +159,22 @@ export default {
             this.shopCarBox = [];
           }
           if (this.shopCarBox.length > 0) {
-            var _that=this;
-            this.shopCarBox.forEach(function(obj,index) {
-              _that.totalMoney += obj.Goods_price*obj.Goods_amount;
-              _that.totalNumber+=obj.Goods_amount;
+            var _that = this;
+            this.shopCarBox.forEach(function(obj, index) {
+              console.log(obj.Goods_amount)
+              _that.totalMoney += (Number(obj.Goods_price) * Number(obj.Goods_amount));
+              _that.totalNumber += Number(obj.Goods_amount);
             });
-            this.totalMoney=this.totalMoney.toFixed(2);
+            
           }
+         this.totalMoney= this.totalMoney.toFixed(2);
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    parentHandleclick(){
+      this._QueryUserWebCartGoods();
     }
   }
 };
@@ -333,9 +345,10 @@ export default {
   height: 66px;
 }
 .shop-right {
-  width: 196px;
+  width: 186px;
   height: 66px;
   float: left;
+  padding-left: 10px;
 }
 .shop-right h4 {
   font-size: 14px;
@@ -352,6 +365,10 @@ export default {
   font-size: 12px;
   font-family: "微软雅黑";
   margin-bottom: 5px;
+  width:100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .pageSearch {
   width: 274px;

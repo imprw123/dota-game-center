@@ -9,7 +9,7 @@
     <div class="shopCarBox">
       <div class="shopCarBox-title">
         <span style="width:104px">
-          <input type="checkbox" id="myCheck" />
+          <input type="checkbox" id="myCheck" v-model="isAllTrue" @click="isFalse" />
         </span>
         <span style="width:230px">商品信息</span>
         <span style="width:206px">单价(通宝)</span>
@@ -21,7 +21,7 @@
         <ul v-if="shopCarBox.length > 0">
           <li v-for="(item,index) in shopCarBox" :key="index">
             <div class="shopCar-row01" style="width:104px">
-              <input type="checkbox" id="myCheck" />
+              <input type="checkbox" id="myCheck" v-model="item.Goods_id" />
             </div>
             <div class="shopCar-row02" style="width:230px">
               <img v-lazy="item.Goods_imgPath" />
@@ -29,26 +29,26 @@
                 <h5>{{item.Goods_disName}}</h5>
                 <p>
                   所属分类:
-                  <em>{{item.Goods_profile}}</em>
+                  <em v-bind:title="item.Goods_profile">{{item.Goods_profile}}</em>
                 </p>
                 <p>
                   <em>{{item.Goods_price}}</em>（商品单价）
                 </p>
               </div>
             </div>
-            <div class="shopCar-row03" style="width:206px">￥89.98</div>
+            <div class="shopCar-row03" style="width:206px">{{item.Goods_price}}</div>
             <div class="shopCar-row04" style="width:120px">
               <span class="changeNum">
-                <em class="leftBtn">-</em>
-                <input type="text" id="count" value="1" />
-                <em class="rightBtn">+</em>
+                <em class="leftBtn" @click="leftBtn(index)">-</em>
+                <input type="text" id="count" v-model="item.Goods_amount" readonly="readonly" />
+                <em class="rightBtn" @click.self="rightBtn(index)">+</em>
               </span>
             </div>
             <div class="shopCar-row05" style="width:210px">
-              <span>￥89.98</span>
+              <span>{{item.Goods_price}}</span>
             </div>
             <div class="shopCar-row06" style="width:208px">
-              <span>删除</span>
+              <span @click="RemoveWebCartGoods(item.Goods_id)">删除</span>
             </div>
           </li>
         </ul>
@@ -56,33 +56,74 @@
       <div class="shopCarBt">
         <p>
           总价:
-          <b>￥89.98</b>
+          <b>{{`￥${totalMoney}`}}</b>
         </p>
         <div class="gmBtn">立即购买</div>
       </div>
+    </div>
+    <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
   </div>
 </template>
 
 <script >
 import Header from "../components/header";
+import Silderbar from "../components/silderbar";
+import { Toast } from "mint-ui";
+import "mint-ui/lib/style.css";
 export default {
   name: "SHOPCAR",
   data() {
     return {
       shopCarBox: [],
       totalNumber: 0,
-      totalMoney: "￥0.00"
+      totalMoney: "￥0.00",
+      isAllTrue: true,
+      flag: false,
+      addFlag: true,
+      delFlag: true
     };
   },
   mounted() {
     this._QueryUserWebCartGoods();
   },
+  watch: {
+    shopCarBox: {
+      handler(newValue, oldValue) {
+        this.totalNumber = 0;
+        this.totalMoney = 0;
+        if (this.shopCarBox.length > 0) {
+          for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
+            if (this.shopCarBox[j].Goods_id) {
+              this.totalMoney +=
+                Number(this.shopCarBox[j].Goods_price) *
+                Number(this.shopCarBox[j].Goods_amount);
+              this.totalNumber += Number(this.shopCarBox[j].Goods_amount);
+            }
+          }
+        }
+        this.totalMoney = this.totalMoney.toFixed(2);
+        if (
+          this.shopCarBox.findIndex(target => target.Goods_id === false) == -1
+        ) {
+          this.isAllTrue = true;
+        } else {
+          this.isAllTrue = false;
+        }
+      },
+      immediate: true,
+      deep: true
+    }
+  },
   methods: {
     _QueryUserWebCartGoods() {
+      debugger;
+      this.totalNumber = 0;
+      this.totalMoney = 0;
       this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
         .then(res => {
-          console.log("购物车");
+          //console.log("购物车");
           console.log(res);
           if (res.code == 0) {
             this.shopCarBox = res.data;
@@ -90,21 +131,142 @@ export default {
             this.shopCarBox = [];
           }
           if (this.shopCarBox.length > 0) {
-            var _that = this;
-            this.shopCarBox.forEach(function(obj, index) {
-              _that.totalMoney += obj.Goods_price * obj.Goods_amount;
-              _that.totalNumber += obj.Goods_amount;
-            });
-            this.totalMoney = this.totalMoney.toFixed(2);
+            for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
+              this.totalMoney +=
+                Number(this.shopCarBox[j].Goods_price) *
+                Number(this.shopCarBox[j].Goods_amount);
+              this.totalNumber += Number(this.shopCarBox[j].Goods_amount);
+            }
           }
+          this.totalMoney = this.totalMoney.toFixed(2);
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    leftBtn(index) {
+      debugger;
+      var _that = this;
+      if (this.delFlag) {
+        this.delFlag = false;
+        this.shopCarBox.forEach(function(obj, i) {
+          if (i == index) {
+            if (obj.Goods_id) {
+              if (obj.Goods_amount <= 1) {
+                obj.Goods_amount == 1;
+                _that.delFlag = true;
+                return false;
+              } else {
+                obj.Goods_amount = obj.Goods_amount - 1;
+                _that.DeductWebCartGoods(obj.Goods_id);
+              }
+            } else {
+              Toast({
+                message: "请先勾选商品!",
+                iconClass: "icon"
+              });
+              _that.delFlag = true;
+            }
+          }
+        });
+      } else {
+       Toast({
+          message: "操作太频繁了……",
+          iconClass: "icon",
+          duration: 500
+        });
+      }
+    },
+    rightBtn(index) {
+      debugger;
+      var _that = this;
+      if (this.addFlag) {
+        this.addFlag = false;
+        for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
+          if (j == index) {
+            if (this.shopCarBox[j].Goods_id) {
+              this.shopCarBox[j].Goods_amount =
+                this.shopCarBox[j].Goods_amount + 1;
+              _that.AddWebCartGoods(this.shopCarBox[j].Goods_id, 1);
+            } else {
+              Toast({
+                message: "请先勾选商品!",
+                iconClass: "icon"
+              });
+              _that.addFlag = true;
+            }
+
+            return false;
+          }
+        }
+      } else {
+        Toast({
+          message: "操作太频繁了……",
+          iconClass: "icon",
+          duration: 500
+        });
+      }
+    },
+    modelFixed(val) {
+      this.flag = val;
+    },
+    AddWebCartGoods(goodsid, count) {
+      debugger;
+      this.$axios(
+        "get",
+        `${this.$ports.shopCar.AddWebCartGoods}?goodsId=${goodsid}&count=${count}`
+      )
+        .then(res => {
+          console.log(res);
+          this.addFlag = true;
+          this.$refs.mychild.parentHandleclick();
+        })
+        .catch(error => {
+          this.addFlag = true;
+        });
+    },
+    DeductWebCartGoods(goodsid) {
+      //debugger;
+      this.$axios(
+        "get",
+        `${this.$ports.shopCar.DeductWebCartGoods}?goodsId=${goodsid}`
+      )
+        .then(res => {
+          console.log(res);
+          this.delFlag = true;
+          this.$refs.mychild.parentHandleclick();
+        })
+        .catch(error => {
+          this.delFlag = true;
+        });
+    },
+    isFalse() {
+      if (this.isAllTrue) {
+        this.shopCarBox.forEach(function(obj, i) {
+          obj.Goods_id = false;
+        });
+      } else if (!this.isAllTrue) {
+        this.shopCarBox.forEach(function(obj, i) {
+          obj.Goods_id = true;
+        });
+      }
+    },
+    RemoveWebCartGoods(goodsid) {
+      this.$axios(
+        "get",
+        `${this.$ports.shopCar.RemoveWebCartGoods}?goodsId=${goodsid}`
+      )
+        .then(res => {
+          console.log(res);
+          this._QueryUserWebCartGoods();
+          this.$refs.mychild.parentHandleclick();
+        })
+        .catch(error => {});
     }
   },
   components: {
-    "header-tab": Header
+    "header-tab": Header,
+    "silderbar-tab": Silderbar
   }
 };
 </script>
@@ -189,6 +351,10 @@ export default {
   color: #a9a9a9;
   font-family: "微软雅黑";
   margin-bottom: 5px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .shopCar-row03 {
   float: left;
@@ -278,6 +444,7 @@ export default {
   color: #3d3d3d;
   font-size: 12px;
   font-family: "微软雅黑";
+  cursor: pointer;
 }
 .gmBtn {
   width: 92px;
@@ -305,5 +472,14 @@ export default {
   color: #ff0808;
   font-family: "微软雅黑";
   font-weight: normal;
+}
+.siderBox {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  transition: 0.5s ease;
+}
+.siderBoxCurrent {
+  right: -300px;
 }
 </style>

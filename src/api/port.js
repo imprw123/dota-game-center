@@ -14,6 +14,9 @@ export default {
         QueryRPGBySearchPager: 'Query/QueryRPGBySearchPager'
     },
     shopCar: {
-        QueryUserWebCartGoods: 'Query/QueryUserWebCartGoods'
+        QueryUserWebCartGoods: 'Query/QueryUserWebCartGoods',
+        AddWebCartGoods: 'do/AddWebCartGoods',
+        DeductWebCartGoods: 'do/DeductWebCartGoods',
+        RemoveWebCartGoods: 'do/RemoveWebCartGoods'
     }
 }
