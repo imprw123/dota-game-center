@@ -2,7 +2,9 @@
   <div class="siderBar">
     <div class="silderBtn">
       <ul>
-        <li class="silder02" v-on:click="openFixed('购物车')"></li>
+        <li class="silder02" v-on:click="openFixed('购物车')">
+          <i class="ci-count">{{totalNumber}}</i>
+        </li>
         <li class="silder03" v-on:click="openFixed('搜索')"></li>
         <li class="silder04" v-on:click="openFixed('搜藏')"></li>
       </ul>
@@ -147,8 +149,8 @@ export default {
       this.$emit("FixedModel", false);
     },
     _QueryUserWebCartGoods() {
-       this.totalNumber=0;
-       this.totalMoney=0;
+      this.totalNumber = 0;
+      this.totalMoney = 0;
       this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
         .then(res => {
           console.log("购物车");
@@ -161,19 +163,19 @@ export default {
           if (this.shopCarBox.length > 0) {
             var _that = this;
             this.shopCarBox.forEach(function(obj, index) {
-              console.log(obj.Goods_amount)
-              _that.totalMoney += (Number(obj.Goods_price) * Number(obj.Goods_amount));
+              console.log(obj.Goods_amount);
+              _that.totalMoney +=
+                Number(obj.Goods_price) * Number(obj.Goods_amount);
               _that.totalNumber += Number(obj.Goods_amount);
             });
-            
           }
-         this.totalMoney= this.totalMoney.toFixed(2);
+          this.totalMoney = this.totalMoney.toFixed(2);
         })
         .catch(error => {
           console.log(error);
         });
     },
-    parentHandleclick(){
+    parentHandleclick() {
       this._QueryUserWebCartGoods();
     }
   }
@@ -217,6 +219,23 @@ export default {
 }
 .silderBtn ul li.silder02 {
   background: url(../assets/silder02.png);
+  position: relative;
+}
+.silderBtn ul li.silder02 .ci-count {
+  position: absolute;
+  top: -1px;
+  left: -3px;
+  display: inline-block;
+  padding: 2px;
+  font-size: 12px;
+  line-height: 14px;
+  letter-spacing: -1px;
+  color: #fff;
+  background-color: #da1026;
+  border-radius: 7px;
+  min-width: 16px;
+  font-family: Arial;
+  text-align: center;
 }
 .silderBtn ul li.silder02:hover {
   background: url(../assets/silder02-hover.png);
@@ -325,6 +344,28 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
 }
+ /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.silder-shop::-webkit-scrollbar  
+{  
+    width: 8px;  
+    height:8px;  
+    background-color:transparent;
+}  
+/*定义滚动条轨道 内阴影+圆角*/  
+.silder-shop::-webkit-scrollbar-track  
+{  
+    border-radius: 4px;  
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+.silder-shop::-webkit-scrollbar-thumb  
+{  
+    border-radius: 4px;  
+    background-color: #053249;  
+}  
+.silder-shop::-webkit-scrollbar-thumb:hover{
+    background-color: #021722;  
+}
 .silder-shop ul li {
   width: 265px;
   height: 74px;
@@ -365,7 +406,7 @@ export default {
   font-size: 12px;
   font-family: "微软雅黑";
   margin-bottom: 5px;
-  width:100%;
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

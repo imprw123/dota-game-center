@@ -38,7 +38,7 @@
           :key="index"
           v-bind:class="index == 4 ?'current':''"
         >
-          <model-div :item="item"></model-div>
+          <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
         </li>
       </ul>
     </div>
@@ -497,7 +497,7 @@
             :key="index"
             v-bind:class="(index+1)%5 == 0 ?'current':''"
           >
-            <model-div :item="item"></model-div>
+            <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
           </li>
         </ul>
         <div class="pageCount" v-if="pages !== null && pages.length != 0 ">
@@ -861,6 +861,9 @@ export default {
           1
         );
       }
+    },
+    childrenHand(){
+       this.$emit('parentFind')
     }
   },
   components: {

@@ -1,7 +1,9 @@
 <template>
   <div class="model">
     <div>
-      <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}"><img v-lazy="item.Goods_imgPath" /></router-link>
+      <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
+        <img v-lazy="item.Goods_imgPath" />
+      </router-link>
       <div class="money">
         ￥
         <b>{{item.Goods_price}}</b>
@@ -12,7 +14,7 @@
       <div class="name" :title="item.Goods_disName">{{item.Goods_disName}}</div>
       <div class="detail-type">{{item.Tag}}</div>
       <div class="action">
-        <span class="shopcar">+ 购物车</span>
+        <span class="shopcar" @click="AddWebCartGoods(item.Goods_id)">+ 购物车</span>
         <span class="send">赠送</span>
         <span class="ljgm">立即购买</span>
       </div>
@@ -30,6 +32,23 @@ export default {
   name: "Model",
   props: {
     item: Object
+  },
+  methods: {
+    AddWebCartGoods(goodsid) {
+      debugger;
+      this.$axios(
+        "get",
+        `${this.$ports.shopCar.AddWebCartGoods}?goodsId=${goodsid}&count=${1}`
+      )
+        .then(res => {
+          console.log(res);
+          this.$emit('parentHand');
+         
+        })
+        .catch(error => {
+          this.$emit('parentHand');
+        });
+    }
   }
 };
 </script>
@@ -50,7 +69,7 @@ export default {
   font-family: "微软雅黑";
 }
 .name {
-  width:100%;
+  width: 100%;
   font-size: 14px;
   font-family: "微软雅黑";
   color: #333333;

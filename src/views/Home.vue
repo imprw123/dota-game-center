@@ -31,7 +31,7 @@
         <span class="limintBg"></span>
         <ul class="model01">
           <li v-for="(item,index) in limitList" :key="index">
-            <model-div :item="item"></model-div>
+            <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
           </li>
         </ul>
       </div>
@@ -70,7 +70,7 @@
 
       <ul class="model01">
         <li v-for="(item,index) in dotaList" :key="index" v-bind:class="index == 4 ?'current':''">
-          <model-div :item="item"></model-div>
+          <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
         </li>
       </ul>
     </div>
@@ -116,12 +116,12 @@
           :key="index"
           v-bind:class="index == 4 ?'current':''"
         >
-          <model-div :item="item"></model-div>
+          <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
         </li>
       </ul>
     </div>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
-      <silderbar-tab v-on:FixedModel="modelFixed"></silderbar-tab>
+      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
   </div>
 </template>
@@ -301,6 +301,9 @@ export default {
     modelFixed(val) {
       console.log("aa");
       this.flag = val;
+    },
+    childrenHand(){
+       this.$refs.mychild.parentHandleclick();
     }
   },
   components: {

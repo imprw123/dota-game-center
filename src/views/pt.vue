@@ -13,9 +13,10 @@
       v-bind:allpage="all"
       v-bind:typeTag="typeChange"
       v-on:childrenFn="childrenFnMethods"
+      v-on:parentFind="childrenHand2"
     >></list-model>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
-      <silderbar-tab v-on:FixedModel="modelFixed"></silderbar-tab>
+      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
   </div>
 </template>
@@ -121,6 +122,9 @@ export default {
       this.typeChange = val4;
       this.pi = val5;
       this.seachFlagPager();
+    },
+     childrenHand2(){
+       this.$refs.mychild.parentHandleclick();
     }
   }
 };

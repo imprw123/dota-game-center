@@ -21,7 +21,7 @@
         <ul v-if="shopCarBox.length > 0">
           <li v-for="(item,index) in shopCarBox" :key="index">
             <div class="shopCar-row01" style="width:104px">
-              <input type="checkbox" id="myCheck" v-model="item.Goods_id" />
+              <input type="checkbox" id="myCheck" v-model="item.goodsid" />
             </div>
             <div class="shopCar-row02" style="width:230px">
               <img v-lazy="item.Goods_imgPath" />
@@ -95,7 +95,7 @@ export default {
         this.totalMoney = 0;
         if (this.shopCarBox.length > 0) {
           for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
-            if (this.shopCarBox[j].Goods_id) {
+            if (this.shopCarBox[j].goodsid) {
               this.totalMoney +=
                 Number(this.shopCarBox[j].Goods_price) *
                 Number(this.shopCarBox[j].Goods_amount);
@@ -105,7 +105,7 @@ export default {
         }
         this.totalMoney = this.totalMoney.toFixed(2);
         if (
-          this.shopCarBox.findIndex(target => target.Goods_id === false) == -1
+          this.shopCarBox.findIndex(target => target.goodsid === false) == -1
         ) {
           this.isAllTrue = true;
         } else {
@@ -136,6 +136,7 @@ export default {
                 Number(this.shopCarBox[j].Goods_price) *
                 Number(this.shopCarBox[j].Goods_amount);
               this.totalNumber += Number(this.shopCarBox[j].Goods_amount);
+              this.$set(this.shopCarBox[j],"goodsid",this.shopCarBox[j].Goods_id);
             }
           }
           this.totalMoney = this.totalMoney.toFixed(2);
@@ -151,7 +152,7 @@ export default {
         this.delFlag = false;
         this.shopCarBox.forEach(function(obj, i) {
           if (i == index) {
-            if (obj.Goods_id) {
+            if (obj.goodsid) {
               if (obj.Goods_amount <= 1) {
                 obj.Goods_amount == 1;
                 _that.delFlag = true;
@@ -184,7 +185,7 @@ export default {
         this.addFlag = false;
         for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
           if (j == index) {
-            if (this.shopCarBox[j].Goods_id) {
+            if (this.shopCarBox[j].goodsid) {
               this.shopCarBox[j].Goods_amount =
                 this.shopCarBox[j].Goods_amount + 1;
               _that.AddWebCartGoods(this.shopCarBox[j].Goods_id, 1);
@@ -243,11 +244,11 @@ export default {
     isFalse() {
       if (this.isAllTrue) {
         this.shopCarBox.forEach(function(obj, i) {
-          obj.Goods_id = false;
+          obj.goodsid = false;
         });
       } else if (!this.isAllTrue) {
         this.shopCarBox.forEach(function(obj, i) {
-          obj.Goods_id = true;
+          obj.goodsid = true;
         });
       }
     },
