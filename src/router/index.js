@@ -11,7 +11,6 @@ import ORDER from '../views/order.vue'
 import MYMAP from '../views/myMap.vue'
 import SHOPCAR from '../views/shopCar.vue'
 import SEARCH from '../views/search.vue'
-
 Vue.use(VueRouter)
 
 const routes = [{

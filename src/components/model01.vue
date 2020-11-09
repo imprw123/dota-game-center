@@ -1,5 +1,5 @@
 <template>
-  <div class="model">
+  <div class="modelbox">
     <div>
       <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
         <img v-lazy="item.Goods_imgPath" />
@@ -15,7 +15,7 @@
       <div class="detail-type">{{item.Tag}}</div>
       <div class="action">
         <span class="shopcar" @click="AddWebCartGoods(item.Goods_id)">+ 购物车</span>
-        <span class="send">赠送</span>
+        <span class="send" @click="sendParentCartGods(item.Goods_id)">赠送</span>
         <span class="ljgm">立即购买</span>
       </div>
       <div class="xian"></div>
@@ -24,16 +24,24 @@
         <span>{{item.Class_name}}</span>
       </div>
     </div>
+    <send-div  ref="childrenSend" ></send-div>
   </div>
 </template>
 
 <script>
+import send from "../components/send";
 export default {
   name: "Model",
   props: {
     item: Object
   },
+  data() {
+    return {
+  
+    };
+  },
   methods: {
+    
     AddWebCartGoods(goodsid) {
       debugger;
       this.$axios(
@@ -42,13 +50,18 @@ export default {
       )
         .then(res => {
           console.log(res);
-          this.$emit('parentHand');
-         
+          this.$emit("parentHand");
         })
         .catch(error => {
-          this.$emit('parentHand');
+          this.$emit("parentHand");
         });
+    },
+    sendParentCartGods(val) {
+      this.$refs.childrenSend.childrenPram(val);
     }
+  },
+  components: {
+    "send-div": send
   }
 };
 </script>

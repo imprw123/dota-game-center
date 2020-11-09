@@ -31,7 +31,7 @@
         <span class="limintBg"></span>
         <ul class="model01">
           <li v-for="(item,index) in limitList" :key="index">
-            <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
+            <model-div :item="item" v-on:parentHand="childrenHand" ></model-div>
           </li>
         </ul>
       </div>
@@ -43,7 +43,9 @@
         <ol>
           <li v-for="(item,index) in rankList" :key="index">
             <div class="img-left">
-              <img v-bind:src="item.Goods_imgPath" alt />
+              <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
+                <img v-lazy="item.Goods_imgPath" />
+              </router-link>
             </div>
             <div class="infor-right">
               <h2>{{item.Goods_disName}}</h2>
@@ -70,7 +72,7 @@
 
       <ul class="model01">
         <li v-for="(item,index) in dotaList" :key="index" v-bind:class="index == 4 ?'current':''">
-          <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
+          <model-div :item="item" v-on:parentHand="childrenHand"  ></model-div>
         </li>
       </ul>
     </div>
@@ -116,13 +118,14 @@
           :key="index"
           v-bind:class="index == 4 ?'current':''"
         >
-          <model-div :item="item" v-on:parentHand="childrenHand"></model-div>
+          <model-div :item="item" v-on:parentHand="childrenHand" ></model-div>
         </li>
       </ul>
     </div>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
-      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
+      <silderbar-tab v-on:FixedModel="modelFixed"  ref="mychild"></silderbar-tab>
     </div>
+
   </div>
 </template>
 <script>
@@ -302,9 +305,10 @@ export default {
       console.log("aa");
       this.flag = val;
     },
-    childrenHand(){
-       this.$refs.mychild.parentHandleclick();
+    childrenHand() {
+      this.$refs.mychild.parentHandleclick();
     }
+
   },
   components: {
     "header-tab": Header,

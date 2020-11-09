@@ -47,7 +47,7 @@
           <p>
             <a href="javascript:;" class="back_Gm">立即购买</a>
             <a href="javascript:;"  class="sure_Gm" @click="AddWebCartGoods()">加入购物车</a>
-            <a href="javascript:;" class="sure_Zs">赠送</a>
+            <a href="javascript:;" class="sure_Zs" @click="sendParentCartGods()">赠送</a>
           </p>
         </div>
       </div>
@@ -59,6 +59,7 @@
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
+    <send-div ref="childrenSend"></send-div>
   </div>
 </template>
 
@@ -66,6 +67,7 @@
 <script>
 import Header from "../components/header";
 import Silderbar from "../components/silderbar";
+import send from "../components/send";
 export default {
   name: "DETAIL",
   data() {
@@ -113,11 +115,15 @@ export default {
         .catch(error => {
           this.addFlag = true;
         });
+    },
+     sendParentCartGods() {
+      this.$refs.childrenSend.childrenPram(this.$route.query.goodsId);
     }
   },
   components: {
     "header-tab": Header,
-    "silderbar-tab": Silderbar
+    "silderbar-tab": Silderbar,
+    "send-div": send
   }
 };
 </script>
