@@ -22,5 +22,8 @@ export default {
     send: {
         Queryfriends: 'Query/Queryfriends',
         CheckAccount: 'Query/QueryUser'
+    },
+    order: {
+        QueryUserOrder: 'Query/QueryUserOrder'
     }
 }

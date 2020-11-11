@@ -14,43 +14,40 @@
         <span style="width:254px">发放对象</span>
       </div>
       <div class="orderContainer-bd">
-        <div class="rowBox" v-for="item in 4">
+        <div class="rowBox" v-for="(value,name,index) in groupLists">
           <div class="rowBox-hd">
-            <span>2020-09-20 09:00:00</span>
+            <span>{{value[0].CreateTime | myDateFilter}}</span>
             <span>
               <em>订单号:</em>
-              <em>5211Shop201909183063434914662000</em>
+              <em>{{name}}</em>
             </span>
             <span>
               <em>订单状态:</em>
-              <em>代付款</em>
+              <em v-bind:class="{'hasPay':value[0].Order_Pay_status == 0}">{{value[0].Order_Pay_status == 0 ?'待付款':'已付款'}}</em>
             </span>
             <span class="fr">
               <em>订单金额:</em>
-              <b>￥189.98</b>
+              <b>{{`￥${value[0].Order_price}`}}</b>
             </span>
           </div>
           <ul>
-            <li v-for=" item in 5">
+            <li v-for=" item in value">
               <div class="row01">
                 <div class="row01-img">
-                  <img src alt />
+                  <img v-lazy="item.Goods_imgPath" />
                 </div>
                 <div class="row01-infor">
-                  <p>燃烧我的卡路里</p>
+                  <p>{{item.Goods_name}}</p>
+
                   <p>
-                    <em>所属分类:</em>
-                    <em>军团战争</em>
-                  </p>
-                  <p>
-                    <em>￥100.00:</em>
+                    <em>{{`￥${item.Goods_price}`}}</em>
                     <em>(商品单价)</em>
                   </p>
                 </div>
-                <div class="row01-number">*1</div>
+                <div class="row01-number">{{`*${item.Goods_count}`}}</div>
               </div>
-              <div class="row02">￥89.98</div>
-              <div class="row3">未发放</div>
+              <div class="row02">{{`￥${item.Order_Pay_price}`}}</div>
+              <div class="row3">{{item.Order_Send_status == 0? '未发放':'发放'}}</div>
               <div class="row4">弥殇</div>
             </li>
           </ul>
@@ -62,9 +59,44 @@
 
 
 <script>
+// var group={};
+// for(var item){
+//   if(!group[item.order_id]){
+//       group[item.order_id]=[];
+//    }
+// 	group[item.order_id].push(item);
+// }
 import Header from "../components/header";
 export default {
   name: "ORDER",
+  data() {
+    return {
+      groupLists: {}
+    };
+  },
+  mounted() {
+    this.QueryUserOrder();
+  },
+  methods: {
+    QueryUserOrder() {
+      this.$axios("get", `${this.$ports.order.QueryUserOrder}`)
+        .then(res => {
+          console.log(res);
+          res.data.forEach(item => {
+            if (!this.groupLists[item.Order_id]) {
+              this.$set(this.groupLists, item.Order_id, []);
+              this.groupLists[item.Order_id].push(item);
+            } else {
+              this.groupLists[item.Order_id].push(item);
+            }
+          });
+          console.log(this.groupLists);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  },
   components: {
     "header-tab": Header
   }
@@ -104,9 +136,10 @@ export default {
   zoom: 1;
   border: 1px solid #d6d6d6;
   margin-bottom: 10px;
+  border-bottom:0px;
 }
 .rowBox-hd {
- width:1026px;
+  width: 1026px;
   height: 45px;
   line-height: 45px;
   border-bottom: 1px solid #cccccc;
@@ -117,21 +150,24 @@ export default {
   padding-left: 29px;
   padding-right: 25px;
 }
-.rowBox-hd span{
-    float: left;
-    height: 45px;
-    line-height: 45px;
-    margin-right: 40px;
+.rowBox-hd span {
+  float: left;
+  height: 45px;
+  line-height: 45px;
+  margin-right: 40px;
 }
-.rowBox-hd span em{
-    margin-right: 10px;
+.rowBox-hd span em {
+  margin-right: 10px;
 }
-.rowBox-hd span b{
-    color:#ff0808;
+.rowBox-hd span em.hasPay{
+   color: #ff0808;
 }
-.rowBox-hd span.fr{
-    float:right;
-    margin-right: 0px;
+.rowBox-hd span b {
+  color: #ff0808;
+}
+.rowBox-hd span.fr {
+  float: right;
+  margin-right: 0px;
 }
 .rowBox ul li {
   width: 100%;
@@ -166,7 +202,7 @@ export default {
   font-size: 14px;
   color: #3a3f4a;
   font-family: "微软雅黑";
-  margin-bottom: 5px;
+  margin-top:9px;
 }
 .row01-infor p em {
   color: #a9a9a9;
