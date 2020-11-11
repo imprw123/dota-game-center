@@ -625,6 +625,9 @@ export default {
       immediate: true,
       deep: true
     },
+    $route(){
+      this.val= this.$route.query.searchName
+    },
     modelist01: {
       handler(newValue, oldValue) {
         console.log(newValue);
@@ -671,7 +674,11 @@ export default {
   },
 
   mounted() {
-    console.log(this.modelobjContainer);
+    if(this.$route.query.searchName){
+       this.val=decodeURI(this.$route.query.searchName);
+    }else{
+      this.val='';
+    }
     var _that = this;
     if (this.modelobjContainer) {
       this.modelobjContainer.Class_GoodsCount.forEach(function(obj, index) {

@@ -10,6 +10,9 @@
       </ul>
     </div>
     <div class="siderHd">
+      <span v-if="Flag01">购物车</span>
+       <span v-if="Flag02">搜索</span>
+       <span v-if="Flag03">收藏</span>
       <div class="back" v-on:click="closeFixed"></div>
     </div>
     <!-- 购物车 -->
@@ -195,6 +198,15 @@ export default {
   width: 300px;
   height: 50px;
   background-color: #053249;
+}
+.siderHd span{
+  float: left;
+  height:50px;
+  line-height: 60px;
+  color: #dfdfdf;
+  font-family:'微软雅黑';
+  font-size: 16px;
+  margin-left: 10px;
 }
 .silderBtn {
   width: 56px;

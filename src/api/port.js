@@ -18,5 +18,9 @@ export default {
         AddWebCartGoods: 'do/AddWebCartGoods',
         DeductWebCartGoods: 'do/DeductWebCartGoods',
         RemoveWebCartGoods: 'do/RemoveWebCartGoods'
+    },
+    send: {
+        Queryfriends: 'Query/Queryfriends',
+        CheckAccount: 'Query/QueryUser'
     }
 }

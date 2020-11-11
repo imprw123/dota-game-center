@@ -47,7 +47,7 @@
           <p>
             <a href="javascript:;" class="back_Gm">立即购买</a>
             <a href="javascript:;"  class="sure_Gm" @click="AddWebCartGoods()">加入购物车</a>
-            <a href="javascript:;" class="sure_Zs" @click="sendParentCartGods()">赠送</a>
+            <a href="javascript:;" class="sure_Zs" @click="sendParentCartGods(detailObj.Goods_imgPath,detailObj.Goods_disName)">赠送</a>
           </p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default {
       debugger;
       this.$axios(
         "get",
-        `${this.$ports.shopCar.AddWebCartGoods}?goodsId=${this.goodsid}&count=${1}`
+        `${this.$ports.shopCar.AddWebCartGoods}?beGivenUserId=${0}&goodsId=${this.goodsid}&count=${1}`
       )
         .then(res => {
           console.log(res);
@@ -116,8 +116,8 @@ export default {
           this.addFlag = true;
         });
     },
-     sendParentCartGods() {
-      this.$refs.childrenSend.childrenPram(this.$route.query.goodsId);
+     sendParentCartGods(img,name) {
+      this.$refs.childrenSend.childrenPram(this.$route.query.goodsId,img,name);
     }
   },
   components: {

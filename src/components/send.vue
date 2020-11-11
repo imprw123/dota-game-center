@@ -5,8 +5,8 @@
         <h1>赠送物品<em @click="closeModel">×</em></h1>
         <div class="giftMain">
             <div class="giftLeft">
-                <span>希腊战神·玛尔斯</span>
-                <p><img src="//img.5211game.com/5211/shop/Goods/Basic/22106.jpg?rand=637400852728121797" onerror="Public.fImgNofind();" height="80" width="80" alt=""></p>
+                <span v-bind:title="nameShow">{{nameShow}}</span>
+                <p><img v-lazy="imgPath"  height="80" width="80" alt=""></p>
                 <p class="note"></p>
             </div>
             <div class="giftRight">
@@ -26,23 +26,34 @@
 
                 <div class="wr_fd"  v-show="gender == 'Male' ">
                     <div class="inp">
-                        <em><img src="../assets/xl.png" h="" height="6" width="11" alt=""></em>
-                        <input type="text" class="fdShow" value="--点击选择好友--" data-uid="0" readonly="readonly" maxlength="15" style="text-align:center;">
+                        <em @click="closeFriend"><img src="../assets/xl.png" h="" height="6" width="11" alt=""></em>
+                        <input type="text" class="fdShow" v-model="valName"  readonly="readonly"  style="text-align:center;" @click="Queryfriends()">
                         <span style="display:none;"><img src="../assets/ture.jpg" height="8" width="12" alt=""></span>
                     </div>
 
-                    <div class="changeFD" style="display:none;">
-                        <ul></ul>
+                    <div class="changeFD" v-show="hasFriend">
+                        <ul>
+                            <li v-for="(item,index) in friendslist" :key="index" @click="chooseName(item.name)">{{item.name}}</li>
+                        </ul>
                     </div>
+                     <div class="sendBtn">
+                         <a href="javascript:;"  class="sureSendDisabled"   v-show="valName == '--点击选择好友--'">确认赠送</a>
+                          <a href="javascript:;" class="sureSend"  @click="CheckAccount" v-show="valName != '--点击选择好友--'" >确认赠送</a>
+                       <span id="chkmsg" style="color:red;" v-show="msg2 != ''">{{msg2}}</span>
+                     </div>
                 </div>
                 <div class="wr_fd"  v-show="gender == 'Female'">
                     <div class="inp">
-                        <input type="text" class="othShow" value="" data-uid="0" placeholder="用户名/手机/邮箱" maxlength="30">
+                        <input type="text" class="othShow" value="" placeholder="请输入你想赠送的用户名" v-model="valName2"  maxlength="30">
                     </div>
                     <span style="display:none;"><img src="../assets/ture.jpg" height="8" width="12" alt=""></span>
+                    <div class="sendBtn">
+                       <a href="javascript:;"  class="sureSendDisabled"   v-show="valName2 == ''">确认赠送</a>
+                          <a href="javascript:;" class="sureSend"  @click="CheckAccount2" v-show="valName2 != ''" >确认赠送</a>
+                       <span id="chkmsg" style="color:red;" v-show="msg != ''">{{msg}}</span>
+                     </div>
                 </div>
-                <span id="chkmsg" style="color:red;"></span>
-                <a href="javascript:;" id="sureSend" class="sureSendDisabled">确认赠送</a>
+              
             </div>
         </div>
     </div>
@@ -58,16 +69,119 @@ export default {
     data(){
         return {
             gender: 'Male',
-            isShowSendFlag: false
+            isShowSendFlag: false,
+            hasFriend:false,
+            friendslist:[],
+            valName:'--点击选择好友--',
+            isSend:false,
+            goodsid:'',
+            imgPath:'',
+            nameShow:'',
+            valName2:'',
+            msg:'',
+            msg2:''
         }
     },
     methods:{
-        childrenPram(val){
+        childrenPram(val,img,name){
              this.isShowSendFlag=true;
+             this.goodsid=val;
+             this.imgPath=img;
+             this.nameShow=name;
             console.log(val)
         },
         closeModel() {
-      this.isShowSendFlag = false;
+        this.isShowSendFlag = false;
+     },
+     //查询好友列表
+     Queryfriends(){
+            this.$axios(
+        "get",
+        `${
+          this.$ports.send.Queryfriends
+        }`
+      )
+        .then(res => {
+            console.log(res);
+            if(res.code == 0){
+                this.friendslist=res.data.friendsList;
+                this.hasFriend=true;
+            }else{
+                this.friendslist=[];
+                this.hasFriend=false;
+            }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+     },
+     //关闭下拉好友
+     closeFriend(){
+          this.hasFriend=false;
+           this.valName='--点击选择好友--';
+     },
+     chooseName(val){
+         this.valName=val;
+           this.hasFriend=false;
+     },
+     //根据好友赠送
+        CheckAccount(){
+            this.$axios(
+        "get",
+        `${
+          this.$ports.send.CheckAccount
+        }?account=${this.valName}`
+      )
+        .then(res => {
+            console.log(res);
+           if(res.code == 0){
+               this.AddWebCartGoods(res.data.UserId);
+           }else if(res.code < 0){
+               this.msg2=res.msg;
+           }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+     },
+          //陌生人赠送
+     CheckAccount2(){
+          this.$axios(
+        "get",
+        `${
+          this.$ports.send.CheckAccount
+        }?account=${this.valName2}`
+      )
+        .then(res => {
+            console.log(res);
+           if(res.code == 0){
+               this.AddWebCartGoods(res.data.UserId);
+           }else if(res.code < 0){
+               this.msg=res.msg;
+           }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+     },
+     //赠送接口
+         AddWebCartGoods(userid) {
+     // debugger;
+      this.$axios(
+        "get",
+        `${this.$ports.shopCar.AddWebCartGoods}?beGivenUserId=${userid}&goodsId=${this.goodsid}&count=${1}`
+      )
+        .then(res => {
+          console.log(res);
+          this.$emit("parentHandparent1");
+           this.isShowSendFlag=false;
+           this.valName='--点击选择好友--';
+        })
+        .catch(error => {
+          this.$emit("parentHandparent1");
+           this.isShowSendFlag=false;
+           this.valName='--点击选择好友--';
+        });
     },
     }
 
@@ -93,7 +207,7 @@ export default {
   margin: 0 auto;
   margin-top: 300px;
 }
-.Gift h1 {
+.model2 .Gift h1 {
   width: 377px;
   height: 25px;
   line-height: 25px;
@@ -116,11 +230,9 @@ export default {
   cursor: pointer;
 }
 .giftMain {
-    width: 360px;
-    height: 138px;
-    background-color: #fff;
-    border: 1px solid #1f2d49;
-    padding: 15px 0px 38px 30px;
+   width: 361px;
+    height: 151px;
+    padding: 15px 0px 26px 30px;
 }
 .giftLeft {
     width: 120px;
@@ -129,13 +241,16 @@ export default {
 }
 
     .giftLeft span {
-        width: 120px;
+        width: 80px;
         height: 30px;
         line-height: 24px;
         color: #323333;
         font-size: 12px;
         font-weight: bold;
         display: inline-block;
+        overflow: hidden;
+text-overflow:ellipsis;
+ white-space: nowrap;
     }
 
     .giftLeft p {
@@ -160,7 +275,7 @@ export default {
 
 .giftRight {
     width: 226px;
-    height: 138px;
+    height: 110px;
     float: left;
 }
 
@@ -172,6 +287,7 @@ export default {
     position: relative;
     vertical-align: text-bottom;
     top: 3px;
+     color:#333;
 }
 .giftRight span input{
     margin-right: 5px;
@@ -184,6 +300,7 @@ export default {
         display: block;
         line-height: 24px;
         font-size: 12px;
+        color:#333;
     }
 
     .giftRight p {
@@ -238,6 +355,7 @@ export default {
     top: 0px;
     left: 0px;
     border-right: none;
+    cursor: pointer;
 }
 
 .giftRight .othShow {
@@ -254,11 +372,9 @@ export default {
 }
 
 .wr_fd span {
-    width: 12px;
-    height: 12px;
-    position: absolute;
-    top: 10px;
-    right: -24px;
+        width: 121px;
+    height: 22px;
+    text-align: center;
 }
 
     .wr_fd span img {
@@ -280,13 +396,18 @@ export default {
     overflow-y: auto;
 }
 
-    .changeFD ul li {
+ .giftRight .wr_fd .changeFD ul li {
         line-height: 24px;
         height: 24px;
         width: 100%;
         font-size: 12px;
         text-indent: 12px;
         cursor: default;
+        padding:0px;
+        cursor: pointer;
+        margin-right: 0px;
+        margin-bottom: 0px;
+        color:#333;
     }
 
         .changeFD ul li:hover {
@@ -300,9 +421,10 @@ export default {
     text-align: center;
     display: block;
     font-size: 12px;
-    background-color: #e03336;
-    border: 1px solid #cf2427;
-    color: #fff;
+       background-color: #ffb373;
+    border: 1px solid #f0cbb6;
+    font-size: 14px;
+    color: #f32a42;
     /*margin-top: 24px;*/
 }
 
@@ -319,5 +441,7 @@ export default {
     /*margin-top: 33px;*/
 }
 /* 赠送模态框 */
-
+.sendBtn{
+    margin-top: 34px;
+}
 </style>

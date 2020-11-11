@@ -24,7 +24,10 @@
               <input type="checkbox" id="myCheck" v-model="item.goodsid" />
             </div>
             <div class="shopCar-row02" style="width:230px">
-              <img v-lazy="item.Goods_imgPath" />
+              <div class="imgBox-shopCar">
+                <img v-lazy="item.Goods_imgPath" />
+                <i class="zen" v-bind:title="sendNameShow" v-show="item.BeGiven_userid>0" v-on:mouseenter="searchName(item.BeGiven_userid)"></i>
+              </div>
               <div class="shopCar-row02-infor">
                 <h5>{{item.Goods_disName}}</h5>
                 <p>
@@ -82,7 +85,8 @@ export default {
       isAllTrue: true,
       flag: false,
       addFlag: true,
-      delFlag: true
+      delFlag: true,
+      sendNameShow:''
     };
   },
   mounted() {
@@ -215,7 +219,7 @@ export default {
       debugger;
       this.$axios(
         "get",
-        `${this.$ports.shopCar.AddWebCartGoods}?goodsId=${goodsid}&count=${count}`
+        `${this.$ports.shopCar.AddWebCartGoods}?beGivenUserId=${0}&goodsId=${goodsid}&count=${count}`
       )
         .then(res => {
           console.log(res);
@@ -263,6 +267,21 @@ export default {
           this.$refs.mychild.parentHandleclick();
         })
         .catch(error => {});
+    },
+    searchName(valName){
+        this.$axios(
+        "get",
+        `${
+          this.$ports.send.CheckAccount
+        }?account=${valName}`
+      )
+        .then(res => {
+
+            this.sendNameShow=`赠送给${res.data.UserName}`;
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   },
   components: {
@@ -482,5 +501,20 @@ export default {
 }
 .siderBoxCurrent {
   right: -300px;
+}
+.imgBox-shopCar{
+width:66px;
+height:66px;
+position:relative;
+float: left;
+}
+.imgBox-shopCar i{
+  width:29px;
+  height:29px;
+  position:absolute;
+  top:0px;
+  left:0px;
+  display:block;
+  background: url(../assets/zen.png);
 }
 </style>

@@ -15,7 +15,7 @@
       <div class="detail-type">{{item.Tag}}</div>
       <div class="action">
         <span class="shopcar" @click="AddWebCartGoods(item.Goods_id)">+ 购物车</span>
-        <span class="send" @click="sendParentCartGods(item.Goods_id)">赠送</span>
+        <span class="send" @click="sendParentCartGods(item.Goods_id,item.Goods_imgPath,item.Goods_disName)">赠送</span>
         <span class="ljgm">立即购买</span>
       </div>
       <div class="xian"></div>
@@ -24,7 +24,7 @@
         <span>{{item.Class_name}}</span>
       </div>
     </div>
-    <send-div  ref="childrenSend" ></send-div>
+    <send-div v-on:parentHandparent1="childrenHand1"  ref="childrenSend" ></send-div>
   </div>
 </template>
 
@@ -41,12 +41,11 @@ export default {
     };
   },
   methods: {
-    
     AddWebCartGoods(goodsid) {
       debugger;
       this.$axios(
         "get",
-        `${this.$ports.shopCar.AddWebCartGoods}?goodsId=${goodsid}&count=${1}`
+        `${this.$ports.shopCar.AddWebCartGoods}?beGivenUserId=${0}&goodsId=${goodsid}&count=${1}`
       )
         .then(res => {
           console.log(res);
@@ -56,8 +55,11 @@ export default {
           this.$emit("parentHand");
         });
     },
-    sendParentCartGods(val) {
-      this.$refs.childrenSend.childrenPram(val);
+    childrenHand1(){
+      this.$emit('parentHand');
+    },
+    sendParentCartGods(val,img,name) {
+      this.$refs.childrenSend.childrenPram(val,img,name);
     }
   },
   components: {
