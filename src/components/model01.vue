@@ -16,7 +16,7 @@
       <div class="action">
         <span class="shopcar" @click="AddWebCartGoods(item.Goods_id)">+ 购物车</span>
         <span class="send" @click="sendParentCartGods(item.Goods_id,item.Goods_imgPath,item.Goods_disName)">赠送</span>
-        <span class="ljgm">立即购买</span>
+        <span class="ljgm" @click="gmFn(item.Goods_id)">立即购买</span>
       </div>
       <div class="xian"></div>
       <div class="mapName">
@@ -25,11 +25,13 @@
       </div>
     </div>
     <send-div v-on:parentHandparent1="childrenHand1"  ref="childrenSend" ></send-div>
+    <payModel-div  ref="payChildren"></payModel-div>
   </div>
 </template>
 
 <script>
 import send from "../components/send";
+import payModel from "../components/payModel";
 export default {
   name: "Model",
   props: {
@@ -37,7 +39,7 @@ export default {
   },
   data() {
     return {
-  
+     
     };
   },
   methods: {
@@ -60,10 +62,14 @@ export default {
     },
     sendParentCartGods(val,img,name) {
       this.$refs.childrenSend.childrenPram(val,img,name);
+    },
+    gmFn(val){
+       this.$refs.payChildren.payChildren(val);
     }
   },
   components: {
-    "send-div": send
+    "send-div": send,
+    "payModel-div":payModel
   }
 };
 </script>

@@ -27,7 +27,7 @@
       <div class="jryx"></div>
     </div>
     <!-- 热门推荐 -->
-    <div class="dota" v-if="modelobjContainer != null">
+    <div class="dota" v-if="modelobjContainer != null && modellistContainer.length>0">
       <h1>
         <em v-text="modelobjContainer != null && !modelobjContainer.IsRPG  == true?'热门推荐':'新手推荐'"></em>
       </h1>

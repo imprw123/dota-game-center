@@ -1,31 +1,42 @@
 <template>
   <div class="header">
     <div class="inHeader">
-      <span>
-        <router-link :to="'/'">首页</router-link>
+      <span v-bind:class="{'current':currentFlag == 'Home'}">
+        <router-link :to="'/'" >首页</router-link>
       </span>
-      <span>
+      <span v-bind:class="{'current':currentFlag == 'PT'}">
         <router-link :to="'PT'">平台</router-link>
       </span>
-      <span>
+      <span v-bind:class="{'current':currentFlag == 'DOTA'}">
         <router-link :to="'DOTA'">DOTA</router-link>
       </span>
-      <span>
+      <span v-bind:class="{'current':currentFlag == 'IMBA'}">
         <router-link :to="'IMBA'">IMBA</router-link>
       </span>
-      <span>
+      <span v-bind:class="{'current':currentFlag == 'RPGMAP'}">
         <router-link :to="'RPGMAP'">RPG商店</router-link>
       </span>
     </div>
     <div class="my-order">
-      <span> <router-link :to="'ORDER'">我的订单</router-link></span>
+      <span v-bind:class="{'current':currentFlag == 'ORDER'}">
+        <router-link :to="'ORDER'">我的订单</router-link>
+      </span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "Header"
+  name: "Header",
+  data(){
+   return {
+      currentFlag:''
+   }
+  },
+  mounted(){
+    this.currentFlag=this.$route.name;
+    console.log(this.$route.name)
+  }
 };
 </script>
 <style  scoped>
@@ -56,6 +67,10 @@ export default {
   color: #dfdfdf;
   display: block;
 }
+.inHeader span.current  a{
+  color: #3dbeff;
+  font-weight: bold;
+}
 .my-order {
   width: 240px;
   height: 45px;
@@ -64,9 +79,13 @@ export default {
   text-align: right;
   padding-right: 50px;
 }
-.my-order span a{
+.my-order span a {
   color: #dfdfdf;
   font-size: 18px;
   font-family: "微软雅黑";
+}
+.my-order span.current a{
+   color: #3dbeff;
+  font-weight: bold;
 }
 </style>

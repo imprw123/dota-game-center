@@ -167,7 +167,7 @@ export default {
         }?classid=${0}&flag=${1}&topN=${1}`
       )
         .then(res => {
-          // console.log(res);
+          //console.log(res);
           if (res.code == 0) {
             this.newRecomment = res.data.list[0];
           } else {
@@ -192,7 +192,7 @@ export default {
           } else {
             this.limitList = [];
           }
-          //console.log(res);
+          console.log(res);
         })
         .catch(error => {
           console.log(error);
@@ -489,9 +489,10 @@ export default {
   cursor: pointer;
 }
 .limit-buy-right .tabchange span.current {
-  color: #000;
   border-bottom: 1px solid #3dbeff;
   font-family: "微软雅黑";
+  color:#3dbeff;
+  font-weight: bold;
 }
 .limit-buy-right ol li {
   width: 243px;
