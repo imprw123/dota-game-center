@@ -22,7 +22,7 @@
             </b>
             <i>{{newRecomment.Unit}}</i>
           </p>
-          <a href="javascript:;" data-goodsid="22106" class="qg">立即抢购</a>
+          <a href="javascript:;" @click="gmFn(newRecomment.Goods_id)" class="qg">立即抢购</a>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@
           :key="index"
           v-bind:class="(index+1)%4 == 0 ?'current':''"
         >
-          <img v-bind:src="item.Goods_imgPath" class="imgShow" />
+          <img   v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`" class="imgShow" />
 
           <div class="rpg-left">
             <p>{{item.Name}}</p>
@@ -125,7 +125,7 @@
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed"  ref="mychild"></silderbar-tab>
     </div>
-
+    <payModel-div  ref="payChildren"></payModel-div>
   </div>
 </template>
 <script>
@@ -133,6 +133,7 @@ import { YYAD } from "../api/YYAD";
 import Header from "../components/header";
 import Silderbar from "../components/silderbar";
 import model01 from "../components/model01";
+import payModel from "../components/payModel";
 import $ from "jquery";
 export default {
   name: "Home",
@@ -307,13 +308,17 @@ export default {
     },
     childrenHand() {
       this.$refs.mychild.parentHandleclick();
+    },
+    gmFn(val){
+       this.$refs.payChildren.payChildren(val);
     }
 
   },
   components: {
     "header-tab": Header,
     "model-div": model01,
-    "silderbar-tab": Silderbar
+    "silderbar-tab": Silderbar,
+     "payModel-div":payModel
   }
 };
 </script>

@@ -25,5 +25,10 @@ export default {
     },
     order: {
         QueryUserOrder: 'Query/QueryUserOrder'
+    },
+    myMap: {
+        QueryUserCollectedRPG: 'Query/QueryUserCollectedRPG',
+        AddCollectedRPG: 'Do/AddCollectedRPG',
+        RemoveCollectedRPG: 'Do/RemoveCollectedRPG'
     }
 }

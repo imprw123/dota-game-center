@@ -66,28 +66,32 @@
     <div class="siderBd" v-if="Flag03">
       <div class="sider-rpg">
         <ul>
-          <li v-for="item in 4">
-            <img
-              src="http://img.5211game.com/5211/shop/Goods/Basic/17372.jpg?rand=637388729297809734"
-              class="imgShow"
-            />
-            <div class="rpg-left">
-              <p>军团战争V</p>
-              <div class="typeName">
-                <span class="lf">防守类</span>
-              </div>
-              <div class="enterShop">
-                <a href="#/rpg?rpgId=105" class>进入商店</a>
-              </div>
+           <li
+          v-for="(item,index) in rpgList"
+          v-bind:class="{'current':(index+1)%4 == 0}"
+          :key="index"
+        >
+          <img
+            v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`"
+            class="imgShow"
+          />
+          <div class="rpg-left">
+            <p>{{item.Class_name}}</p>
+            <div class="typeName">
+              <span class="lf">{{item.Category | typeName}}</span>
             </div>
-          </li>
+            <div class="enterShop">
+              <router-link :to="{'name':'RPG',query:{rpgId:item.Class_id}}">进入商店</router-link>
+            </div>
+          </div>
+        </li>
         </ul>
       </div>
       <div class="totalBox">
         <div class="totalBox-left">
           <p style="height:47px;line-height:47px;">
             全部搜藏
-            <b>10</b>
+            <b>{{count}}</b>
           </p>
         </div>
         <div class="totalBox-right">
@@ -111,8 +115,33 @@ export default {
       val1: "",
       shopCarBox: [],
       totalNumber: 0,
-      totalMoney: "￥0.00"
+      totalMoney: "￥0.00",
+      current:1,
+      showItem:10,
+      rpgList:[],
+      count:0
     };
+  },
+   filters: {
+    typeName(val) {
+      if (val == 1) {
+        return "防守类";
+      } else if (val == 2) {
+        return "休闲类";
+      } else if (val == 3) {
+        return "塔防类";
+      } else if (val == 4) {
+        return "生存类";
+      } else if (val == 5) {
+        return "对抗类";
+      } else if (val == 6) {
+        return "ORPG";
+      } else if (val == 7) {
+        return "会员类";
+      } else if (val == 8) {
+        return "DOTA";
+      }
+    }
   },
   watch: {
     val1: {
@@ -142,6 +171,7 @@ export default {
         this.Flag01 = false;
         this.Flag02 = false;
         this.Flag03 = true;
+        this.collectedMap();
       }
       this.$emit("FixedModel", true);
     },
@@ -180,6 +210,18 @@ export default {
     },
     parentHandleclick() {
       this._QueryUserWebCartGoods();
+    },
+       collectedMap() {
+      this.$axios(
+        "get",
+        `${this.$ports.myMap.QueryUserCollectedRPG}?pi=${this.current}&ps=${this.showItem}`
+      )
+        .then(res => {
+          console.log(res);
+          this.rpgList = res.data.list;
+          this.count=res.data.count;
+        })
+        .catch(error => {});
     }
   }
 };
@@ -376,6 +418,28 @@ export default {
     background-color: #053249;  
 }  
 .silder-shop::-webkit-scrollbar-thumb:hover{
+    background-color: #021722;  
+}
+ /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.sider-rpg::-webkit-scrollbar  
+{  
+    width: 8px;  
+    height:8px;  
+    background-color:transparent;
+}  
+/*定义滚动条轨道 内阴影+圆角*/  
+.sider-rpg::-webkit-scrollbar-track  
+{  
+    border-radius: 4px;  
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+.sider-rpg::-webkit-scrollbar-thumb  
+{  
+    border-radius: 4px;  
+    background-color: #053249;  
+}  
+.sider-rpg::-webkit-scrollbar-thumb:hover{
     background-color: #021722;  
 }
 .silder-shop ul li {

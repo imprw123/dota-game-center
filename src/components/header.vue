@@ -13,7 +13,7 @@
       <span v-bind:class="{'current':currentFlag == 'IMBA'}">
         <router-link :to="'IMBA'">IMBA</router-link>
       </span>
-      <span v-bind:class="{'current':currentFlag == 'RPGMAP'}">
+      <span v-bind:class="{'current':currentFlag == 'RPGMAP' || currentFlag == 'RPG'}">
         <router-link :to="'RPGMAP'">RPG商店</router-link>
       </span>
     </div>

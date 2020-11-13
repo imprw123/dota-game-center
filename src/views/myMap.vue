@@ -9,22 +9,43 @@
     <div class="map-title">全部搜藏</div>
     <div class="myMapList">
       <ul>
-        <li v-for="(item,index) in 10" v-bind:class="{'current':(index+1)%4 == 0}" :key="index">
+        <li
+          v-for="(item,index) in rpgList"
+          v-bind:class="{'current':(index+1)%4 == 0}"
+          :key="index"
+        >
           <img
-            src="http://img.5211game.com/5211/shop/Goods/Basic/17372.jpg?rand=637388729297809734"
+            v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`"
             class="imgShow"
           />
           <div class="rpg-left">
-            <p>军团战争V</p>
+            <p>{{item.Class_name}}</p>
             <div class="typeName">
-              <span class="lf">防守类</span>
+              <span class="lf">{{item.Category | typeName}}</span>
             </div>
             <div class="enterShop">
-              <a href="#/rpg?rpgId=105" class>进入商店</a>
+              <router-link :to="{'name':'RPG',query:{rpgId:item.Class_id}}">进入商店</router-link>
             </div>
           </div>
         </li>
       </ul>
+    </div>
+    <div class="pageCount" v-if="pages !== null && pages.length != 0 ">
+      <span class="prev" v-show="current != 1" v-on:click="current-- && goto(current)">前一页</span>
+      <span class="first" v-on:click="firstPage">首页</span>
+      <a
+        v-for="index in pages"
+        v-on:click="goto(index)"
+        v-bind:class="{'current':current == index}"
+        :key="index"
+      >{{index}}</a>
+
+      <span class="next" v-on:click="lastPage">尾页</span>
+      <span
+        class="prev"
+        v-show="allpageLists != current && allpageLists != 0 "
+        v-on:click="current++ && goto(current++)"
+      >后一页</span>
     </div>
   </div>
 </template>
@@ -33,6 +54,89 @@
 import Header from "../components/header";
 export default {
   name: "MYMAP",
+  data() {
+    return {
+      showItem: 16, // 最少显示5个页码
+      current: 1, // 当前页码
+      rpgList: [],
+      allpageLists: ""
+    };
+  },
+  computed: {
+    pages: function() {
+      var pag = [];
+      // debugger;
+      if (this.current < this.showItem) {
+        //如果当前的激活的项 小于要显示的条数
+        //总页数和要显示的条数那个大就显示多少条
+        var i = Math.min(this.showItem, this.allpageLists);
+        while (i) {
+          pag.unshift(i--);
+        }
+      } else {
+        //当前页数大于显示页数了
+        var middle = this.current - Math.floor(this.showItem / 2), //从哪里开始
+          i = this.showItem;
+        if (middle > this.allpageLists - this.showItem) {
+          middle = this.allpageLists - this.showItem + 1;
+        }
+        while (i--) {
+          pag.push(middle++);
+        }
+      }
+      return pag;
+    }
+  },
+  filters: {
+    typeName(val) {
+      if (val == 1) {
+        return "防守类";
+      } else if (val == 2) {
+        return "休闲类";
+      } else if (val == 3) {
+        return "塔防类";
+      } else if (val == 4) {
+        return "生存类";
+      } else if (val == 5) {
+        return "对抗类";
+      } else if (val == 6) {
+        return "ORPG";
+      } else if (val == 7) {
+        return "会员类";
+      } else if (val == 8) {
+        return "DOTA";
+      }
+    }
+  },
+  mounted() {
+    this.collectedMap();
+  },
+  methods: {
+    goto: function(index) {
+      this.current = index;
+      this.collectedMap();
+    },
+    firstPage() {
+      this.current = 1;
+      this.collectedMap();
+    },
+    lastPage() {
+      this.current = this.allpageLists;
+      this.collectedMap();
+    },
+    collectedMap() {
+      this.$axios(
+        "get",
+        `${this.$ports.myMap.QueryUserCollectedRPG}?pi=${this.current}&ps=${this.showItem}`
+      )
+        .then(res => {
+          console.log(res);
+          this.rpgList = res.data.list;
+          this.allpageLists = Math.ceil(res.data.count / 16);
+        })
+        .catch(error => {});
+    }
+  },
   components: {
     "header-tab": Header
   }
@@ -76,8 +180,8 @@ export default {
   margin-bottom: 10px;
   margin-right: 12px;
 }
-.myMapList ul li.current{
-    margin-right: 0px;
+.myMapList ul li.current {
+  margin-right: 0px;
 }
 .myMapList ul li img.imgShow {
   width: 127px;

@@ -17,5 +17,10 @@
   background-position: center top;
   padding-bottom: 50px;
   font-family: "微软雅黑";
+-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
 }
 </style>

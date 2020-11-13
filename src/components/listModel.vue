@@ -12,18 +12,18 @@
       <div class="indetail-infor">
         <div class="detail-name">
           <span>{{modelobjContainer.Class_name}}</span>
-          <em>满100-10</em>
-          <em>满200八折</em>
+          <!-- <em>满100-10</em>
+          <em>满200八折</em> -->
         </div>
         <div class="detailtypeName">
           <span v-if="modelobjContainer.Class_category">{{modelobjContainer.Class_category}}</span>
         </div>
         <div class="num-infor">
-          <span>普通商品（111）</span>
-          <span v-if="msg">定制商品(1111)</span>
+          <span>{{`普通商品(${commonShopCount})`}}</span>
+          <span v-if="msg"> {{`定制商品(${orderShopCount})`}}</span>
         </div>
       </div>
-      <div class="scGame"></div>
+      <div class="scGame" @click="QueryUserCollectedRPG(modelobjContainer.Class_id)"></div>
       <div class="jryx"></div>
     </div>
     <!-- 热门推荐 -->
@@ -578,7 +578,9 @@ export default {
       allpageLists: "", // 总共的
       shopFlag: 0,
       val: "",
-      pages: []
+      pages: [],
+      commonShopCount:0,
+      orderShopCount:0
     };
   },
   watch: {
@@ -630,6 +632,7 @@ export default {
     },
     modelist01: {
       handler(newValue, oldValue) {
+         console.log('李玉林');
         console.log(newValue);
         this.modellistContainer = newValue;
       },
@@ -684,8 +687,10 @@ export default {
       this.modelobjContainer.Class_GoodsCount.forEach(function(obj, index) {
         if (obj.Flag == 128) {
           _that.msg = true;
+           _that.orderShopCount=obj.Count;
         } else {
           _that.msg = false;
+          _that.commonShopCount=obj.Count;
         }
       });
     }
@@ -871,6 +876,28 @@ export default {
     },
     childrenHand(){
        this.$emit('parentFind')
+    },
+    AddCollectedRPG(val){
+        this.$axios(
+        "get",
+        `${this.$ports.myMap.AddCollectedRPG}?classId=${val}`
+      )
+        .then(res => {
+          console.log(res);
+        
+        })
+        .catch(error => {});
+    },
+    RemoveCollectedRPG(val){
+        this.$axios(
+        "get",
+        `${this.$ports.myMap.RemoveCollectedRPG}?classId=${val}`
+      )
+        .then(res => {
+          console.log(res);
+        
+        })
+        .catch(error => {});
     }
   },
   components: {
