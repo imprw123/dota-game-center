@@ -11,7 +11,10 @@
         <div class="tpic_show">
           <em class="jingxi"></em>
           <div class="imgContainer">
-            <img v-bind:src="newRecomment.Goods_imgPath" />
+             <router-link :to="{name:'DETAIL',query:{goodsId:newRecomment.Goods_id}}">
+        <img v-bind:src="newRecomment.Goods_imgPath" />
+      </router-link>
+          
           </div>
           <h4>{{newRecomment.Goods_disName}}</h4>
           <p>
@@ -42,10 +45,11 @@
         </div>
         <ol>
           <li v-for="(item,index) in rankList" :key="index">
+             <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
             <div class="img-left">
-              <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
+             
                 <img v-lazy="item.Goods_imgPath" />
-              </router-link>
+             
             </div>
             <div class="infor-right">
               <h2>{{item.Goods_disName}}</h2>
@@ -57,6 +61,7 @@
                 </em>
               </p>
             </div>
+             </router-link>
           </li>
         </ol>
       </div>
@@ -90,7 +95,7 @@
           :key="index"
           v-bind:class="(index+1)%4 == 0 ?'current':''"
         >
-          <img   v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`" class="imgShow" />
+          <img   v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.id}.jpg`" class="imgShow" />
 
           <div class="rpg-left">
             <p>{{item.Name}}</p>
@@ -504,6 +509,9 @@ export default {
   height: 57px;
   border-bottom: 1px dashed #e6e6e6;
   padding-top: 10px;
+}
+.limit-buy-right ol li a{
+  color:#333;
 }
 .limit-buy-right ol li .img-left {
   width: 50px;

@@ -2,11 +2,11 @@
   <div class="siderBar">
     <div class="silderBtn">
       <ul>
-        <li class="silder02" v-on:click="openFixed('购物车')">
+        <li class="silder02" v-on:click="openFixed('购物车')"  v-bind:class="{'silder02Current':Flag01}" >
           <i class="ci-count">{{totalNumber}}</i>
         </li>
-        <li class="silder03" v-on:click="openFixed('搜索')"></li>
-        <li class="silder04" v-on:click="openFixed('搜藏')"></li>
+        <li class="silder03" v-on:click="openFixed('搜索')" v-bind:class="{'silder03Current':Flag02}"></li>
+        <li class="silder04" v-on:click="openFixed('搜藏')" v-bind:class="{'silder04Current':Flag03}"></li>
       </ul>
     </div>
     <div class="siderHd">
@@ -211,6 +211,9 @@ export default {
     parentHandleclick() {
       this._QueryUserWebCartGoods();
     },
+    AddCollectedChildrenClick(){
+      this.collectedMap();
+    },
        collectedMap() {
       this.$axios(
         "get",
@@ -295,6 +298,9 @@ export default {
   background: url(../assets/silder02-hover.png);
   transition: 0.2s;
 }
+.silderBtn ul li.silder02Current{
+   background: url(../assets/silder02-hover.png);
+}
 .silderBtn ul li.silder03 {
   background: url(../assets/silder03.png);
 }
@@ -302,12 +308,18 @@ export default {
   background: url(../assets/silder03-hover.png);
   transition: 0.2s;
 }
+.silderBtn ul li.silder03Current{
+  background: url(../assets/silder03-hover.png);
+}
 .silderBtn ul li.silder04 {
   background: url(../assets/silder04.png);
 }
 .silderBtn ul li.silder04:hover {
   background: url(../assets/silder04-hover.png);
   transition: 0.2s;
+}
+.silderBtn ul li.silder04Current{
+   background: url(../assets/silder04-hover.png);
 }
 .back {
   width: 26px;

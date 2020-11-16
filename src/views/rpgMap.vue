@@ -91,7 +91,7 @@ export default {
       category:0,
       typeListName:[{'name':'全部','categoryid':0},{'name':'防守类','categoryid':1},{'name':'休闲类','categoryid':2},{'name':'塔防类','categoryid':3},{'name':'生存类','categoryid':4},{'name':'对抗类','categoryid':5},{'name':'ORPG','categoryid':6},{'name':'会员类','categoryid':7},{'name':'DOTA','categoryid':8}],
       stirngFirstWords:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
-      firstword:'A',
+      firstword:'',
       valName:''
     };
   },
@@ -181,7 +181,12 @@ export default {
       this._QueryRPGBySearchPager();
     },
     firstWordSearch(word){
-      this.firstword=word;
+      if(this.firstword == word){
+         this.firstword='';
+      }else{
+        this.firstword=word;
+      }
+     
        this.current=1;
       console.log(this.firstword);
        console.log(this.category)
@@ -189,6 +194,7 @@ export default {
     },
     searchBtn(){
        this.current=1;
+       this.firstword='';
       this._QueryRPGBySearchPager();
     }
   },

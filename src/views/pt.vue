@@ -103,7 +103,7 @@ export default {
         `${this.$ports.dota.QueryWebClassInfoByCid}?classid=${this.classid}`
       )
         .then(res => {
-          // console.log(res);
+           console.log(res);
           this.flag03 = true;
           if (res.code == 0) {
             this.modelObj = res.data;
@@ -122,6 +122,7 @@ export default {
       this.typeChange = val4;
       this.pi = val5;
       this.seachFlagPager();
+      this.ClassInfoByCid();
     },
      childrenHand2(){
        this.$refs.mychild.parentHandleclick();

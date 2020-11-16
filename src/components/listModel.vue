@@ -23,7 +23,8 @@
           <span v-if="msg"> {{`定制商品(${orderShopCount})`}}</span>
         </div>
       </div>
-      <div class="scGame" @click="QueryUserCollectedRPG(modelobjContainer.Class_id)"></div>
+      <div class="scGame" @click="AddCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected == 0"></div>
+      <div class="scGame ysc" @click="RemoveCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected != 0"></div>
       <div class="jryx"></div>
     </div>
     <!-- 热门推荐 -->
@@ -53,6 +54,10 @@
       >
         <span @click="isCustomShop('普通商品')" v-bind:class="{'current01':shopFlag == 0}">普通商品</span>
         <span @click="isCustomShop('定制商品')" v-bind:class="{'current02':shopFlag == 128}">定制商品</span>
+      </div>
+      <div class="tabBox"  v-bind:class="{'tabBoxCurrent01':id == 1,'tabBoxCurrent02':id == 5}" v-if="id == 1 || id == 5">
+          <span @click="isCustomShop2('平台服务')" v-bind:class="{'current01':id == 1}">平台服务</span>
+          <span @click="isCustomShop2('游戏道具')" v-bind:class="{'current01':id == 5}">游戏道具</span>
       </div>
       <div
         class="in-tab-change-model"
@@ -874,6 +879,29 @@ export default {
         );
       }
     },
+       isCustomShop2(val) {
+      if (val == "平台服务") {
+        this.id = 1;
+        this.$emit(
+          "childrenFn",
+          this.id,
+          this.shopFlag,
+          escape(this.val),
+          this.typeTagStr,
+          1
+        );
+      } else if (val == "游戏道具") {
+        this.id = 5;
+        this.$emit(
+          "childrenFn",
+          this.id,
+          this.shopFlag,
+          escape(this.val),
+          this.typeTagStr,
+          1
+        );
+      }
+    },
     childrenHand(){
        this.$emit('parentFind')
     },
@@ -884,7 +912,7 @@ export default {
       )
         .then(res => {
           console.log(res);
-        
+          this.$emit('AddCollected');
         })
         .catch(error => {});
     },
@@ -894,7 +922,8 @@ export default {
         `${this.$ports.myMap.RemoveCollectedRPG}?classId=${val}`
       )
         .then(res => {
-          console.log(res);
+          console.log(res); 
+           this.$emit('AddCollected');
         
         })
         .catch(error => {});

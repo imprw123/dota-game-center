@@ -15,7 +15,7 @@
         <span style="width:206px">单价(人民币)</span>
         <span style="width:120px">数量</span>
         <span style="width:210px">小计(人民币)</span>
-        <span style="width:208px">操作</span>
+        <span style="width:200px">操作</span>
       </div>
       <div class="shopCarList">
         <ul v-if="shopCarBox.length > 0">
@@ -50,7 +50,7 @@
             <div class="shopCar-row05" style="width:210px">
               <span>{{`￥${item.Goods_price*item.Goods_amount}`}}</span>
             </div>
-            <div class="shopCar-row06" style="width:208px">
+            <div class="shopCar-row06" style="width:200px">
               <span @click="RemoveWebCartGoods(item.Goods_id)">删除</span>
             </div>
           </li>
@@ -328,11 +328,34 @@ export default {
 }
 .shopCarList {
   width: 1078px;
+  height:624px;
   border: 1px solid #cccccc;
   border-bottom: 0px;
-  overflow: hidden;
-  zoom: 1;
+ overflow-y: auto;
+  overflow-x: hidden;
   background-color: #f0f0f0;
+}
+ /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+.shopCarList::-webkit-scrollbar  
+{  
+    width: 8px;  
+    height:8px;  
+    background-color:transparent;
+}  
+/*定义滚动条轨道 内阴影+圆角*/  
+.shopCarList::-webkit-scrollbar-track  
+{  
+    border-radius: 4px;  
+}  
+  
+/*定义滑块 内阴影+圆角*/  
+.shopCarList::-webkit-scrollbar-thumb  
+{  
+    border-radius: 4px;  
+    background-color: #053249;  
+}  
+.shopCarList::-webkit-scrollbar-thumb:hover{
+    background-color: #021722;  
 }
 .shopCarList ul li {
   width: 100%;

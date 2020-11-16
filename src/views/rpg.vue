@@ -14,6 +14,7 @@
       v-bind:typeTag="typeChange"
       v-on:childrenFn="childrenFnMethods"
        v-on:parentFind="childrenHand2"
+       v-on:AddCollected="AddCollectedChildren"
     >></list-model>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
@@ -133,6 +134,9 @@ export default {
     },
      childrenHand2() {
       this.$refs.mychild.parentHandleclick();
+    },
+    AddCollectedChildren(){
+      this.$refs.mychild.AddCollectedChildrenClick();
     }
   }
 };

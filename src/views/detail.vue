@@ -418,7 +418,7 @@ a.sure_Gm {
   margin-right: 20px;
 }
 a.sure_Zs {
-  width: 98px;
+  width: 158px;
   height: 34px;
   line-height: 34px;
   background-color: #ffb373;
