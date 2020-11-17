@@ -2,6 +2,7 @@
   <div class="siderBar">
     <div class="silderBtn">
       <ul>
+        <li class="silder01" v-show="Flag01 || Flag02 || Flag03" v-on:click="closeFixed"></li>
         <li class="silder02" v-on:click="openFixed('购物车')"  v-bind:class="{'silder02Current':Flag01}" >
           <i class="ci-count">{{totalNumber}}</i>
         </li>
@@ -268,10 +269,10 @@ export default {
   cursor: pointer;
 }
 .silderBtn ul li.silder01 {
-  background: url(../assets/silder01.png);
+  background: url(../assets/bigBack.png);
 }
 .silderBtn ul li.silder01:hover {
-  background: url(../assets/silder01-hover.png);
+  background: url(../assets/bigBack-hover.png);
   transition: 0.2s;
 }
 .silderBtn ul li.silder02 {

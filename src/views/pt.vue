@@ -122,7 +122,10 @@ export default {
       this.typeChange = val4;
       this.pi = val5;
       this.seachFlagPager();
-      this.ClassInfoByCid();
+      if(this.classid == 1 || this.classid == 5){
+        this.ClassInfoByCid();
+      }
+      
     },
      childrenHand2(){
        this.$refs.mychild.parentHandleclick();

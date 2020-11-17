@@ -12,6 +12,8 @@
       <div class="indetail-infor">
         <div class="detail-name">
           <span>{{modelobjContainer.Class_name}}</span>
+          <div class="scGame" v-if="rpg == 'RPG'" @click="AddCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected == 0"></div>
+      <div class="scGame ysc" v-if="rpg == 'RPG'" @click="RemoveCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected != 0"></div>
           <!-- <em>满100-10</em>
           <em>满200八折</em> -->
         </div>
@@ -23,9 +25,9 @@
           <span v-if="msg"> {{`定制商品(${orderShopCount})`}}</span>
         </div>
       </div>
-      <div class="scGame" @click="AddCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected == 0"></div>
-      <div class="scGame ysc" @click="RemoveCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected != 0"></div>
-      <div class="jryx"></div>
+      
+      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=ID1" v-if="this.$route.name == 'DOTA'"></a>
+      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=ID6" v-if="this.$route.name == 'IMBA'"></a>
     </div>
     <!-- 热门推荐 -->
     <div class="dota" v-if="modelobjContainer != null && modellistContainer.length>0">
@@ -55,9 +57,9 @@
         <span @click="isCustomShop('普通商品')" v-bind:class="{'current01':shopFlag == 0}">普通商品</span>
         <span @click="isCustomShop('定制商品')" v-bind:class="{'current02':shopFlag == 128}">定制商品</span>
       </div>
-      <div class="tabBox"  v-bind:class="{'tabBoxCurrent01':id == 1,'tabBoxCurrent02':id == 5}" v-if="id == 1 || id == 5">
-          <span @click="isCustomShop2('平台服务')" v-bind:class="{'current01':id == 1}">平台服务</span>
-          <span @click="isCustomShop2('游戏道具')" v-bind:class="{'current01':id == 5}">游戏道具</span>
+      <div class="tabBox"  v-bind:class="{'tabBoxCurrent01':ptid01 == 1,'tabBoxCurrent02':ptid02 == 5}" v-if="name == 'PT'">
+          <span @click="isCustomShop2('平台服务')" v-bind:class="{'current01':ptid01 == 1}">平台服务</span>
+          <span @click="isCustomShop2('游戏道具')" v-bind:class="{'current01':ptid02 == 5}">游戏道具</span>
       </div>
       <div
         class="in-tab-change-model"
@@ -585,7 +587,11 @@ export default {
       val: "",
       pages: [],
       commonShopCount:0,
-      orderShopCount:0
+      orderShopCount:0,
+      name:this.$route.name,
+      ptid01:1,
+      ptid02:'',
+      rpg:this.$route.name,
     };
   },
   watch: {
@@ -882,6 +888,8 @@ export default {
        isCustomShop2(val) {
       if (val == "平台服务") {
         this.id = 1;
+        this.ptid01=1;
+        this.ptid02='';
         this.$emit(
           "childrenFn",
           this.id,
@@ -892,6 +900,7 @@ export default {
         );
       } else if (val == "游戏道具") {
         this.id = 5;
+        this.ptid02=5;
         this.$emit(
           "childrenFn",
           this.id,
@@ -982,13 +991,13 @@ export default {
   padding-left: 32px;
 }
 .detail-name {
-  overflow: hidden;
-  zoom: 1;
+ height:25px;
   margin-bottom: 20px;
 }
 .detail-name span {
   color: #000;
   font-size: 14px;
+  float:left;
 }
 .detail-name em {
   font-size: 12px;
@@ -1027,10 +1036,11 @@ export default {
   width: 96px;
   height: 24px;
   background: url(../assets/sc.png);
-  position: absolute;
-  top: 50px;
-  right: 20px;
-  cursor: pointer;
+  float:left;
+  margin-left:10px;
+  position:relative;
+  top:-2px;
+  cursor:pointer;
 }
 .ysc {
   background: url(../assets/ysc.png);
