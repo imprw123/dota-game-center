@@ -297,7 +297,6 @@ export default {
       var script = document.createElement("script");
       script.type = "text/javascript";
       try {
-        console.log(YYAD.LoadAds(1436));
         var jsCodeNode = document.createTextNode(
           `${YYAD.LoadAds(1436, null, null, "#mydiv")}`
         );
@@ -660,11 +659,21 @@ ul.model01 li img {
   text-align: center;
   line-height: 20px;
 }
+.enterShop:hover{
+   border: 1px solid #966e1a;
+   background-color: #fff9d3;
+}
 .enterShop a {
   width: 100%;
   height: 100%;
   font-family: "微软雅黑";
   color: #aa2828;
+}
+.enterShop:hover a{
+  width: 100%;
+  height: 100%;
+  font-family: "微软雅黑";
+  color: #966e1a;
 }
 .more {
   width: 131px;

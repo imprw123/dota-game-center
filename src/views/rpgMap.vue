@@ -7,13 +7,13 @@
       <span>RPG商店</span>
     </div>
     <div class="adver-rpg">
-      <div class="adver-rpg-left"></div>
+      <div class="adver-rpg-left" id="mydiv"></div>
       <div class="adver-rpg-right">
         <ul>
-          <li></li>
-          <li class="current"></li>
-          <li></li>
-          <li class="current"></li>
+          <li id="mydiv01"></li>
+          <li class="current" id="mydiv02"></li>
+          <li id="mydiv03"></li>
+          <li class="current" id="mydiv04"></li>
         </ul>
       </div>
     </div>
@@ -84,6 +84,7 @@
 <script>
 import Header from "../components/header";
 import Silderbar from "../components/silderbar";
+import { YYAD } from "../api/YYAD";
 export default {
   'name': "RPGMAP",
   data() {
@@ -161,8 +162,83 @@ export default {
   },
   mounted() {
     this._QueryRPGBySearchPager();
+     this._YYAD();
+    this._YYAD1();
+    this._YYAD2();
+    this._YYAD3();
+    this._YYAD4();
   },
   methods: {
+      _YYAD() {
+       var _that = this;
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      try {
+        var jsCodeNode = document.createTextNode(
+          `${YYAD.LoadAds(1467, null, null, "#mydiv")}`
+        );
+        script.appendChild(jsCodeNode);
+      } catch (e) {
+        script.text = code;
+      }
+      document.getElementById("mydiv01").appendChild(script);
+    },
+     _YYAD1() {
+       var _that = this;
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      try {
+        var jsCodeNode = document.createTextNode(
+          `${YYAD.LoadAds(1468, null, null, "#mydiv01")}`
+        );
+        script.appendChild(jsCodeNode);
+      } catch (e) {
+        script.text = code;
+      }
+      document.getElementById("mydiv02").appendChild(script);
+    },
+      _YYAD2() {
+       var _that = this;
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      try {
+        var jsCodeNode = document.createTextNode(
+          `${YYAD.LoadAds(1469, null, null, "#mydiv02")}`
+        );
+        script.appendChild(jsCodeNode);
+      } catch (e) {
+        script.text = code;
+      }
+      document.getElementById("mydiv02").appendChild(script);
+    },
+      _YYAD3() {
+       var _that = this;
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      try {
+        var jsCodeNode = document.createTextNode(
+          `${YYAD.LoadAds(1470, null, null, "#mydiv03")}`
+        );
+        script.appendChild(jsCodeNode);
+      } catch (e) {
+        script.text = code;
+      }
+      document.getElementById("mydiv02").appendChild(script);
+    },
+      _YYAD4() {
+       var _that = this;
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      try {
+        var jsCodeNode = document.createTextNode(
+          `${YYAD.LoadAds(1471, null, null, "#mydiv04")}`
+        );
+        script.appendChild(jsCodeNode);
+      } catch (e) {
+        script.text = code;
+      }
+      document.getElementById("mydiv02").appendChild(script);
+    },
     _QueryRPGBySearchPager() {
       this.$axios(
         "get",
@@ -246,8 +322,8 @@ export default {
 .adver-rpg-left {
   width: 542px;
   height: 310px;
-  background-color: #fff;
   float: left;
+  overflow:hidden;
 }
 .adver-rpg-right {
   width: 526px;
@@ -257,7 +333,6 @@ export default {
 .adver-rpg-right ul li {
   width: 258px;
   height: 151px;
-  background-color: #fff;
   float: left;
   margin-right: 10px;
   margin-bottom: 7px;

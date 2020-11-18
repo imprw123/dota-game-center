@@ -60,6 +60,9 @@ export default {
   font-family: "微软雅黑";
   cursor: pointer;
 }
+.inHeader span:hover a{
+   color: #3dbeff;
+}
 .inHeader span a {
   width: 100%;
   height: 100%;
@@ -83,6 +86,9 @@ export default {
   color: #dfdfdf;
   font-size: 18px;
   font-family: "微软雅黑";
+}
+.my-order span:hover a{
+   color: #3dbeff;
 }
 .my-order span.current a{
    color: #3dbeff;

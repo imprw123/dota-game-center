@@ -1,6 +1,6 @@
 <template>
   <div class="modelbox">
-    <div>
+    <div class="img-box">
       <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
         <img v-lazy="item.Goods_imgPath" />
       </router-link>
@@ -78,6 +78,15 @@ export default {
   font-size: 12px;
   color: #f74a4a;
   font-family: "微软雅黑";
+}
+.img-box:hover img{
+   -webkit-transition: transform 0.4s;
+    -o-transition: transform 0.4s;
+    transition: transform 0.4s;
+    -webkit-transform: translateY(-2px);
+    -ms-transform: translateY(-2px);
+    -o-transform: translateY(-2px);
+    transform: translateY(-2px);
 }
 .money b {
   font-size: 20px;

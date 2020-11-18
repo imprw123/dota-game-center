@@ -16,18 +16,18 @@
       <div class="orderContainer-bd">
         <div class="rowBox" v-for="(value,name,index) in groupLists">
           <div class="rowBox-hd">
-            <span>{{value[0].CreateTime | myDateFilter}}</span>
+            <span v-if="value[0] != null">{{value[0].CreateTime | myDateFilter}}</span>
             <span>
               <em>订单号:</em>
               <em>{{name}}</em>
             </span>
             <span>
               <em>订单状态:</em>
-              <em v-bind:class="{'hasPay':value[0].Order_Pay_status == 0}">{{value[0].Order_Pay_status == 0 ?'待付款':'已付款'}}</em>
+              <em v-if="value[0] != null" v-bind:class="{'hasPay':value[0].Order_Pay_status == 0}">{{value[0].Order_Pay_status == 0 ?'待付款':'已付款'}}</em>
             </span>
             <span class="fr">
               <em>订单金额:</em>
-              <b>{{`￥${value[0].Order_price}`}}</b>
+              <b v-if="value[0] != null">{{`￥${value[0].Order_price}`}}</b>
             </span>
           </div>
           <ul>
@@ -54,30 +54,33 @@
         </div>
       </div>
     </div>
+     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
+    </div>
   </div>
 </template>
 
 
 <script>
-// var group={};
-// for(var item){
-//   if(!group[item.order_id]){
-//       group[item.order_id]=[];
-//    }
-// 	group[item.order_id].push(item);
-// }
 import Header from "../components/header";
+import Silderbar from "../components/silderbar";
 export default {
   name: "ORDER",
   data() {
     return {
-      groupLists: {}
+       flag: false,
+      groupLists: {
+       
+      }
     };
   },
   mounted() {
     this.QueryUserOrder();
   },
   methods: {
+      modelFixed(val) {
+      this.flag = val;
+    },
     QueryUserOrder() {
       this.$axios("get", `${this.$ports.order.QueryUserOrder}`)
         .then(res => {
@@ -98,7 +101,8 @@ export default {
     }
   },
   components: {
-    "header-tab": Header
+    "header-tab": Header,
+    "silderbar-tab": Silderbar
   }
 };
 </script>
