@@ -74,12 +74,16 @@
         </div>
       </div>
     </div>
+     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
+    </div>
   </div>
 </template>
 
 
 <script>
 import Header from "../components/header";
+import Silderbar from "../components/silderbar";
 export default {
   'name': "RPGMAP",
   data() {
@@ -92,8 +96,22 @@ export default {
       typeListName:[{'name':'全部','categoryid':0},{'name':'防守类','categoryid':1},{'name':'休闲类','categoryid':2},{'name':'塔防类','categoryid':3},{'name':'生存类','categoryid':4},{'name':'对抗类','categoryid':5},{'name':'ORPG','categoryid':6},{'name':'会员类','categoryid':7},{'name':'DOTA','categoryid':8}],
       stirngFirstWords:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
       firstword:'',
-      valName:''
+      valName:'',
+       flag: false,
+       isSearch:true
     };
+  },
+  watch:{
+     valName: {
+      handler(newValue, oldValue) {
+       if(newValue == ''){
+         this.valName='';
+        this._QueryRPGBySearchPager();
+       }
+      },
+      immediate: true,
+      deep: true
+    }
   },
   filters: {
     typeName(val) {
@@ -176,6 +194,9 @@ export default {
     categoryChange(id){
       this.category=id;
       this.current=1;
+      if(this.isSearch){
+        this.valName='';
+      }
       console.log(this.firstword);
        console.log(this.category)
       this._QueryRPGBySearchPager();
@@ -195,11 +216,16 @@ export default {
     searchBtn(){
        this.current=1;
        this.firstword='';
-      this._QueryRPGBySearchPager();
-    }
+       this.isSearch=false;
+       this._QueryRPGBySearchPager();
+    },
+      modelFixed(val) {
+      this.flag = val;
+    },
   },
   components: {
-    "header-tab": Header
+    "header-tab": Header,
+     "silderbar-tab": Silderbar
   }
 };
 </script>
@@ -358,8 +384,8 @@ export default {
   height: 93px;
   background-color: #fff;
   float: left;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin-right: 12px;
+  margin-bottom: 12px;
   padding: 15px 0px 0px 8px;
 }
 .mapListRpg ul li.current {
@@ -414,5 +440,10 @@ export default {
   font-size: 12px;
   text-align: center;
   line-height: 20px;
+}
+.enterShop a{
+  display:block;
+  width:100%;
+  height:100%;
 }
 </style>

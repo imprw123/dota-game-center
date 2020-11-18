@@ -29,7 +29,7 @@
                 <i class="zen" v-bind:title="sendNameShow" v-show="item.BeGiven_userid>0" v-on:mouseenter="searchName(item.BeGiven_userid)"></i>
               </div>
               <div class="shopCar-row02-infor">
-                <h5>{{item.Goods_disName}}</h5>
+                <h5 v-bind:title="item.Goods_disName">{{item.Goods_disName}}</h5>
                 <p>
                   所属分类:
                   <em v-bind:title="item.Goods_profile">{{item.Goods_profile}}</em>
@@ -388,6 +388,10 @@ export default {
   color: #3a3f4a;
   font-family: "微软雅黑";
   margin-bottom: 5px;
+  width:100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .shopCar-row02-infor p {
   font-size: 12px;

@@ -47,11 +47,15 @@
         v-on:click="current++ && goto(current++)"
       >后一页</span>
     </div>
+    <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+      <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
+    </div>
   </div>
 </template>
 
 <script >
 import Header from "../components/header";
+import Silderbar from "../components/silderbar";
 export default {
   name: "MYMAP",
   data() {
@@ -59,7 +63,8 @@ export default {
       showItem: 16, // 最少显示5个页码
       current: 1, // 当前页码
       rpgList: [],
-      allpageLists: ""
+      allpageLists: "",
+       flag: false
     };
   },
   computed: {
@@ -112,6 +117,9 @@ export default {
     this.collectedMap();
   },
   methods: {
+     modelFixed(val) {
+      this.flag = val;
+    },
     goto: function(index) {
       this.current = index;
       this.collectedMap();
@@ -138,7 +146,8 @@ export default {
     }
   },
   components: {
-    "header-tab": Header
+    "header-tab": Header,
+    "silderbar-tab": Silderbar
   }
 };
 </script>

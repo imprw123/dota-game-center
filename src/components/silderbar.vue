@@ -151,6 +151,13 @@ export default {
       },
       immediate: true,
       deep: true
+    },
+    rpgList: {
+      handler(newValue, oldValue) {
+         this.$set(this.rpgList, newValue);
+      },
+      immediate: true,
+      deep: true
     }
   },
 

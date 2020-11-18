@@ -104,6 +104,8 @@ export default {
   color: #9d9d9d;
   font-family: "微软雅黑";
   margin: 4px 0px;
+  height:16px;
+  line-height:16px;
 }
 .action {
   width: 160px;

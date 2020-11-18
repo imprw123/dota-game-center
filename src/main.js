@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
             axios.get('Login/GetNowUser')
                 .then(function(response) {
                     if (response.data.code < 0) {
-                        // window.location.href = `http://test.shop.5211game.com/Login?returnUrl=${escape(window.location.href)}`;
+                        //window.location.href = `http://test.shop.5211game.com/Login?returnUrl=${escape(window.location.href)}`;
                         next();
                     } else {
                         window.localStorage.setItem('loginInfo', response.data.data);

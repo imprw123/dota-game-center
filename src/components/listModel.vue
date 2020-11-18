@@ -13,9 +13,11 @@
         <div class="detail-name">
           <span>{{modelobjContainer.Class_name}}</span>
           <div class="scGame" v-if="rpg == 'RPG'" @click="AddCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected == 0"></div>
-      <div class="scGame ysc" v-if="rpg == 'RPG'" @click="RemoveCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected != 0"></div>
-          <!-- <em>满100-10</em>
-          <em>满200八折</em> -->
+      <div class="ysc" v-if="rpg == 'RPG'" @click="RemoveCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected != 0"></div>
+        </div>
+        <div class="quanBox">
+          <!--  <em class="quan">满100-10</em>
+          <em class="quan">满200八折</em> -->
         </div>
         <div class="detailtypeName">
           <span v-if="modelobjContainer.Class_category">{{modelobjContainer.Class_category}}</span>
@@ -28,6 +30,7 @@
       
       <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=ID1" v-if="this.$route.name == 'DOTA'"></a>
       <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=ID6" v-if="this.$route.name == 'IMBA'"></a>
+       <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=ID6" v-if="this.$route.name == 'RPG'"></a>
     </div>
     <!-- 热门推荐 -->
     <div class="dota" v-if="modelobjContainer != null && modellistContainer.length>0">
@@ -920,8 +923,10 @@ export default {
         `${this.$ports.myMap.AddCollectedRPG}?classId=${val}`
       )
         .then(res => {
+         // console.log('李玉林2')
           console.log(res);
           this.$emit('AddCollected');
+          this.$emit('changeCollected')
         })
         .catch(error => {});
     },
@@ -933,7 +938,7 @@ export default {
         .then(res => {
           console.log(res); 
            this.$emit('AddCollected');
-        
+         this.$emit('changeCollected')
         })
         .catch(error => {});
     }
@@ -992,14 +997,18 @@ export default {
 }
 .detail-name {
  height:25px;
-  margin-bottom: 20px;
+}
+.quanBox{
+  height:20px;
+  width:100%;
+  margin:5px 0px 10px 0px;
 }
 .detail-name span {
   color: #000;
   font-size: 14px;
   float:left;
 }
-.detail-name em {
+ em.quan {
   font-size: 12px;
   background-color: #fbdcc7;
   display: inline-block;
@@ -1009,13 +1018,13 @@ export default {
   font-family: "微软雅黑";
   padding: 0px 2px;
   border-radius: 1px;
-  margin-left: 10px;
+  margin-right: 10px;
 }
 .detailtypeName {
   width: 100%;
   overflow: hidden;
   zoom: 1;
-  margin-bottom: 20px;
+  margin-bottom:15px;
 }
 .detailtypeName span {
   padding: 0 4px;
@@ -1033,16 +1042,23 @@ export default {
   margin-right: 10px;
 }
 .scGame {
-  width: 96px;
-  height: 24px;
+  width: 49px;
+  height: 15px;
   background: url(../assets/sc.png);
   float:left;
   margin-left:10px;
   position:relative;
-  top:-2px;
+  top:2px;
   cursor:pointer;
 }
 .ysc {
+  width: 49px;
+  height: 15px;
+  float:left;
+  margin-left:10px;
+  position:relative;
+  top:2px;
+  cursor:pointer;
   background: url(../assets/ysc.png);
 }
 .scGame:hover {
@@ -1050,11 +1066,11 @@ export default {
   transition: 0.2s;
 }
 .jryx {
-  width: 96px;
-  height: 24px;
+  width: 134px;
+  height: 33px;
   background: url(../assets/jryx.png);
   position: absolute;
-  top: 85px;
+  top: 72px;
   right: 20px;
   cursor: pointer;
 }
