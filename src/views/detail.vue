@@ -9,7 +9,7 @@
     <div class="productInfor">
       <div class="productInfor_left">
         <div class="borderBox">
-          <img v-lazy="detailObj.Goods_imgPath" class="imgShow" />
+          <img v-bind:src="detailObj.Goods_imgPath" class="imgShow" />
         </div>
       </div>
       <div class="productInfor_right">

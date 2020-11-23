@@ -58,7 +58,7 @@
     <div class="siderBd" v-if="Flag02">
       <input type="text" class="pageSearch" v-model="val1" placeholder="请输入你想要查找的道具名称" />
       <div class="quickSearch">
-        <router-link :to="{name:'SEARCH',query:{searchName:val1}}">进入商店</router-link>
+        <router-link :to="{name:'SEARCH',query:{searchName:val1}}">搜索商品</router-link>
       </div>
     </div>
     <!-- 搜索 -->

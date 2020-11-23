@@ -2,6 +2,7 @@ import QS from 'qs';
 import { Toast } from 'mint-ui';
 import axios from 'axios';
 import { Indicator } from 'mint-ui';
+
 // 环境的切换
 if (process.env.NODE_ENV == 'development') {
     axios.defaults.baseURL = '/api';
@@ -16,7 +17,10 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.interceptors.request.use(
         config => {
             // debugger;
-            // Indicator.open('玩命加载中...');
+            Indicator.open({ //打开loading
+                text: '加载中...',
+                spinnerType: 'fading-circle'
+            });
             return config;
         },
         error => {
@@ -27,11 +31,11 @@ axios.interceptors.response.use(
     response => {
         if (response.status === 200) {
             return Promise.resolve(response);
-            Indicator.close();
+            Indicator.close(); //关闭loading
         } else {
             return Promise.reject(response);
         }
-        Indicator.close();
+        Indicator.close(); //关闭loading
     },
     // 服务器状态码不是200的情况
     error => {

@@ -56,7 +56,7 @@
               <p>
                 价格:
                 <em>
-                  <i>{{item.Goods_price}}</i>
+                  <i>{{`￥${item.Goods_price}`}}</i>
                   <i>{{item.Unit}}</i>
                 </em>
               </p>
