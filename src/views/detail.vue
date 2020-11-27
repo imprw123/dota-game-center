@@ -45,7 +45,7 @@
             </span>
           </p>
           <p>
-            <a href="javascript:;" class="back_Gm" @click="gmFn(detailObj.Goods_id)">立即购买</a>
+            <a href="javascript:;" class="back_Gm" @click="gmFn(detailObj.Goods_id,1,0)">立即购买</a>
             <a href="javascript:;" class="sure_Gm" @click="AddWebCartGoods()">加入购物车</a>
             <a
               href="javascript:;"
@@ -142,8 +142,8 @@ export default {
         name
       );
     },
-     gmFn(val){
-       this.$refs.payChildren.payChildren(val);
+     gmFn(val,c,v){
+       this.$refs.payChildren.payChildren(val,c,v);
     }
   },
   components: {

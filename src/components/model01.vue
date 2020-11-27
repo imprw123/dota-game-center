@@ -10,13 +10,14 @@
         <span>
           <em>{{item.Unit}}</em>
         </span>
+        <i class="quan" v-if="item.IsDiscount == 1"></i>
       </div>
       <div class="name" :title="item.Goods_disName">{{item.Goods_disName}}</div>
       <div class="detail-type">{{item.Tag}}</div>
       <div class="action">
         <span class="shopcar" @click="AddWebCartGoods(item.Goods_id)">+ 购物车</span>
         <span class="send" @click="sendParentCartGods(item.Goods_id,item.Goods_imgPath,item.Goods_disName)">赠送</span>
-        <span class="ljgm" @click="gmFn(item.Goods_id)">立即购买</span>
+        <span class="ljgm" @click="gmFn(item.Goods_id,1,0)">立即购买</span>
       </div>
       <div class="xian"></div>
       <div class="mapName">
@@ -24,7 +25,7 @@
         <span>{{item.Class_name}}</span>
       </div>
     </div>
-    <send-div v-on:parentHandparent1="childrenHand1"  ref="childrenSend" ></send-div>
+    <send-div v-on:parentHandparent1="childrenHand1" v-on:parentPayFor="childrenPayFor"  ref="childrenSend" ></send-div>
     <payModel-div  ref="payChildren"></payModel-div>
   </div>
 </template>
@@ -63,8 +64,11 @@ export default {
     sendParentCartGods(val,img,name) {
       this.$refs.childrenSend.childrenPram(val,img,name);
     },
-    gmFn(val){
-       this.$refs.payChildren.payChildren(val);
+    gmFn(val,c,u){
+       this.$refs.payChildren.payChildren(val,c,u);
+    },
+    childrenPayFor(val,c,u){
+       this.$refs.payChildren.payChildren(val,c,u);
     }
   },
   components: {
@@ -87,6 +91,15 @@ export default {
     -ms-transform: translateY(-2px);
     -o-transform: translateY(-2px);
     transform: translateY(-2px);
+}
+.quan{
+  width:16px;
+  height: 16px;
+  background: url(../assets/quan.png);
+  display:inline-block;
+  margin-left: 5px;
+  position: relative;
+  top:3px;
 }
 .money b {
   font-size: 20px;

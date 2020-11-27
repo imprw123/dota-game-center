@@ -35,7 +35,6 @@ router.beforeEach((to, from, next) => {
                 .catch(function(error) {
                     console.log(error);
                 })
-
         }
     } else {
         next();

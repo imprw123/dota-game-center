@@ -30,5 +30,8 @@ export default {
         QueryUserCollectedRPG: 'Query/QueryUserCollectedRPG',
         AddCollectedRPG: 'Do/AddCollectedRPG',
         RemoveCollectedRPG: 'Do/RemoveCollectedRPG'
+    },
+    pay: {
+        PaymentRequest: 'Pay/PaymentRequest'
     }
 }

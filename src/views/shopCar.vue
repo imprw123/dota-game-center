@@ -26,7 +26,12 @@
             <div class="shopCar-row02" style="width:230px">
               <div class="imgBox-shopCar">
                 <img v-lazy="item.Goods_imgPath" />
-                <i class="zen" v-bind:title="sendNameShow" v-show="item.BeGiven_userid>0" v-on:mouseenter="searchName(item.BeGiven_userid)"></i>
+                <i
+                  class="zen"
+                  v-bind:title="sendNameShow"
+                  v-show="item.BeGiven_userid>0"
+                  v-on:mouseenter="searchName(item.BeGiven_userid)"
+                ></i>
               </div>
               <div class="shopCar-row02-infor">
                 <h5 v-bind:title="item.Goods_disName">{{item.Goods_disName}}</h5>
@@ -61,18 +66,21 @@
           选取商品总价:
           <b>{{`￥${totalMoney}`}}</b>
         </p>
-        <div class="gmBtn">立即购买</div>
+        <div class="gmNoBtn" v-show="shopCarBox.length == 0">立即购买</div>
+        <div class="gmBtn" v-show="shopCarBox.length>0" @click="gmFn()">立即购买</div>
       </div>
     </div>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
+    <payModel-div ref="payChildren"></payModel-div>
   </div>
 </template>
 
 <script >
 import Header from "../components/header";
 import Silderbar from "../components/silderbar";
+import payModel from "../components/payModel";
 import { Toast } from "mint-ui";
 import "mint-ui/lib/style.css";
 export default {
@@ -86,7 +94,7 @@ export default {
       flag: false,
       addFlag: true,
       delFlag: true,
-      sendNameShow:''
+      sendNameShow: ""
     };
   },
   mounted() {
@@ -140,7 +148,11 @@ export default {
                 Number(this.shopCarBox[j].Goods_price) *
                 Number(this.shopCarBox[j].Goods_amount);
               this.totalNumber += Number(this.shopCarBox[j].Goods_amount);
-              this.$set(this.shopCarBox[j],"goodsid",this.shopCarBox[j].Goods_id);
+              this.$set(
+                this.shopCarBox[j],
+                "goodsid",
+                this.shopCarBox[j].Goods_id
+              );
             }
           }
           this.totalMoney = this.totalMoney.toFixed(2);
@@ -175,7 +187,7 @@ export default {
           }
         });
       } else {
-       Toast({
+        Toast({
           message: "操作太频繁了……",
           iconClass: "icon",
           duration: 500
@@ -219,7 +231,9 @@ export default {
       debugger;
       this.$axios(
         "get",
-        `${this.$ports.shopCar.AddWebCartGoods}?beGivenUserId=${0}&goodsId=${goodsid}&count=${count}`
+        `${
+          this.$ports.shopCar.AddWebCartGoods
+        }?beGivenUserId=${0}&goodsId=${goodsid}&count=${count}`
       )
         .then(res => {
           console.log(res);
@@ -268,25 +282,45 @@ export default {
         })
         .catch(error => {});
     },
-    searchName(valName){
-        this.$axios(
-        "get",
-        `${
-          this.$ports.send.CheckAccount
-        }?account=${valName}`
-      )
+    searchName(valName) {
+      this.$axios("get", `${this.$ports.send.CheckAccount}?account=${valName}`)
         .then(res => {
-
-            this.sendNameShow=`赠送给${res.data.UserName}`;
+          this.sendNameShow = `赠送给${res.data.UserName}`;
         })
         .catch(error => {
           console.log(error);
         });
+    },
+    gmFn() {
+      console.log(this.shopCarBox);
+      var _data=[];
+      for (var i = 0; i < this.shopCarBox.length; i++) {
+        if (this.shopCarBox[i].goodsid) {
+          var _obj = new Object();
+          _obj.I = this.shopCarBox[i].Goods_id;
+          _obj.C = this.shopCarBox[i].Goods_amount;
+          _obj.U = this.shopCarBox[i].BeGiven_userid;
+          _data.push(_obj);
+        }
+      }
+      var jsonStr = JSON.stringify(_data);
+      console.log(jsonStr);
+      console.log(_data.length)
+      if (_data.length == 0) {
+          Toast({
+          message: "请勾选商品!",
+          iconClass: "icon",
+          duration: 500
+        });
+      } else {
+       this.$refs.payChildren.payChildrenLists(jsonStr);
+      }
     }
   },
   components: {
     "header-tab": Header,
-    "silderbar-tab": Silderbar
+    "silderbar-tab": Silderbar,
+    "payModel-div": payModel
   }
 };
 </script>
@@ -328,34 +362,31 @@ export default {
 }
 .shopCarList {
   width: 1078px;
-  height:624px;
+  height: 624px;
   border: 1px solid #cccccc;
   border-bottom: 0px;
- overflow-y: auto;
+  overflow-y: auto;
   overflow-x: hidden;
   background-color: #f0f0f0;
 }
- /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
-.shopCarList::-webkit-scrollbar  
-{  
-    width: 8px;  
-    height:8px;  
-    background-color:transparent;
-}  
-/*定义滚动条轨道 内阴影+圆角*/  
-.shopCarList::-webkit-scrollbar-track  
-{  
-    border-radius: 4px;  
-}  
-  
-/*定义滑块 内阴影+圆角*/  
-.shopCarList::-webkit-scrollbar-thumb  
-{  
-    border-radius: 4px;  
-    background-color: #053249;  
-}  
-.shopCarList::-webkit-scrollbar-thumb:hover{
-    background-color: #021722;  
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.shopCarList::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+.shopCarList::-webkit-scrollbar-track {
+  border-radius: 4px;
+}
+
+/*定义滑块 内阴影+圆角*/
+.shopCarList::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #053249;
+}
+.shopCarList::-webkit-scrollbar-thumb:hover {
+  background-color: #021722;
 }
 .shopCarList ul li {
   width: 100%;
@@ -388,7 +419,7 @@ export default {
   color: #3a3f4a;
   font-family: "微软雅黑";
   margin-bottom: 5px;
-  width:100%;
+  width: 100%;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -503,6 +534,19 @@ export default {
   font-size: 12px;
   font-family: "微软雅黑";
   border-radius: 4px;
+  cursor: pointer;
+}
+.gmNoBtn {
+  width: 92px;
+  line-height: 25px;
+  height: 25px;
+  text-align: center;
+  background-color: #b8b8b8;
+  color: #fff;
+  font-size: 12px;
+  font-family: "微软雅黑";
+  border-radius: 4px;
+  cursor: pointer;
 }
 .shopCarBt {
   position: absolute;
@@ -529,19 +573,19 @@ export default {
 .siderBoxCurrent {
   right: -300px;
 }
-.imgBox-shopCar{
-width:66px;
-height:66px;
-position:relative;
-float: left;
+.imgBox-shopCar {
+  width: 66px;
+  height: 66px;
+  position: relative;
+  float: left;
 }
-.imgBox-shopCar i{
-  width:29px;
-  height:29px;
-  position:absolute;
-  top:0px;
-  left:0px;
-  display:block;
+.imgBox-shopCar i {
+  width: 29px;
+  height: 29px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: block;
   background: url(../assets/zen.png);
 }
 </style>

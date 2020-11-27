@@ -25,7 +25,7 @@
             </b>
             <i>{{newRecomment.Unit}}</i>
           </p>
-          <a href="javascript:;" @click="gmFn(newRecomment.Goods_id)" class="qg">立即抢购</a>
+          <a href="javascript:;" @click="gmFn(newRecomment.Goods_id,1,0)" class="qg">立即抢购</a>
         </div>
       </div>
     </div>
@@ -313,8 +313,8 @@ export default {
     childrenHand() {
       this.$refs.mychild.parentHandleclick();
     },
-    gmFn(val){
-       this.$refs.payChildren.payChildren(val);
+    gmFn(val,c,v){
+       this.$refs.payChildren.payChildren(val,c,v);
     }
 
   },
