@@ -26,14 +26,26 @@
     </div>
     <div class="rpgMapList">
       <div class="rpgMapListHd">
-        <span v-for="(item,index) in typeListName" :key="index" v-bind:class="{'current':item.categoryid == category }" @click="categoryChange(item.categoryid)">{{item.name}}</span>
+        <span
+          v-for="(item,index) in typeListName"
+          :key="index"
+          v-bind:class="{'current':item.categoryid == category }"
+          @click="categoryChange(item.categoryid)"
+        >{{item.name}}</span>
       </div>
       <div class="rpgMapListCenter">
         <span>筛选</span>
-        <em v-for="(item,index) in stirngFirstWords" :key="index" @click="firstWordSearch(item)" v-bind:class="{'current':item == firstword}">{{item}}</em>
-       
+        <em
+          v-for="(item,index) in stirngFirstWords"
+          :key="index"
+          @click="firstWordSearch(item)"
+          v-bind:class="{'current':item == firstword}"
+        >{{item}}</em>
       </div>
-      <div class="mapListRpg">
+      <div class="mapListRpg" v-if="rpgList.length == 0" v-cloak>
+        <span class="noPain"></span>
+      </div>
+      <div class="mapListRpg" v-if="rpgList.length>0">
         <ul>
           <li
             v-for="(item,index) in rpgList"
@@ -74,7 +86,7 @@
         </div>
       </div>
     </div>
-     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+    <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
   </div>
@@ -86,29 +98,66 @@ import Header from "../components/header";
 import Silderbar from "../components/silderbar";
 import { YYAD } from "../api/YYAD";
 export default {
-  'name': "RPGMAP",
+  name: "RPGMAP",
   data() {
     return {
       rpgList: [],
       allpageLists: "",
       showItem: 12, // 最少显示5个页码
-      current:1 ,// 当前页码
-      category:0,
-      typeListName:[{'name':'全部','categoryid':0},{'name':'防守类','categoryid':1},{'name':'休闲类','categoryid':2},{'name':'塔防类','categoryid':3},{'name':'生存类','categoryid':4},{'name':'对抗类','categoryid':5},{'name':'ORPG','categoryid':6},{'name':'会员类','categoryid':7},{'name':'DOTA','categoryid':8}],
-      stirngFirstWords:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'],
-      firstword:'',
-      valName:'',
-       flag: false,
-       isSearch:true
+      current: 1, // 当前页码
+      category: 0,
+      typeListName: [
+        { name: "全部", categoryid: 0 },
+        { name: "防守类", categoryid: 1 },
+        { name: "休闲类", categoryid: 2 },
+        { name: "塔防类", categoryid: 3 },
+        { name: "生存类", categoryid: 4 },
+        { name: "对抗类", categoryid: 5 },
+        { name: "ORPG", categoryid: 6 },
+        { name: "会员类", categoryid: 7 },
+        { name: "DOTA", categoryid: 8 }
+      ],
+      stirngFirstWords: [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y",
+        "Z"
+      ],
+      firstword: "",
+      valName: "",
+      flag: false,
+      isSearch: true
     };
   },
-  watch:{
-     valName: {
+  watch: {
+    valName: {
       handler(newValue, oldValue) {
-       if(newValue == ''){
-         this.valName='';
-        this._QueryRPGBySearchPager();
-       }
+        if (newValue == "") {
+          this.valName = "";
+          this._QueryRPGBySearchPager();
+        }
       },
       immediate: true,
       deep: true
@@ -138,7 +187,7 @@ export default {
   computed: {
     pages: function() {
       var pag = [];
-     // debugger;
+      // debugger;
       if (this.current < this.showItem) {
         //如果当前的激活的项 小于要显示的条数
         //总页数和要显示的条数那个大就显示多少条
@@ -162,15 +211,15 @@ export default {
   },
   mounted() {
     this._QueryRPGBySearchPager();
-     this._YYAD();
+    this._YYAD();
     this._YYAD1();
     this._YYAD2();
     this._YYAD3();
     this._YYAD4();
   },
   methods: {
-      _YYAD() {
-       var _that = this;
+    _YYAD() {
+      var _that = this;
       var script = document.createElement("script");
       script.type = "text/javascript";
       try {
@@ -183,8 +232,8 @@ export default {
       }
       document.getElementById("mydiv01").appendChild(script);
     },
-     _YYAD1() {
-       var _that = this;
+    _YYAD1() {
+      var _that = this;
       var script = document.createElement("script");
       script.type = "text/javascript";
       try {
@@ -197,8 +246,8 @@ export default {
       }
       document.getElementById("mydiv02").appendChild(script);
     },
-      _YYAD2() {
-       var _that = this;
+    _YYAD2() {
+      var _that = this;
       var script = document.createElement("script");
       script.type = "text/javascript";
       try {
@@ -211,8 +260,8 @@ export default {
       }
       document.getElementById("mydiv02").appendChild(script);
     },
-      _YYAD3() {
-       var _that = this;
+    _YYAD3() {
+      var _that = this;
       var script = document.createElement("script");
       script.type = "text/javascript";
       try {
@@ -225,8 +274,8 @@ export default {
       }
       document.getElementById("mydiv02").appendChild(script);
     },
-      _YYAD4() {
-       var _that = this;
+    _YYAD4() {
+      var _that = this;
       var script = document.createElement("script");
       script.type = "text/javascript";
       try {
@@ -242,12 +291,10 @@ export default {
     _QueryRPGBySearchPager() {
       this.$axios(
         "get",
-        `${
-          this.$ports.rpgMap.QueryRPGBySearchPager
-        }?category=${this.category}&firstword=${this.firstword}&search=${this.valName}&pi=${this.current}&ps=${this.showItem}`
+        `${this.$ports.rpgMap.QueryRPGBySearchPager}?category=${this.category}&firstword=${this.firstword}&search=${this.valName}&pi=${this.current}&ps=${this.showItem}`
       )
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.rpgList = res.data.list;
           this.allpageLists = Math.ceil(res.data.count / 12);
         })
@@ -267,47 +314,50 @@ export default {
       this.current = this.allpageLists;
       this._QueryRPGBySearchPager();
     },
-    categoryChange(id){
-      this.category=id;
-      this.current=1;
-      if(this.isSearch){
-        this.valName='';
+    categoryChange(id) {
+      this.category = id;
+      this.current = 1;
+      if (this.isSearch) {
+        this.valName = "";
       }
-      console.log(this.firstword);
-       console.log(this.category)
+      //console.log(this.firstword);
+      // console.log(this.category)
       this._QueryRPGBySearchPager();
     },
-    firstWordSearch(word){
-      if(this.firstword == word){
-         this.firstword='';
-      }else{
-        this.firstword=word;
+    firstWordSearch(word) {
+      if (this.firstword == word) {
+        this.firstword = "";
+      } else {
+        this.firstword = word;
       }
-     
-       this.current=1;
-      console.log(this.firstword);
-       console.log(this.category)
+
+      this.current = 1;
+      //  console.log(this.firstword);
+      // console.log(this.category)
       this._QueryRPGBySearchPager();
     },
-    searchBtn(){
-       this.current=1;
-       this.firstword='';
-       this.isSearch=false;
-       this._QueryRPGBySearchPager();
+    searchBtn() {
+      this.current = 1;
+      this.firstword = "";
+      this.isSearch = false;
+      this._QueryRPGBySearchPager();
     },
-      modelFixed(val) {
+    modelFixed(val) {
       this.flag = val;
-    },
+    }
   },
   components: {
     "header-tab": Header,
-     "silderbar-tab": Silderbar
+    "silderbar-tab": Silderbar
   }
 };
 </script>
     
 
 <style>
+[v-cloak] {
+  display: none;
+}
 .rpgMap {
   width: 1080px;
   overflow: hidden;
@@ -323,7 +373,7 @@ export default {
   width: 542px;
   height: 310px;
   float: left;
-  overflow:hidden;
+  overflow: hidden;
 }
 .adver-rpg-right {
   width: 526px;
@@ -397,6 +447,14 @@ export default {
   overflow: hidden;
   zoom: 1;
 }
+.noPain {
+  width: 137px;
+  height: 169px;
+  display: block;
+  margin: 0 auto;
+  margin-top: 100px;
+  background: url(../assets/noPain.png);
+}
 .rpgMapList .rpgMapListHd {
   width: 1080px;
   height: 23px;
@@ -413,8 +471,8 @@ export default {
   font-size: 14px;
   cursor: pointer;
 }
-.rpgMapList .rpgMapListHd span.current{
-  color:#ff3434;
+.rpgMapList .rpgMapListHd span.current {
+  color: #ff3434;
 }
 .rpgMapListCenter {
   height: 19px;
@@ -442,7 +500,7 @@ export default {
   border-radius: 4px;
   cursor: pointer;
 }
-.rpgMapListCenter em.current{
+.rpgMapListCenter em.current {
   background-color: #ff3434;
 }
 .mapListRpg {
@@ -516,9 +574,9 @@ export default {
   text-align: center;
   line-height: 20px;
 }
-.enterShop a{
-  display:block;
-  width:100%;
-  height:100%;
+.enterShop a {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 </style>

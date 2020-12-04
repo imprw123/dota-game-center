@@ -198,7 +198,7 @@ export default {
           } else {
             this.limitList = [];
           }
-          console.log(res);
+        //  console.log(res);
         })
         .catch(error => {
           console.log(error);
@@ -251,7 +251,7 @@ export default {
         "http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
         function() {
           _that.rpgList = rpgObj.data;
-          console.log(_that.rpgList);
+          //console.log(_that.rpgList);
         }
       );
     },
@@ -261,8 +261,8 @@ export default {
       $.getScript(
         "http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
         function() {
-          console.log("121");
-          console.log(HotRank);
+         // console.log("121");
+         // console.log(HotRank);
           _that.rankList = HotRank.data.list;
         }
       );
@@ -307,7 +307,7 @@ export default {
       document.getElementById("mydiv").appendChild(script);
     },
     modelFixed(val) {
-      console.log("aa");
+     // console.log("aa");
       this.flag = val;
     },
     childrenHand() {

@@ -30,10 +30,10 @@ export default {
     encode(str) {
       // 对编码的字符串转化base64
       var base64 = btoa(str);
-      console.log(base64);
+     // console.log(base64);
       // 对字符串进行编码
       var encode = encodeURI(base64);
-      console.log(encode);
+     // console.log(encode);
       return encode;
     },
     payChildren(val, c, u) {
@@ -44,7 +44,7 @@ export default {
       this.$axios("get", `${this.$ports.pay.PaymentRequest}?data=${dataEnCode}`)
         .then(res => {
           this.payShowFlag = true;
-          console.log(res);
+          //console.log(res);
           if (res.code == 0) {
             this.url = res.data.Url;
           }
@@ -64,7 +64,7 @@ export default {
 
       this.$axios("get", `${this.$ports.pay.PaymentRequest}?data=${dataEnCode}`)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.payShowFlag = true;
           if (res.code == 0) {
             this.url = res.data.Url;
@@ -76,7 +76,7 @@ export default {
     },
     closePay() {
       this.payFlag = false;
-      this.payShowFlag=false;
+      this.payShowFlag = false;
     }
   }
 };

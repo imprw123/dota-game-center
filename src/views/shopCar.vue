@@ -236,7 +236,7 @@ export default {
         }?beGivenUserId=${0}&goodsId=${goodsid}&count=${count}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           this.addFlag = true;
           this.$refs.mychild.parentHandleclick();
         })
@@ -251,7 +251,7 @@ export default {
         `${this.$ports.shopCar.DeductWebCartGoods}?goodsId=${goodsid}`
       )
         .then(res => {
-          console.log(res);
+        //  console.log(res);
           this.delFlag = true;
           this.$refs.mychild.parentHandleclick();
         })
@@ -304,8 +304,8 @@ export default {
         }
       }
       var jsonStr = JSON.stringify(_data);
-      console.log(jsonStr);
-      console.log(_data.length)
+    //  console.log(jsonStr);
+    //  console.log(_data.length)
       if (_data.length == 0) {
           Toast({
           message: "请勾选商品!",

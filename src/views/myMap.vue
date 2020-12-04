@@ -7,7 +7,10 @@
       <span>我的搜藏</span>
     </div>
     <div class="map-title">全部搜藏</div>
-    <div class="myMapList">
+    <div class="myMapList" v-if="rpgList.length == 0" v-cloak>
+        <span class="noPain"></span>
+    </div>
+    <div class="myMapList" v-if="rpgList.length>0">
       <ul>
         <li
           v-for="(item,index) in rpgList"
@@ -138,7 +141,7 @@ export default {
         `${this.$ports.myMap.QueryUserCollectedRPG}?pi=${this.current}&ps=${this.showItem}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           this.rpgList = res.data.list;
           this.allpageLists = Math.ceil(res.data.count / 16);
         })
@@ -154,6 +157,9 @@ export default {
 
 
 <style>
+[v-cloak] {
+  display: none;
+}
 .myMap {
   width: 1080px;
   overflow: hidden;
@@ -177,6 +183,14 @@ export default {
   width: 1080px;
   overflow: hidden;
   zoom: 1;
+}
+.myMapList .noPain{
+   width:137px;
+  height: 169px;
+  display:block;
+  margin: 0 auto;
+  margin-top:100px;
+  background: url(../assets/noPain.png);
 }
 .myMapList ul li {
   width: 251px;

@@ -194,8 +194,8 @@ export default {
       this.totalMoney = 0;
       this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
         .then(res => {
-          console.log("购物车");
-          console.log(res);
+         // console.log("购物车");
+         // console.log(res);
           if (res.code == 0) {
             this.shopCarBox = res.data;
           } else {
@@ -204,7 +204,7 @@ export default {
           if (this.shopCarBox.length > 0) {
             var _that = this;
             this.shopCarBox.forEach(function(obj, index) {
-              console.log(obj.Goods_amount);
+             // console.log(obj.Goods_amount);
               _that.totalMoney +=
                 Number(obj.Goods_price) * Number(obj.Goods_amount);
               _that.totalNumber += Number(obj.Goods_amount);
@@ -228,7 +228,7 @@ export default {
         `${this.$ports.myMap.QueryUserCollectedRPG}?pi=${this.current}&ps=${this.showItem}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           this.rpgList = res.data.list;
           this.count=res.data.count;
         })

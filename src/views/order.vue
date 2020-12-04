@@ -48,7 +48,7 @@
               </div>
               <div class="row02">{{`￥${item.Order_Pay_price}`}}</div>
               <div class="row3">{{item.Order_Send_status == 0? '未发放':'发放'}}</div>
-              <div class="row4">弥殇</div>
+              <div class="row4">{{item.Receiver}}</div>
             </li>
           </ul>
         </div>
@@ -84,7 +84,7 @@ export default {
     QueryUserOrder() {
       this.$axios("get", `${this.$ports.order.QueryUserOrder}`)
         .then(res => {
-          console.log(res);
+         // console.log(res);
           res.data.forEach(item => {
             if (!this.groupLists[item.Order_id]) {
               this.$set(this.groupLists, item.Order_id, []);
@@ -93,7 +93,7 @@ export default {
               this.groupLists[item.Order_id].push(item);
             }
           });
-          console.log(this.groupLists);
+         // console.log(this.groupLists);
         })
         .catch(error => {
           console.log(error);

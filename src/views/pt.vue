@@ -66,7 +66,7 @@ export default {
       )
         .then(res => {
           this.flag01 = true;
-          console.log(res);
+        //  console.log(res);
           this.searchList = res.data.list;
 
           this.all = Math.ceil(res.data.count / 10);
@@ -103,7 +103,7 @@ export default {
         `${this.$ports.dota.QueryWebClassInfoByCid}?classid=${this.classid}`
       )
         .then(res => {
-           console.log(res);
+          // console.log(res);
           this.flag03 = true;
           if (res.code == 0) {
             this.modelObj = res.data;

@@ -15,9 +15,9 @@
       <div class="name" :title="item.Goods_disName">{{item.Goods_disName}}</div>
       <div class="detail-type">{{item.Tag}}</div>
       <div class="action">
-        <span class="shopcar" @click="AddWebCartGoods(item.Goods_id)">+ 购物车</span>
-        <span class="send" @click="sendParentCartGods(item.Goods_id,item.Goods_imgPath,item.Goods_disName)">赠送</span>
-        <span class="ljgm" @click="gmFn(item.Goods_id,1,0)">立即购买</span>
+        <span class="shopcar" v-if="item.Class_id != 583" @click="AddWebCartGoods(item.Goods_id)">+ 购物车</span>
+        <span class="send"    v-if="item.Class_id != 583" @click="sendParentCartGods(item.Goods_id,item.Goods_imgPath,item.Goods_disName)">赠送</span>
+        <span class="ljgm" v-bind:class="{'ljgmCurrent':item.Class_id == 583}" @click="gmFn(item.Goods_id,1,0)">立即购买</span>
       </div>
       <div class="xian"></div>
       <div class="mapName">
@@ -51,7 +51,7 @@ export default {
         `${this.$ports.shopCar.AddWebCartGoods}?beGivenUserId=${0}&goodsId=${goodsid}&count=${1}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           this.$emit("parentHand");
         })
         .catch(error => {
@@ -172,6 +172,9 @@ export default {
   font-family: "微软雅黑";
   float: left;
   text-align: center;
+}
+.action span.ljgmCurrent{
+  width:100%;
 }
 .action span:hover {
   background-color: #b44c4c;

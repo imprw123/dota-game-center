@@ -35,7 +35,7 @@ export default {
   },
   mounted(){
     this.currentFlag=this.$route.name;
-    console.log(this.$route.name)
+   // console.log(this.$route.name)
   }
 };
 </script>

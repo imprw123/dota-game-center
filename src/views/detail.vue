@@ -46,8 +46,10 @@
           </p>
           <p>
             <a href="javascript:;" class="back_Gm" @click="gmFn(detailObj.Goods_id,1,0)">立即购买</a>
-            <a href="javascript:;" class="sure_Gm" @click="AddWebCartGoods()">加入购物车</a>
+            <a href="javascript:;" class="sure_Gm" v-if="detailObj.Class_id != 583" v-clock @click="AddWebCartGoods()">加入购物车</a>
             <a
+            v-if="detailObj.Class_id != 583"
+            v-clock
               href="javascript:;"
               class="sure_Zs"
               @click="sendParentCartGods(detailObj.Goods_imgPath,detailObj.Goods_disName)"
@@ -85,7 +87,7 @@ export default {
     };
   },
   mounted() {
-    console.log(this.$route.query.goodsId);
+   // console.log(this.$route.query.goodsId);
     this._QueryGoodsById();
   },
   methods: {
@@ -127,7 +129,7 @@ export default {
         }&count=${this.count}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           this.addFlag = true;
           this.$refs.mychild.parentHandleclick();
         })
@@ -157,6 +159,9 @@ export default {
 
 
 <style>
+[v-clock]{
+  display: none !important;
+}
 .detail {
   width: 1080px;
   overflow: hidden;

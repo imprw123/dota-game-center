@@ -89,11 +89,10 @@ export default {
         "get",
         `${this.$ports.home.QueryWebGoodsByFlagTopN}?classid=${
           this.classid
-        }&flag=${256}&topN=${5}`
+        }&flag=${512}&topN=${5}`
       )
         .then(res => {
           //console.log(res);
-   
           this.flag02 = true;
           if (res && res.code == 0) {
             this.dotaList = res.data.list;

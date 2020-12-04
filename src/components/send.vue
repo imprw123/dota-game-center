@@ -156,7 +156,7 @@ export default {
       this.goodsid = val;
       this.imgPath = img;
       this.nameShow = name;
-      console.log(val);
+     // console.log(val);
     },
     closeModel() {
       this.isShowSendFlag = false;
@@ -165,7 +165,7 @@ export default {
     Queryfriends() {
       this.$axios("get", `${this.$ports.send.Queryfriends}`)
         .then(res => {
-          console.log(res);
+          //console.log(res);
           if (res.code == 0) {
             this.friendslist = res.data.friendsList;
             this.hasFriend = true;
@@ -212,7 +212,7 @@ export default {
         `${this.$ports.send.CheckAccount}?account=${this.valName}`
       )
         .then(res => {
-          console.log(res);
+        //  console.log(res);
           if (res.code == 0) {
             this.AddWebCartGoods(res.data.UserId);
           } else if (res.code < 0) {
@@ -230,7 +230,7 @@ export default {
         `${this.$ports.send.CheckAccount}?account=${this.valName2}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           if (res.code == 0) {
             this.$emit("parentPayFor", this.goodsid, 1, res.data.UserId);
           } else if (res.code < 0) {
@@ -248,7 +248,7 @@ export default {
         `${this.$ports.send.CheckAccount}?account=${this.valName2}`
       )
         .then(res => {
-          console.log(res);
+          //console.log(res);
           if (res.code == 0) {
             this.AddWebCartGoods(res.data.UserId);
           } else if (res.code < 0) {
@@ -269,7 +269,7 @@ export default {
         }?beGivenUserId=${userid}&goodsId=${this.goodsid}&count=${1}`
       )
         .then(res => {
-          console.log(res);
+        //  console.log(res);
           this.$emit("parentHandparent1");
           this.isShowSendFlag = false;
           this.valName = "--点击选择好友--";

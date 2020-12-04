@@ -1,0 +1,553 @@
+
+{
+  "header": {
+    "reportVersion": 1,
+    "event": "Allocation failed - JavaScript heap out of memory",
+    "trigger": "FatalError",
+    "filename": "report.20201204.141433.33176.0.001.json",
+    "dumpEventTime": "2020-12-04T14:14:33Z",
+    "dumpEventTimeStamp": "1607062473920",
+    "processId": 33176,
+    "cwd": "G:\\dotaGameCenter\\dota-game-center",
+    "commandLine": [
+      "node",
+      "G:\\dotaGameCenter\\dota-game-center\\node_modules\\.bin\\\\..\\@vue\\cli-service\\bin\\vue-cli-service.js",
+      "serve"
+    ],
+    "nodejsVersion": "v12.9.1",
+    "wordSize": 64,
+    "arch": "x64",
+    "platform": "win32",
+    "componentVersions": {
+      "node": "12.9.1",
+      "v8": "7.6.303.29-node.15",
+      "uv": "1.31.0",
+      "zlib": "1.2.11",
+      "brotli": "1.0.7",
+      "ares": "1.15.0",
+      "modules": "72",
+      "nghttp2": "1.39.2",
+      "napi": "4",
+      "llhttp": "1.1.4",
+      "http_parser": "2.8.0",
+      "openssl": "1.1.1c",
+      "cldr": "35.1",
+      "icu": "64.2",
+      "tz": "2019a",
+      "unicode": "12.1"
+    },
+    "release": {
+      "name": "node",
+      "headersUrl": "https://nodejs.org/download/release/v12.9.1/node-v12.9.1-headers.tar.gz",
+      "sourceUrl": "https://nodejs.org/download/release/v12.9.1/node-v12.9.1.tar.gz",
+      "libUrl": "https://nodejs.org/download/release/v12.9.1/win-x64/node.lib"
+    },
+    "osName": "Windows_NT",
+    "osRelease": "6.1.7601",
+    "osVersion": "Windows 7 Ultimate Service Pack 1",
+    "osMachine": "x86_64",
+    "cpus": [
+      {
+        "model": "Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz",
+        "speed": 3192,
+        "user": 944702540,
+        "nice": 0,
+        "sys": 334036673,
+        "idle": 2738235788,
+        "irq": 18089345
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz",
+        "speed": 3192,
+        "user": 898550939,
+        "nice": 0,
+        "sys": 289473380,
+        "idle": 2828950307,
+        "irq": 5712756
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz",
+        "speed": 3192,
+        "user": 787717985,
+        "nice": 0,
+        "sys": 275483429,
+        "idle": 2953773088,
+        "irq": 5206860
+      },
+      {
+        "model": "Intel(R) Core(TM) i5-3470 CPU @ 3.20GHz",
+        "speed": 3192,
+        "user": 524965610,
+        "nice": 0,
+        "sys": 227356075,
+        "idle": 3264652692,
+        "irq": 4454514
+      }
+    ],
+    "networkInterfaces": [
+      {
+        "name": "本地连接",
+        "internal": false,
+        "mac": "40:16:7e:79:d8:27",
+        "address": "fe80::11b4:3116:d4bb:a0c",
+        "netmask": "ffff:ffff:ffff:ffff::",
+        "family": "IPv6",
+        "scopeid": 11
+      },
+      {
+        "name": "本地连接",
+        "internal": false,
+        "mac": "40:16:7e:79:d8:27",
+        "address": "10.1.27.113",
+        "netmask": "255.255.254.0",
+        "family": "IPv4"
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "::1",
+        "netmask": "ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff",
+        "family": "IPv6",
+        "scopeid": 0
+      },
+      {
+        "name": "Loopback Pseudo-Interface 1",
+        "internal": true,
+        "mac": "00:00:00:00:00:00",
+        "address": "127.0.0.1",
+        "netmask": "255.0.0.0",
+        "family": "IPv4"
+      }
+    ],
+    "host": "YY-LIYULIN"
+  },
+  "javascriptStack": {
+    "message": "No stack.",
+    "stack": [
+      "Unavailable."
+    ]
+  },
+  "nativeStack": [
+    {
+      "pc": "0x000000013f0e6ed9",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+10873"
+    },
+    {
+      "pc": "0x000000013f0eb26c",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+28172"
+    },
+    {
+      "pc": "0x000000013f0ea218",
+      "symbol": "std::basic_ostream<char,std::char_traits<char> >::operator<<+23992"
+    },
+    {
+      "pc": "0x000000013f1d5e6b",
+      "symbol": "v8::base::CPU::has_sse+37691"
+    },
+    {
+      "pc": "0x000000013f9c89ae",
+      "symbol": "v8::Isolate::ReportExternalAllocationLimitReached+94"
+    },
+    {
+      "pc": "0x000000013f9b0951",
+      "symbol": "v8::SharedArrayBuffer::Externalize+833"
+    },
+    {
+      "pc": "0x000000013f87ec8c",
+      "symbol": "v8::internal::Heap::EphemeronKeyWriteBarrierFromCode+1436"
+    },
+    {
+      "pc": "0x000000013f886841",
+      "symbol": "v8::internal::Heap::PageFlagsAreConsistent+3761"
+    },
+    {
+      "pc": "0x000000013f87c263",
+      "symbol": "v8::internal::Heap::CollectGarbage+1235"
+    },
+    {
+      "pc": "0x000000013f87ab04",
+      "symbol": "v8::internal::Heap::AddRetainedMap+2356"
+    },
+    {
+      "pc": "0x000000013f89a315",
+      "symbol": "v8::internal::Factory::NewFillerObject+53"
+    },
+    {
+      "pc": "0x000000013f608fad",
+      "symbol": "v8::internal::interpreter::JumpTableTargetOffsets::iterator::operator=+3981"
+    },
+    {
+      "pc": "0x000000013fde224d",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+575565"
+    },
+    {
+      "pc": "0x000000013fd5bbeb",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+25067"
+    },
+    {
+      "pc": "0x000000013fe431cd",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+972749"
+    },
+    {
+      "pc": "0x000000013fd5fcfc",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+41724"
+    },
+    {
+      "pc": "0x000000013fd5fcfc",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+41724"
+    },
+    {
+      "pc": "0x000000013fd5fcfc",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+41724"
+    },
+    {
+      "pc": "0x000000013fd5fcfc",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+41724"
+    },
+    {
+      "pc": "0x000000013fd5fcfc",
+      "symbol": "v8::internal::SetupIsolateDelegate::SetupHeap+41724"
+    },
+    {
+      "pc": "0x000000ad2a4e66df",
+      "symbol": ""
+    }
+  ],
+  "javascriptHeap": {
+    "totalMemory": 145354752,
+    "totalCommittedMemory": 145354752,
+    "usedMemory": 136212552,
+    "availableMemory": 2061798344,
+    "memoryLimit": 2197815296,
+    "heapSpaces": {
+      "read_only_space": {
+        "memorySize": 262144,
+        "committedMemory": 262144,
+        "capacity": 261832,
+        "used": 31432,
+        "available": 230400
+      },
+      "new_space": {
+        "memorySize": 1048576,
+        "committedMemory": 1048576,
+        "capacity": 1047328,
+        "used": 1047304,
+        "available": 24
+      },
+      "old_space": {
+        "memorySize": 95006720,
+        "committedMemory": 95006720,
+        "capacity": 94618336,
+        "used": 88843464,
+        "available": 5774872
+      },
+      "code_space": {
+        "memorySize": 3571712,
+        "committedMemory": 3571712,
+        "capacity": 3337216,
+        "used": 2045376,
+        "available": 1291840
+      },
+      "map_space": {
+        "memorySize": 4198400,
+        "committedMemory": 4198400,
+        "capacity": 4191256,
+        "used": 3197920,
+        "available": 993336
+      },
+      "large_object_space": {
+        "memorySize": 40062976,
+        "committedMemory": 40062976,
+        "capacity": 39946736,
+        "used": 39946736,
+        "available": 0
+      },
+      "code_large_object_space": {
+        "memorySize": 1204224,
+        "committedMemory": 1204224,
+        "capacity": 1100320,
+        "used": 1100320,
+        "available": 0
+      },
+      "new_large_object_space": {
+        "memorySize": 0,
+        "committedMemory": 0,
+        "capacity": 1047328,
+        "used": 0,
+        "available": 1047328
+      }
+    }
+  },
+  "resourceUsage": {
+    "userCpuSeconds": 25.849,
+    "kernelCpuSeconds": 6.661,
+    "cpuConsumptionPercent": 11.6107,
+    "maxRss": 265818112,
+    "pageFaults": {
+      "IORequired": 218190,
+      "IONotRequired": 0
+    },
+    "fsActivity": {
+      "reads": 4321,
+      "writes": 57
+    }
+  },
+  "libuv": [
+  ],
+  "environmentVariables": {
+    "": "G:=G:\\dotaGameCenter\\dota-game-center",
+    "ALLUSERSPROFILE": "C:\\ProgramData",
+    "APPDATA": "C:\\Users\\liyulin.7FGAME\\AppData\\Roaming",
+    "BABEL_ENV": "development",
+    "CommonProgramFiles": "C:\\Program Files\\Common Files",
+    "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
+    "CommonProgramW6432": "C:\\Program Files\\Common Files",
+    "COMPUTERNAME": "YY-LIYULIN",
+    "ComSpec": "C:\\Windows\\system32\\cmd.exe",
+    "FP_NO_HOST_CHECK": "NO",
+    "HOME": "C:\\Users\\liyulin.7FGAME",
+    "HOMEDRIVE": "C:",
+    "HOMEPATH": "\\Users\\liyulin.7FGAME",
+    "INIT_CWD": "G:\\dotaGameCenter\\dota-game-center",
+    "LOCALAPPDATA": "C:\\Users\\liyulin.7FGAME\\AppData\\Local",
+    "LOGONSERVER": "\\\\JDC1",
+    "NODE": "C:\\Program Files\\nodejs\\node.exe",
+    "NODE_ENV": "development",
+    "npm_config_access": "",
+    "npm_config_allow_same_version": "",
+    "npm_config_also": "",
+    "npm_config_always_auth": "",
+    "npm_config_argv": "{\"remain\":[],\"cooked\":[\"--userconfig\",\"C:\\\\Users\\\\liyulin.7FGAME\\\\.cnpmrc\",\"--disturl\",\"https://npm.taobao.org/mirrors/node\",\"--registry\",\"https://r.npm.taobao.org\",\"run\",\"serve\"],\"original\":[\"--userconfig=C:\\\\Users\\\\liyulin.7FGAME\\\\.cnpmrc\",\"--disturl=https://npm.taobao.org/mirrors/node\",\"--registry=https://r.npm.taobao.org\",\"run\",\"serve\"]}",
+    "npm_config_audit": "true",
+    "npm_config_audit_level": "low",
+    "npm_config_auth_type": "legacy",
+    "npm_config_before": "",
+    "npm_config_bin_links": "true",
+    "npm_config_browser": "",
+    "npm_config_ca": "",
+    "npm_config_cache": "C:\\Users\\liyulin.7FGAME\\AppData\\Roaming\\npm-cache",
+    "npm_config_cache_lock_retries": "10",
+    "npm_config_cache_lock_stale": "60000",
+    "npm_config_cache_lock_wait": "10000",
+    "npm_config_cache_max": "Infinity",
+    "npm_config_cache_min": "10",
+    "npm_config_cafile": "",
+    "npm_config_cert": "",
+    "npm_config_cidr": "",
+    "npm_config_color": "true",
+    "npm_config_commit_hooks": "true",
+    "npm_config_depth": "Infinity",
+    "npm_config_description": "true",
+    "npm_config_dev": "",
+    "npm_config_disturl": "https://npm.taobao.org/mirrors/node",
+    "npm_config_dry_run": "",
+    "npm_config_editor": "notepad.exe",
+    "npm_config_engine_strict": "",
+    "npm_config_fetch_retries": "2",
+    "npm_config_fetch_retry_factor": "10",
+    "npm_config_fetch_retry_maxtimeout": "60000",
+    "npm_config_fetch_retry_mintimeout": "10000",
+    "npm_config_force": "",
+    "npm_config_format_package_lock": "true",
+    "npm_config_fund": "true",
+    "npm_config_git": "git",
+    "npm_config_git_tag_version": "true",
+    "npm_config_global": "",
+    "npm_config_globalconfig": "C:\\Program Files\\nodejs\\etc\\npmrc",
+    "npm_config_globalignorefile": "C:\\Program Files\\nodejs\\etc\\npmignore",
+    "npm_config_global_style": "",
+    "npm_config_group": "",
+    "npm_config_ham_it_up": "",
+    "npm_config_heading": "npm",
+    "npm_config_https_proxy": "",
+    "npm_config_if_present": "",
+    "npm_config_ignore_prepublish": "",
+    "npm_config_ignore_scripts": "",
+    "npm_config_init_author_email": "",
+    "npm_config_init_author_name": "",
+    "npm_config_init_author_url": "",
+    "npm_config_init_license": "ISC",
+    "npm_config_init_module": "C:\\Users\\liyulin.7FGAME\\.npm-init.js",
+    "npm_config_init_version": "1.0.0",
+    "npm_config_json": "",
+    "npm_config_key": "",
+    "npm_config_legacy_bundling": "",
+    "npm_config_link": "",
+    "npm_config_local_address": "",
+    "npm_config_loglevel": "notice",
+    "npm_config_logs_max": "10",
+    "npm_config_long": "",
+    "npm_config_maxsockets": "50",
+    "npm_config_message": "%s",
+    "npm_config_metrics_registry": "https://r.npm.taobao.org/",
+    "npm_config_node_gyp": "C:\\Users\\liyulin.7FGAME\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\node_modules\\node-gyp\\bin\\node-gyp.js",
+    "npm_config_node_options": "",
+    "npm_config_node_version": "12.9.1",
+    "npm_config_noproxy": "",
+    "npm_config_offline": "",
+    "npm_config_onload_script": "",
+    "npm_config_only": "",
+    "npm_config_optional": "true",
+    "npm_config_otp": "",
+    "npm_config_package_lock": "true",
+    "npm_config_package_lock_only": "",
+    "npm_config_parseable": "",
+    "npm_config_prefer_offline": "",
+    "npm_config_prefer_online": "",
+    "npm_config_prefix": "C:\\Program Files\\nodejs",
+    "npm_config_preid": "",
+    "npm_config_production": "",
+    "npm_config_progress": "true",
+    "npm_config_proxy": "",
+    "npm_config_read_only": "",
+    "npm_config_rebuild_bundle": "true",
+    "npm_config_registry": "https://r.npm.taobao.org/",
+    "npm_config_rollback": "true",
+    "npm_config_save": "true",
+    "npm_config_save_bundle": "",
+    "npm_config_save_dev": "",
+    "npm_config_save_exact": "",
+    "npm_config_save_optional": "",
+    "npm_config_save_prefix": "^",
+    "npm_config_save_prod": "",
+    "npm_config_scope": "",
+    "npm_config_scripts_prepend_node_path": "warn-only",
+    "npm_config_script_shell": "",
+    "npm_config_searchexclude": "",
+    "npm_config_searchlimit": "20",
+    "npm_config_searchopts": "",
+    "npm_config_searchstaleness": "900",
+    "npm_config_send_metrics": "",
+    "npm_config_shell": "C:\\Windows\\system32\\cmd.exe",
+    "npm_config_shrinkwrap": "true",
+    "npm_config_sign_git_commit": "",
+    "npm_config_sign_git_tag": "",
+    "npm_config_sso_poll_frequency": "500",
+    "npm_config_sso_type": "oauth",
+    "npm_config_strict_ssl": "true",
+    "npm_config_tag": "latest",
+    "npm_config_tag_version_prefix": "v",
+    "npm_config_timing": "",
+    "npm_config_tmp": "C:\\Users\\LIYULI~1.7FG\\AppData\\Local\\Temp",
+    "npm_config_umask": "0000",
+    "npm_config_unicode": "",
+    "npm_config_unsafe_perm": "true",
+    "npm_config_update_notifier": "true",
+    "npm_config_usage": "",
+    "npm_config_user": "",
+    "npm_config_userconfig": "C:\\Users\\liyulin.7FGAME\\.cnpmrc",
+    "npm_config_user_agent": "npm/6.13.0 node/v12.9.1 win32 x64",
+    "npm_config_version": "",
+    "npm_config_versions": "",
+    "npm_config_viewer": "browser",
+    "npm_execpath": "C:\\Users\\liyulin.7FGAME\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\bin\\npm-cli.js",
+    "npm_lifecycle_event": "serve",
+    "npm_lifecycle_script": "vue-cli-service serve",
+    "npm_node_execpath": "C:\\Program Files\\nodejs\\node.exe",
+    "npm_package_dependencies_core_js": "^3.6.5",
+    "npm_package_dependencies_jquery": "^3.5.1",
+    "npm_package_dependencies_vue": "^2.6.11",
+    "npm_package_dependencies_vuex": "^3.4.0",
+    "npm_package_dependencies_vue_router": "^3.2.0",
+    "npm_package_description": "## Project setup ``` npm install ```",
+    "npm_package_devDependencies_sass": "^1.26.5",
+    "npm_package_devDependencies_sass_loader": "^8.0.2",
+    "npm_package_devDependencies_vue_lazyload": "^1.3.3",
+    "npm_package_devDependencies_vue_template_compiler": "^2.6.11",
+    "npm_package_devDependencies__vue_cli_plugin_babel": "~4.5.0",
+    "npm_package_devDependencies__vue_cli_plugin_router": "~4.5.0",
+    "npm_package_devDependencies__vue_cli_plugin_vuex": "~4.5.0",
+    "npm_package_devDependencies__vue_cli_service": "~4.5.0",
+    "npm_package_gitHead": "f208edda56206b4f86f20f69b18455cdab572f01",
+    "npm_package_name": "dota-game-center",
+    "npm_package_private": "true",
+    "npm_package_readmeFilename": "README.md",
+    "npm_package_scripts_build": "vue-cli-service build",
+    "npm_package_scripts_serve": "vue-cli-service serve",
+    "npm_package_version": "0.1.0",
+    "NUMBER_OF_PROCESSORS": "4",
+    "OS": "Windows_NT",
+    "Path": "C:\\Users\\liyulin.7FGAME\\AppData\\Roaming\\npm\\node_modules\\cnpm\\node_modules\\npm\\node_modules\\npm-lifecycle\\node-gyp-bin;G:\\dotaGameCenter\\dota-game-center\\node_modules\\.bin;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\Users\\liyulin.7FGAME\\.dnx\\bin;C:\\Program Files\\Microsoft DNX\\Dnvm\\;C:\\Program Files\\Microsoft SQL Server\\120\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\130\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\110\\DTS\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\110\\Tools\\Binn\\;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\Tools\\Binn\\ManagementStudio\\;C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\PrivateAssemblies\\;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\DTS\\Binn\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\TortoiseSVN\\bin;;C:\\Users\\liyulin.7FGAME\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\liyulin.7FGAME\\AppData\\Roaming\\npm",
+    "PATHEXT": ".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JSE;.WSF;.WSH;.MSC",
+    "PROCESSOR_ARCHITECTURE": "AMD64",
+    "PROCESSOR_IDENTIFIER": "Intel64 Family 6 Model 58 Stepping 9, GenuineIntel",
+    "PROCESSOR_LEVEL": "6",
+    "PROCESSOR_REVISION": "3a09",
+    "ProgramData": "C:\\ProgramData",
+    "ProgramFiles": "C:\\Program Files",
+    "ProgramFiles(x86)": "C:\\Program Files (x86)",
+    "ProgramW6432": "C:\\Program Files",
+    "PROMPT": "$P$G",
+    "PSModulePath": "C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules\\;C:\\Program Files (x86)\\Microsoft SQL Server\\110\\Tools\\PowerShell\\Modules\\",
+    "PUBLIC": "C:\\Users\\Public",
+    "SESSIONNAME": "Console",
+    "SystemDrive": "C:",
+    "SystemRoot": "C:\\Windows",
+    "TEMP": "C:\\Users\\LIYULI~1.7FG\\AppData\\Local\\Temp",
+    "TMP": "C:\\Users\\LIYULI~1.7FG\\AppData\\Local\\Temp",
+    "USERDNSDOMAIN": "7FGAME.NET",
+    "USERDOMAIN": "7FGAME",
+    "USERNAME": "liyulin",
+    "USERPROFILE": "C:\\Users\\liyulin.7FGAME",
+    "VS140COMNTOOLS": "D:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\Common7\\Tools\\",
+    "VUE_CLI_ENTRY_FILES": "[\"G:\\\\dotaGameCenter\\\\dota-game-center\\\\src\\\\main.js\"]",
+    "VUE_CLI_TRANSPILE_BABEL_RUNTIME": "true",
+    "WEBPACK_DEV_SERVER": "true",
+    "windir": "C:\\Windows",
+    "windows_tracing_flags": "3",
+    "windows_tracing_logfile": "C:\\BVTBin\\Tests\\installpackage\\csilogfile.log",
+    "WXDRIVE_START_ARGS": "--wxdrive-setting=0 --disable-gpu --disable-software-rasterizer --enable-features=NetworkServiceInProcess"
+  },
+  "sharedObjects": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "C:\\Windows\\SYSTEM32\\ntdll.dll",
+    "C:\\Windows\\system32\\kernel32.dll",
+    "C:\\Windows\\system32\\KERNELBASE.dll",
+    "C:\\Windows\\system32\\dbghelp.dll",
+    "C:\\Windows\\system32\\msvcrt.dll",
+    "C:\\Windows\\system32\\WS2_32.dll",
+    "C:\\Windows\\system32\\RPCRT4.dll",
+    "C:\\Windows\\system32\\NSI.dll",
+    "C:\\Windows\\system32\\ADVAPI32.dll",
+    "C:\\Windows\\SYSTEM32\\sechost.dll",
+    "C:\\Windows\\system32\\USER32.dll",
+    "C:\\Windows\\system32\\GDI32.dll",
+    "C:\\Windows\\system32\\LPK.dll",
+    "C:\\Windows\\system32\\USP10.dll",
+    "C:\\Windows\\system32\\IPHLPAPI.DLL",
+    "C:\\Windows\\system32\\WINNSI.DLL",
+    "C:\\Windows\\system32\\PSAPI.DLL",
+    "C:\\Windows\\system32\\USERENV.dll",
+    "C:\\Windows\\system32\\profapi.dll",
+    "C:\\Windows\\system32\\CRYPT32.dll",
+    "C:\\Windows\\system32\\MSASN1.dll",
+    "C:\\Windows\\system32\\bcrypt.dll",
+    "C:\\Windows\\system32\\WINMM.dll",
+    "C:\\Windows\\system32\\IMM32.DLL",
+    "C:\\Windows\\system32\\MSCTF.dll",
+    "C:\\Windows\\system32\\api-ms-win-core-synch-l1-2-0.DLL",
+    "C:\\Windows\\system32\\powrprof.dll",
+    "C:\\Windows\\system32\\SETUPAPI.dll",
+    "C:\\Windows\\system32\\CFGMGR32.dll",
+    "C:\\Windows\\system32\\OLEAUT32.dll",
+    "C:\\Windows\\system32\\ole32.dll",
+    "C:\\Windows\\system32\\DEVOBJ.dll",
+    "C:\\Windows\\system32\\uxtheme.dll",
+    "C:\\Windows\\system32\\mswsock.dll",
+    "C:\\Windows\\System32\\wshtcpip.dll",
+    "C:\\Windows\\System32\\wship6.dll",
+    "C:\\Windows\\system32\\bcryptprimitives.dll",
+    "C:\\Windows\\system32\\NLAapi.dll",
+    "C:\\Windows\\system32\\napinsp.dll",
+    "C:\\Windows\\system32\\pnrpnsp.dll",
+    "C:\\Windows\\system32\\DNSAPI.dll",
+    "C:\\Windows\\System32\\winrnr.dll",
+    "C:\\Windows\\system32\\dhcpcsvc6.DLL",
+    "C:\\Windows\\system32\\dhcpcsvc.DLL",
+    "C:\\Windows\\system32\\cryptbase.dll",
+    "C:\\Windows\\system32\\rasadhlp.dll",
+    "C:\\Windows\\System32\\fwpuclnt.dll",
+    "C:\\Windows\\system32\\apphelp.dll"
+  ]
+}

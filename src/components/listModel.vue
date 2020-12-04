@@ -35,7 +35,7 @@
     <!-- 热门推荐 -->
     <div class="dota" v-if="modelobjContainer != null && modellistContainer.length>0">
       <h1>
-        <em v-text="modelobjContainer != null && !modelobjContainer.IsRPG  == true?'热门推荐':'新手推荐'"></em>
+        <em v-text="modelobjContainer != null && modelobjContainer.IsRPG  == true? '新手推荐':'热门推荐'"></em>
       </h1>
       <ul class="model01">
         <li
@@ -500,7 +500,10 @@
           </span>
         </div>
       </div>
-      <div class="listContent">
+      <div class="listContent" v-if="searchlistContainer.length == 0" v-cloak>
+          <span class="noPain"></span>
+      </div>
+      <div class="listContent" v-if="searchlistContainer.length>0">
         <ul class="model01">
           <li
             v-for="(item,index) in searchlistContainer"
@@ -607,7 +610,7 @@ export default {
     },
     pageIndex: {
       handler(newValue, oldValue) {
-        console.log(newValue);
+      //  console.log(newValue);
         this.current = newValue;
         var pag = [];
         if (this.current < this.showItem) {
@@ -635,7 +638,7 @@ export default {
     },
     searchlist: {
       handler(newValue, oldValue) {
-        console.log(newValue);
+      //  console.log(newValue);
         this.searchlistContainer = newValue;
       },
       immediate: true,
@@ -646,8 +649,8 @@ export default {
     },
     modelist01: {
       handler(newValue, oldValue) {
-         console.log('李玉林');
-        console.log(newValue);
+        // console.log('李玉林');
+       // console.log(newValue);
         this.modellistContainer = newValue;
       },
       immediate: true,
@@ -655,7 +658,7 @@ export default {
     },
     modelobj: {
       handler(newValue, oldValue) {
-        console.log(newValue);
+       // console.log(newValue);
         this.modelobjContainer = newValue;
       },
       immediate: true,
@@ -951,6 +954,9 @@ export default {
 
 
 <style>
+[v-cloak] {
+  display: none;
+}
 .listModelContainer {
   width: 1080px;
   min-height: 960px;
@@ -1216,6 +1222,14 @@ export default {
   width: 1080px;
   overflow: hidden;
   zoom: 1;
+}
+.listContent .noPain{
+  width:137px;
+  height: 169px;
+  display:block;
+  margin: 0 auto;
+  margin-top:100px;
+  background: url(../assets/noPain.png);
 }
 .listContent ul.model01 {
   overflow: hidden;
