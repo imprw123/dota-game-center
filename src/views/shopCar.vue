@@ -136,7 +136,7 @@ export default {
       this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
         .then(res => {
           //console.log("购物车");
-          console.log(res);
+         // console.log(res);
           if (res.code == 0) {
             this.shopCarBox = res.data;
           } else {
@@ -276,7 +276,7 @@ export default {
         `${this.$ports.shopCar.RemoveWebCartGoods}?goodsId=${goodsid}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           this._QueryUserWebCartGoods();
           this.$refs.mychild.parentHandleclick();
         })
@@ -292,7 +292,7 @@ export default {
         });
     },
     gmFn() {
-      console.log(this.shopCarBox);
+     // console.log(this.shopCarBox);
       var _data=[];
       for (var i = 0; i < this.shopCarBox.length; i++) {
         if (this.shopCarBox[i].goodsid) {

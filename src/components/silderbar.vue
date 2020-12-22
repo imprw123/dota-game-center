@@ -3,7 +3,11 @@
     <div class="silderBtn">
       <ul>
         <li class="silder01" v-show="Flag01 || Flag02 || Flag03" v-on:click="closeFixed"></li>
-        <li class="silder02" v-on:click="openFixed('购物车')"  v-bind:class="{'silder02Current':Flag01}" >
+        <li
+          class="silder02"
+          v-on:click="openFixed('购物车')"
+          v-bind:class="{'silder02Current':Flag01}"
+        >
           <i class="ci-count">{{totalNumber}}</i>
         </li>
         <li class="silder03" v-on:click="openFixed('搜索')" v-bind:class="{'silder03Current':Flag02}"></li>
@@ -12,12 +16,27 @@
     </div>
     <div class="siderHd">
       <span v-if="Flag01">购物车</span>
-       <span v-if="Flag02">搜索</span>
-       <span v-if="Flag03">收藏</span>
-      <div class="back" v-on:click="closeFixed"></div>
+      <span v-if="Flag02">搜索</span>
+      <span v-if="Flag03">收藏</span>
     </div>
+    <div class="sider-xian"></div>
     <!-- 购物车 -->
     <div class="siderBd" v-if="Flag01">
+      <div class="totalBox">
+        <div class="totalBox-left">
+          <p>
+            <em>{{totalNumber}}</em>
+            件商品
+          </p>
+          <p style="line-height:22px;">
+            共计
+            <b>{{`￥${totalMoney}`}}</b>
+          </p>
+        </div>
+        <div class="totalBox-right">
+          <router-link :to="'shopCar'">去购物车结算</router-link>
+        </div>
+      </div>
       <div class="silder-shop" v-if="shopCarBox.length > 0">
         <ul>
           <li v-for="(item,index) in shopCarBox" :key="index">
@@ -36,21 +55,6 @@
           </li>
         </ul>
       </div>
-      <div class="totalBox">
-        <div class="totalBox-left">
-          <p>
-            <em>{{totalNumber}}</em>
-            件商品
-          </p>
-          <p>
-            共计
-            <b>{{`￥${totalMoney}`}}</b>
-          </p>
-        </div>
-        <div class="totalBox-right">
-          <router-link :to="'shopCar'">去购物车结算</router-link>
-        </div>
-      </div>
     </div>
     <!-- 购物车 -->
 
@@ -65,29 +69,6 @@
 
     <!-- 搜藏 -->
     <div class="siderBd" v-if="Flag03">
-      <div class="sider-rpg">
-        <ul>
-           <li
-          v-for="(item,index) in rpgList"
-          v-bind:class="{'current':(index+1)%4 == 0}"
-          :key="index"
-        >
-          <img
-            v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`"
-            class="imgShow"
-          />
-          <div class="rpg-left">
-            <p>{{item.Class_name}}</p>
-            <div class="typeName">
-              <span class="lf">{{item.Category | typeName}}</span>
-            </div>
-            <div class="enterShop">
-              <router-link :to="{'name':'RPG',query:{rpgId:item.Class_id}}">进入商店</router-link>
-            </div>
-          </div>
-        </li>
-        </ul>
-      </div>
       <div class="totalBox">
         <div class="totalBox-left">
           <p style="height:47px;line-height:47px;">
@@ -98,6 +79,29 @@
         <div class="totalBox-right">
           <router-link :to="'myMap'">查看全部搜藏</router-link>
         </div>
+      </div>
+      <div class="sider-rpg">
+        <ul>
+          <li
+            v-for="(item,index) in rpgList"
+            v-bind:class="{'current':(index+1)%4 == 0}"
+            :key="index"
+          >
+            <img
+              v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`"
+              class="imgShow"
+            />
+            <div class="rpg-left">
+              <p>{{item.Class_name}}</p>
+              <div class="typeName">
+                <span class="lf">{{item.Category | typeName}}</span>
+              </div>
+              <div class="enterShop">
+                <router-link :to="{'name':'RPG',query:{rpgId:item.Class_id}}">进入商店</router-link>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
     <!-- 搜藏 -->
@@ -117,13 +121,13 @@ export default {
       shopCarBox: [],
       totalNumber: 0,
       totalMoney: "￥0.00",
-      current:1,
-      showItem:10,
-      rpgList:[],
-      count:0
+      current: 1,
+      showItem: 10,
+      rpgList: [],
+      count: 0
     };
   },
-   filters: {
+  filters: {
     typeName(val) {
       if (val == 1) {
         return "防守类";
@@ -154,7 +158,7 @@ export default {
     },
     rpgList: {
       handler(newValue, oldValue) {
-         this.$set(this.rpgList, newValue);
+        this.$set(this.rpgList, newValue);
       },
       immediate: true,
       deep: true
@@ -190,12 +194,12 @@ export default {
       this.$emit("FixedModel", false);
     },
     _QueryUserWebCartGoods() {
-      this.totalNumber = 0;
-      this.totalMoney = 0;
       this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
         .then(res => {
-         // console.log("购物车");
-         // console.log(res);
+          // console.log("购物车");
+          // console.log(res);
+          this.totalNumber = 0;
+          this.totalMoney = 0;
           if (res.code == 0) {
             this.shopCarBox = res.data;
           } else {
@@ -204,13 +208,16 @@ export default {
           if (this.shopCarBox.length > 0) {
             var _that = this;
             this.shopCarBox.forEach(function(obj, index) {
-             // console.log(obj.Goods_amount);
+              // console.log(obj.Goods_amount);
               _that.totalMoney +=
                 Number(obj.Goods_price) * Number(obj.Goods_amount);
               _that.totalNumber += Number(obj.Goods_amount);
             });
+            this.totalMoney = this.totalMoney.toFixed(2);
+          } else {
+            this.totalNumber = 0;
+            this.totalMoney = 0;
           }
-          this.totalMoney = this.totalMoney.toFixed(2);
         })
         .catch(error => {
           console.log(error);
@@ -219,18 +226,18 @@ export default {
     parentHandleclick() {
       this._QueryUserWebCartGoods();
     },
-    AddCollectedChildrenClick(){
+    AddCollectedChildrenClick() {
       this.collectedMap();
     },
-       collectedMap() {
+    collectedMap() {
       this.$axios(
         "get",
         `${this.$ports.myMap.QueryUserCollectedRPG}?pi=${this.current}&ps=${this.showItem}`
       )
         .then(res => {
-         // console.log(res);
+          // console.log(res);
           this.rpgList = res.data.list;
-          this.count=res.data.count;
+          this.count = res.data.count;
         })
         .catch(error => {});
     }
@@ -249,16 +256,24 @@ export default {
 }
 .siderHd {
   width: 300px;
-  height: 50px;
+  height: 21px;
   background-color: #053249;
-}
-.siderHd span{
-  float: left;
-  height:50px;
-  line-height: 60px;
+  font-size: 12px;
   color: #dfdfdf;
-  font-family:'微软雅黑';
-  font-size: 16px;
+  font-family: "微软雅黑";
+}
+.sider-xian {
+  width: 300px;
+  height: 1px;
+  background: url(../assets/xian.jpg);
+}
+.siderHd span {
+  float: left;
+  height: 21px;
+  line-height: 21px;
+  color: #4a819d;
+  font-family: "微软雅黑";
+  font-size: 12px;
   margin-left: 10px;
 }
 .silderBtn {
@@ -306,8 +321,8 @@ export default {
   background: url(../assets/silder02-hover.png);
   transition: 0.2s;
 }
-.silderBtn ul li.silder02Current{
-   background: url(../assets/silder02-hover.png);
+.silderBtn ul li.silder02Current {
+  background: url(../assets/silder02-hover.png);
 }
 .silderBtn ul li.silder03 {
   background: url(../assets/silder03.png);
@@ -316,7 +331,7 @@ export default {
   background: url(../assets/silder03-hover.png);
   transition: 0.2s;
 }
-.silderBtn ul li.silder03Current{
+.silderBtn ul li.silder03Current {
   background: url(../assets/silder03-hover.png);
 }
 .silderBtn ul li.silder04 {
@@ -326,8 +341,8 @@ export default {
   background: url(../assets/silder04-hover.png);
   transition: 0.2s;
 }
-.silderBtn ul li.silder04Current{
-   background: url(../assets/silder04-hover.png);
+.silderBtn ul li.silder04Current {
+  background: url(../assets/silder04-hover.png);
 }
 .back {
   width: 26px;
@@ -370,20 +385,18 @@ export default {
 }
 .totalBox {
   width: 300px;
-  height: 47px;
-  background-color: #e5e5e5;
-  position: absolute;
-  bottom: 0px;
+  height: 45px;
+  background-color: #053249;
 }
 .totalBox-left {
   padding-left: 10px;
   float: left;
-  color: #9d9d9d;
+  color: #fff;
   font-size: 14px;
 }
 .totalBox-left p {
   height: 22px;
-  line-height: 22px;
+  line-height: 25px;
 }
 .totalBox-left p em {
   color: #f74a4a;
@@ -411,6 +424,11 @@ export default {
   text-align: center;
   font-family: "微软雅黑";
 }
+.totalBox-right a:hover {
+  background-color: #f5d184;
+  border: 1px solid #ceae68;
+  transition: 0.2s;
+}
 .silder-shop {
   width: 284px;
   padding: 8px;
@@ -418,49 +436,43 @@ export default {
   overflow-y: auto;
   overflow-x: hidden;
 }
- /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
-.silder-shop::-webkit-scrollbar  
-{  
-    width: 8px;  
-    height:8px;  
-    background-color:transparent;
-}  
-/*定义滚动条轨道 内阴影+圆角*/  
-.silder-shop::-webkit-scrollbar-track  
-{  
-    border-radius: 4px;  
-}  
-  
-/*定义滑块 内阴影+圆角*/  
-.silder-shop::-webkit-scrollbar-thumb  
-{  
-    border-radius: 4px;  
-    background-color: #053249;  
-}  
-.silder-shop::-webkit-scrollbar-thumb:hover{
-    background-color: #021722;  
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.silder-shop::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
 }
- /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
-.sider-rpg::-webkit-scrollbar  
-{  
-    width: 8px;  
-    height:8px;  
-    background-color:transparent;
-}  
-/*定义滚动条轨道 内阴影+圆角*/  
-.sider-rpg::-webkit-scrollbar-track  
-{  
-    border-radius: 4px;  
-}  
-  
-/*定义滑块 内阴影+圆角*/  
-.sider-rpg::-webkit-scrollbar-thumb  
-{  
-    border-radius: 4px;  
-    background-color: #053249;  
-}  
-.sider-rpg::-webkit-scrollbar-thumb:hover{
-    background-color: #021722;  
+/*定义滚动条轨道 内阴影+圆角*/
+.silder-shop::-webkit-scrollbar-track {
+  border-radius: 4px;
+}
+
+/*定义滑块 内阴影+圆角*/
+.silder-shop::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #053249;
+}
+.silder-shop::-webkit-scrollbar-thumb:hover {
+  background-color: #021722;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+.sider-rpg::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+.sider-rpg::-webkit-scrollbar-track {
+  border-radius: 4px;
+}
+
+/*定义滑块 内阴影+圆角*/
+.sider-rpg::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #053249;
+}
+.sider-rpg::-webkit-scrollbar-thumb:hover {
+  background-color: #021722;
 }
 .silder-shop ul li {
   width: 265px;

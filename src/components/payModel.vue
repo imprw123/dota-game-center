@@ -3,6 +3,7 @@
     <div class="pay">
       <i class="close" @click="closePay"></i>
       <iframe
+        class="iframeBox"
         width="604"
         height="420"
         scrolling="no"
@@ -30,10 +31,10 @@ export default {
     encode(str) {
       // 对编码的字符串转化base64
       var base64 = btoa(str);
-     // console.log(base64);
+      // console.log(base64);
       // 对字符串进行编码
       var encode = encodeURI(base64);
-     // console.log(encode);
+      // console.log(encode);
       return encode;
     },
     payChildren(val, c, u) {
@@ -43,13 +44,16 @@ export default {
 
       this.$axios("get", `${this.$ports.pay.PaymentRequest}?data=${dataEnCode}`)
         .then(res => {
-          this.payShowFlag = true;
-          //console.log(res);
           if (res.code == 0) {
-            this.url = res.data.Url;
+            this.payShowFlag = true;
+            this.url = "";
+            this.$nextTick(() => {
+              this.url = res.data.Url;
+            });
           }
         })
         .catch(error => {
+          this.payShowFlag = false;
           this.payFlag = false;
         });
     },
@@ -65,12 +69,16 @@ export default {
       this.$axios("get", `${this.$ports.pay.PaymentRequest}?data=${dataEnCode}`)
         .then(res => {
           // console.log(res);
-          this.payShowFlag = true;
           if (res.code == 0) {
-            this.url = res.data.Url;
+            this.payShowFlag = true;
+            this.url = "";
+            this.$nextTick(() => {
+              this.url = res.data.Url;
+            });
           }
         })
         .catch(error => {
+          this.payShowFlag = false;
           this.payFlag = false;
         });
     },
@@ -102,7 +110,7 @@ export default {
   margin-top: -210px;
   border: 1px solid #b1b3b4;
   background: #fff;
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
 }
@@ -114,5 +122,11 @@ export default {
   top: 7px;
   right: 7px;
   cursor: pointer;
+  z-index: 1;
+}
+.iframeBox {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
 </style>
