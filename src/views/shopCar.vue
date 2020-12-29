@@ -28,9 +28,8 @@
                 <img v-lazy="item.Goods_imgPath" />
                 <i
                   class="zen"
-                  v-bind:title="sendNameShow"
                   v-show="item.BeGiven_userid>0"
-                  v-on:mouseenter="searchName(item.BeGiven_userid)"
+                  v-on:click.self="searchName(item.BeGiven_userid)"
                 ></i>
               </div>
               <div class="shopCar-row02-infor">
@@ -136,7 +135,7 @@ export default {
       this.$axios("get", `${this.$ports.shopCar.QueryUserWebCartGoods}`)
         .then(res => {
           //console.log("购物车");
-         // console.log(res);
+          // console.log(res);
           if (res.code == 0) {
             this.shopCarBox = res.data;
           } else {
@@ -236,9 +235,17 @@ export default {
         }?beGivenUserId=${0}&goodsId=${goodsid}&count=${count}`
       )
         .then(res => {
-         // console.log(res);
-          this.addFlag = true;
-          this.$refs.mychild.parentHandleclick();
+          // console.log(res);
+          if (res.code == 0) {
+            this.addFlag = true;
+            this.$refs.mychild.parentHandleclick();
+          } else if (res.code < 0) {
+            Toast({
+              message:res.msg,
+              iconClass: "icon",
+              duration: 1500
+            });
+          }
         })
         .catch(error => {
           this.addFlag = true;
@@ -251,7 +258,7 @@ export default {
         `${this.$ports.shopCar.DeductWebCartGoods}?goodsId=${goodsid}`
       )
         .then(res => {
-        //  console.log(res);
+          //  console.log(res);
           this.delFlag = true;
           this.$refs.mychild.parentHandleclick();
         })
@@ -276,7 +283,7 @@ export default {
         `${this.$ports.shopCar.RemoveWebCartGoods}?goodsId=${goodsid}`
       )
         .then(res => {
-         // console.log(res);
+          // console.log(res);
           this._QueryUserWebCartGoods();
           this.$refs.mychild.parentHandleclick();
         })
@@ -286,14 +293,19 @@ export default {
       this.$axios("get", `${this.$ports.send.CheckAccount}?account=${valName}`)
         .then(res => {
           this.sendNameShow = `赠送给${res.data.UserName}`;
+          Toast({
+            message: this.sendNameShow,
+            iconClass: "icon",
+            duration: 1000
+          });
         })
         .catch(error => {
           console.log(error);
         });
     },
     gmFn() {
-     // console.log(this.shopCarBox);
-      var _data=[];
+      // console.log(this.shopCarBox);
+      var _data = [];
       for (var i = 0; i < this.shopCarBox.length; i++) {
         if (this.shopCarBox[i].goodsid) {
           var _obj = new Object();
@@ -304,16 +316,16 @@ export default {
         }
       }
       var jsonStr = JSON.stringify(_data);
-    //  console.log(jsonStr);
-    //  console.log(_data.length)
+      //  console.log(jsonStr);
+      //  console.log(_data.length)
       if (_data.length == 0) {
-          Toast({
+        Toast({
           message: "请勾选商品!",
           iconClass: "icon",
           duration: 500
         });
       } else {
-       this.$refs.payChildren.payChildrenLists(jsonStr);
+        this.$refs.payChildren.payChildrenLists(jsonStr);
       }
     }
   },
@@ -569,6 +581,7 @@ export default {
   top: 0px;
   right: 0px;
   transition: 0.5s ease;
+  z-index: 1;
 }
 .siderBoxCurrent {
   right: -300px;
@@ -587,5 +600,6 @@ export default {
   left: 0px;
   display: block;
   background: url(../assets/zen.png);
+  cursor: pointer;
 }
 </style>

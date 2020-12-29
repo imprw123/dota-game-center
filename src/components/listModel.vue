@@ -28,8 +28,8 @@
         </div>
       </div>
       
-      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=ID1" v-if="this.$route.name == 'DOTA'"></a>
-      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=ID6" v-if="this.$route.name == 'IMBA'"></a>
+      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=1" v-if="this.$route.name == 'DOTA'"></a>
+      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=6" v-if="this.$route.name == 'IMBA'"></a>
        <a class="jryx" v-bind:href="modelobjContainer.Agreement" v-if="this.$route.name == 'RPG'"></a>
     </div>
     <!-- 热门推荐 -->

@@ -18,6 +18,7 @@
 
 
 <script >
+import { Toast } from "mint-ui";
 export default {
   name: "pay",
   data() {
@@ -50,6 +51,12 @@ export default {
             this.$nextTick(() => {
               this.url = res.data.Url;
             });
+          }else if (res.code < 0){
+            Toast({
+              message: res.msg,
+              iconClass: "icon",
+              duration: 1500
+            });
           }
         })
         .catch(error => {
@@ -74,6 +81,12 @@ export default {
             this.url = "";
             this.$nextTick(() => {
               this.url = res.data.Url;
+            });
+          }else if (res.code < 0){
+            Toast({
+              message: res.msg,
+              iconClass: "icon",
+              duration: 1500
             });
           }
         })

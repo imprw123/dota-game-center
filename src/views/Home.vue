@@ -691,6 +691,7 @@ ul.model01 li img {
   top: 0px;
   right: 0px;
   transition: 0.5s ease;
+   z-index:1;
 }
 .siderBoxCurrent {
   right: -300px;

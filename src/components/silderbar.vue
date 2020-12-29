@@ -40,18 +40,20 @@
       <div class="silder-shop" v-if="shopCarBox.length > 0">
         <ul>
           <li v-for="(item,index) in shopCarBox" :key="index">
-            <div class="shop-left">
-              <img v-lazy="item.Goods_imgPath" />
-            </div>
-            <div class="shop-right">
-              <h4>{{item.Goods_disName}}</h4>
-              <p>
-                <b>{{`￥${item.Goods_price}`}}</b>
-              </p>
-              <p>
-                <em v-bind:title="item.Goods_profile">{{item.Goods_profile}}</em>
-              </p>
-            </div>
+            <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
+              <div class="shop-left">
+                <img v-lazy="item.Goods_imgPath" />
+              </div>
+              <div class="shop-right">
+                <h4>{{item.Goods_disName}}</h4>
+                <p>
+                  <b>{{`￥${item.Goods_price}`}}</b>
+                </p>
+                <p>
+                  <em v-bind:title="item.Goods_profile">{{item.Goods_profile}}</em>
+                </p>
+              </div>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -414,7 +416,7 @@ export default {
 .totalBox-right a {
   width: 94px;
   height: 22px;
-  background-color: #9ab1cc;
+  background-color: #7799c2;
   border: 1px solid #778da6;
   display: inline-block;
   color: #fff;
@@ -482,6 +484,12 @@ export default {
   border: 1px solid #ebebeb;
   padding: 9px 0px 0px 9px;
   margin-bottom: 5px;
+}
+.silder-shop ul li a {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
 }
 .shop-left {
   width: 66px;

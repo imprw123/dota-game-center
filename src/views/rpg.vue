@@ -13,9 +13,9 @@
       v-bind:allpage="all"
       v-bind:typeTag="typeChange"
       v-on:childrenFn="childrenFnMethods"
-       v-on:parentFind="childrenHand2"
-       v-on:AddCollected="AddCollectedChildren"
-       v-on:changeCollected="changeCollectedChildren"
+      v-on:parentFind="childrenHand2"
+      v-on:AddCollected="AddCollectedChildren"
+      v-on:changeCollected="changeCollectedChildren"
     >></list-model>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
@@ -47,12 +47,24 @@ export default {
       classid: this.$route.query.rpgId
     };
   },
+  watch: {
+    $route: {
+      handler() {
+        this.classid = this.$route.query.rpgId;
+        this.seachFlagPager();
+        this.dotaRecomment();
+        this.ClassInfoByCid();
+        //深度监听，同时也可监听到param参数变化
+      },
+      deep: true
+    }
+  },
   mounted() {
     // this.classid = this.$route.query.rpgId;
-   // console.log(this.$route.query.rpgId);
-     this.seachFlagPager();
-      this.dotaRecomment();
-      this.ClassInfoByCid();
+    // console.log(this.$route.query.rpgId);
+    this.seachFlagPager();
+    this.dotaRecomment();
+    this.ClassInfoByCid();
   },
   components: {
     "header-tab": Header,
@@ -111,8 +123,7 @@ export default {
         `${this.$ports.dota.QueryWebClassInfoByCid}?classid=${this.classid}`
       )
         .then(res => {
-
-         // console.log(res);
+          // console.log(res);
           this.flag03 = true;
           if (res && res.code == 0) {
             this.modelObj = res.data;
@@ -132,13 +143,13 @@ export default {
       this.pi = val5;
       this.seachFlagPager();
     },
-    changeCollectedChildren(){
+    changeCollectedChildren() {
       this.ClassInfoByCid();
     },
-     childrenHand2() {
+    childrenHand2() {
       this.$refs.mychild.parentHandleclick();
     },
-    AddCollectedChildren(){
+    AddCollectedChildren() {
       this.$refs.mychild.AddCollectedChildrenClick();
     }
   }
@@ -157,6 +168,7 @@ export default {
   top: 0px;
   right: 0px;
   transition: 0.5s ease;
+  z-index: 1;
 }
 .siderBoxCurrent {
   right: -300px;

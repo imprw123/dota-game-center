@@ -5,6 +5,7 @@
       <span>首页</span>
       <em>></em>
       <span>{{detailObj.Goods_disName}}</span>
+      <span v-on:click="back" style="float:right;cursor:pointer;"><<返回</span>
     </div>
     <div class="productInfor">
       <div class="productInfor_left">
@@ -14,16 +15,18 @@
       </div>
       <div class="productInfor_right">
         <div class="rows">
-          <span>名称</span>
+          <span style="letter-spacing: 32px;">名称</span>
           <b>{{detailObj.Goods_disName}}</b>
         </div>
         <div class="rows">
-          <span>标签</span>
+          <span>分类/标签</span>
+          <em>{{detailObj.Class_name}}</em>
+          <em>/</em>
           <em>{{detailObj.Tag}}</em>
         </div>
         <div class="inforBg">
           <div class="rows">
-            <span>价格</span>
+            <span style="letter-spacing: 32px;">价格</span>
             <div style="float:left;" class="saleCount">
               <b class="price">{{`￥${(detailObj.Goods_price/100).toFixed(2)}`}}</b>
               <i>{{detailObj.Unit}}</i>
@@ -31,13 +34,13 @@
           </div>
 
           <div class="rows">
-            <span>简介</span>
+            <span style="letter-spacing: 32px;">简介</span>
             <p>{{detailObj.Goods_profile}}</p>
           </div>
         </div>
         <div class="UserCation">
           <p class="addNumber">
-            <i>数 量：</i>
+            <i>数 量</i>
             <span class="changeNum">
               <em class="leftBtn" @click="leftBtn">-</em>
               <input type="text" id="count" v-model="count" />
@@ -46,10 +49,16 @@
           </p>
           <p>
             <a href="javascript:;" class="back_Gm" @click="gmFn(detailObj.Goods_id,1,0)">立即购买</a>
-            <a href="javascript:;" class="sure_Gm" v-if="detailObj.Class_id != 583" v-clock @click="AddWebCartGoods()">加入购物车</a>
             <a
-            v-if="detailObj.Class_id != 583"
-            v-clock
+              href="javascript:;"
+              class="sure_Gm"
+              v-if="detailObj.Class_id != 583"
+              v-clock
+              @click="AddWebCartGoods()"
+            >加入购物车</a>
+            <a
+              v-if="detailObj.Class_id != 583"
+              v-clock
               href="javascript:;"
               class="sure_Zs"
               @click="sendParentCartGods(detailObj.Goods_imgPath,detailObj.Goods_disName)"
@@ -65,7 +74,11 @@
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
-    <send-div ref="childrenSend"></send-div>
+    <send-div
+      v-on:parentHandparent1="childrenHand1"
+      v-on:parentPayFor="childrenPayFor"
+      ref="childrenSend"
+    ></send-div>
     <payModel-div ref="payChildren"></payModel-div>
   </div>
 </template>
@@ -76,6 +89,7 @@ import Header from "../components/header";
 import Silderbar from "../components/silderbar";
 import send from "../components/send";
 import payModel from "../components/payModel";
+import { Toast } from "mint-ui";
 export default {
   name: "DETAIL",
   data() {
@@ -83,11 +97,21 @@ export default {
       goodsid: this.$route.query.goodsId,
       detailObj: "",
       flag: false,
-      count:1
+      count: 1
     };
   },
+  watch: {
+    $route: {
+      handler() {
+        this.goodsid = this.$route.query.goodsId;
+        this._QueryGoodsById();
+        //深度监听，同时也可监听到param参数变化
+      },
+      deep: true
+    }
+  },
   mounted() {
-   // console.log(this.$route.query.goodsId);
+    // console.log(this.$route.query.goodsId);
     this._QueryGoodsById();
   },
   methods: {
@@ -110,14 +134,14 @@ export default {
     modelFixed(val) {
       this.flag = val;
     },
-    rightBtn(){
-      this.count=this.count+1;
+    rightBtn() {
+      this.count = this.count + 1;
     },
-    leftBtn(){
-      if(this.count <= 1){
-        this.count =1;
-      }else{
-        this.count=this.count-1;
+    leftBtn() {
+      if (this.count <= 1) {
+        this.count = 1;
+      } else {
+        this.count = this.count - 1;
       }
     },
     AddWebCartGoods() {
@@ -129,9 +153,17 @@ export default {
         }&count=${this.count}`
       )
         .then(res => {
-         // console.log(res);
-          this.addFlag = true;
-          this.$refs.mychild.parentHandleclick();
+          // console.log(res);
+          if (res.code == 0) {
+            this.addFlag = true;
+            this.$refs.mychild.parentHandleclick();
+          } else if (res.code < 0) {
+            Toast({
+              message: res.msg,
+              iconClass: "icon",
+              duration: 1500
+            });
+          }
         })
         .catch(error => {
           this.addFlag = true;
@@ -144,8 +176,17 @@ export default {
         name
       );
     },
-     gmFn(val,c,v){
-       this.$refs.payChildren.payChildren(val,c,v);
+    gmFn(val, c, v) {
+      this.$refs.payChildren.payChildren(val, c, v);
+    },
+    childrenPayFor(val, c, u) {
+      this.$refs.payChildren.payChildren(val, c, u);
+    },
+    back() {
+      this.$router.go(-1); //返回上一层
+    },
+    childrenHand1() {
+      this.$refs.mychild.parentHandleclick();
     }
   },
   components: {
@@ -159,7 +200,7 @@ export default {
 
 
 <style>
-[v-clock]{
+[v-clock] {
   display: none !important;
 }
 .detail {
@@ -173,6 +214,7 @@ export default {
   top: 0px;
   right: 0px;
   transition: 0.5s ease;
+  z-index: 1;
 }
 .siderBoxCurrent {
   right: -300px;
@@ -323,7 +365,7 @@ export default {
 .rows span {
   color: #999999;
   font-size: 14px;
-  width: 60px;
+  width: 95px;
   height: 30px;
   line-height: 30px;
   padding-left: 8px;
@@ -459,8 +501,11 @@ a.sure_Zs {
 
 .UserCation p i {
   display: inline-block;
-  /*width: 50px;*/
-  text-align: right;
+  width: 95px;
+  text-align: left;
+  letter-spacing: 13px;
+  color: #999999;
+  font-size: 14px;
 }
 
 .UserCation p b {
@@ -490,9 +535,8 @@ a.sure_Zs {
   display: block;
   position: absolute;
   top: 0px;
-  left: 46px;
+  left: 150px;
   border: 1px solid #cccccc;
-  margin-left: 15px;
   margin-top: 0px;
 }
 

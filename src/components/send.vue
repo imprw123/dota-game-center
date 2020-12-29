@@ -125,6 +125,7 @@
 
 
 <script>
+import { Toast } from "mint-ui";
 export default {
   name: "send",
   data() {
@@ -270,9 +271,18 @@ export default {
       )
         .then(res => {
         //  console.log(res);
-          this.$emit("parentHandparent1");
+        if(res.code == 0){
+this.$emit("parentHandparent1");
           this.isShowSendFlag = false;
           this.valName = "--点击选择好友--";
+        }else if(res.code<0){
+            Toast({
+              message:res.msg,
+              iconClass: "icon",
+              duration: 1500
+            });
+        }
+          
         })
         .catch(error => {
           this.$emit("parentHandparent1");
