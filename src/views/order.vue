@@ -23,7 +23,10 @@
             </span>
             <span>
               <em>订单状态:</em>
-              <em v-if="value[0] != null" v-bind:class="{'hasPay':value[0].Order_Pay_status == 0}">{{value[0].Order_Pay_status == 0 ?'待付款':'已付款'}}</em>
+              <em
+                v-if="value[0] != null"
+                v-bind:class="{'hasPay':value[0].Order_Pay_status == 0}"
+              >{{value[0].Order_Pay_status == 0 ?'待付款':'已付款'}}</em>
             </span>
             <span class="fr">
               <em>订单金额:</em>
@@ -34,7 +37,9 @@
             <li v-for=" item in value">
               <div class="row01">
                 <div class="row01-img">
-                  <img v-lazy="item.Goods_imgPath" />
+                  <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
+                    <img v-lazy="item.Goods_imgPath" />
+                  </router-link>
                 </div>
                 <div class="row01-infor">
                   <p>{{item.Goods_name}}</p>
@@ -54,7 +59,7 @@
         </div>
       </div>
     </div>
-     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
+    <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
   </div>
@@ -68,23 +73,21 @@ export default {
   name: "ORDER",
   data() {
     return {
-       flag: false,
-      groupLists: {
-       
-      }
+      flag: false,
+      groupLists: {}
     };
   },
   mounted() {
     this.QueryUserOrder();
   },
   methods: {
-      modelFixed(val) {
+    modelFixed(val) {
       this.flag = val;
     },
     QueryUserOrder() {
       this.$axios("get", `${this.$ports.order.QueryUserOrder}`)
         .then(res => {
-         // console.log(res);
+          // console.log(res);
           res.data.forEach(item => {
             if (!this.groupLists[item.Order_id]) {
               this.$set(this.groupLists, item.Order_id, []);
@@ -93,7 +96,7 @@ export default {
               this.groupLists[item.Order_id].push(item);
             }
           });
-         // console.log(this.groupLists);
+          // console.log(this.groupLists);
         })
         .catch(error => {
           console.log(error);
@@ -140,7 +143,7 @@ export default {
   zoom: 1;
   border: 1px solid #d6d6d6;
   margin-bottom: 10px;
-  border-bottom:0px;
+  border-bottom: 0px;
 }
 .rowBox-hd {
   width: 1026px;
@@ -163,8 +166,8 @@ export default {
 .rowBox-hd span em {
   margin-right: 10px;
 }
-.rowBox-hd span em.hasPay{
-   color: #ff0808;
+.rowBox-hd span em.hasPay {
+  color: #ff0808;
 }
 .rowBox-hd span b {
   color: #ff0808;
@@ -192,6 +195,12 @@ export default {
   background-color: #000;
   float: left;
 }
+.row01-img a{
+  width:100%;
+  height: 100%;
+  display: block;
+  cursor: pointer;
+} 
 .row01-img img {
   width: 66px;
   height: 66px;
@@ -206,7 +215,7 @@ export default {
   font-size: 14px;
   color: #3a3f4a;
   font-family: "微软雅黑";
-  margin-top:9px;
+  margin-top: 9px;
 }
 .row01-infor p em {
   color: #a9a9a9;

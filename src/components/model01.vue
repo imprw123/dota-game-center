@@ -75,7 +75,7 @@ export default {
              Toast({
               message:res.msg,
               iconClass: "icon",
-              duration: 1500
+              duration: 2000
             });
           }
         })

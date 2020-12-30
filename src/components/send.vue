@@ -262,6 +262,7 @@ export default {
     },
     //赠送接口
     AddWebCartGoods(userid) {
+      if(userid == null){userid =0};
       // debugger;
       this.$axios(
         "get",

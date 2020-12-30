@@ -927,7 +927,7 @@ export default {
       )
         .then(res => {
          // console.log('李玉林2')
-          console.log(res);
+         // console.log(res);
           this.$emit('AddCollected');
           this.$emit('changeCollected')
         })
@@ -939,7 +939,7 @@ export default {
         `${this.$ports.myMap.RemoveCollectedRPG}?classId=${val}`
       )
         .then(res => {
-          console.log(res); 
+        //  console.log(res); 
            this.$emit('AddCollected');
          this.$emit('changeCollected')
         })

@@ -39,7 +39,7 @@ export default {
       return encode;
     },
     payChildren(val, c, u) {
-      console.log(val, c, u);
+      //console.log(val, c, u);
       var payData = `[{"I":${val},"C":${c},"U":${u}}]`;
       var dataEnCode = this.encode(payData);
 
@@ -98,6 +98,7 @@ export default {
     closePay() {
       this.payFlag = false;
       this.payShowFlag = false;
+      this.$emit('rushWebCar');
     }
   }
 };

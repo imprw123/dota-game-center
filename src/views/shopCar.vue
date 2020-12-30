@@ -25,7 +25,9 @@
             </div>
             <div class="shopCar-row02" style="width:230px">
               <div class="imgBox-shopCar">
-                <img v-lazy="item.Goods_imgPath" />
+                <router-link :to="{name:'DETAIL',query:{goodsId:item.Goods_id}}">
+                  <img v-lazy="item.Goods_imgPath" />
+                </router-link>
                 <i
                   class="zen"
                   v-show="item.BeGiven_userid>0"
@@ -46,33 +48,45 @@
             <div class="shopCar-row03" style="width:206px">{{`￥${item.Goods_price}`}}</div>
             <div class="shopCar-row04" style="width:120px">
               <span class="changeNum">
-                <em class="leftBtn" @click="leftBtn(index)">-</em>
+                <em
+                  class="leftBtn"
+                  @click="leftBtn(item.Goods_id,item.goodsid,item.BeGiven_userid,item.Goods_amount)"
+                >-</em>
                 <input type="text" id="count" v-model="item.Goods_amount" readonly="readonly" />
-                <em class="rightBtn" @click.self="rightBtn(index)">+</em>
+                <em
+                  class="rightBtn"
+                  @click.self="rightBtn(item.Goods_id,item.goodsid,item.BeGiven_userid)"
+                >+</em>
               </span>
             </div>
             <div class="shopCar-row05" style="width:210px">
               <span>{{`￥${item.Goods_price*item.Goods_amount}`}}</span>
             </div>
             <div class="shopCar-row06" style="width:200px">
-              <span @click="RemoveWebCartGoods(item.Goods_id)">删除</span>
+              <span @click="RemoveWebCartGoods(item.Goods_id,item.BeGiven_userid)">删除</span>
             </div>
           </li>
         </ul>
       </div>
       <div class="shopCarBt">
+        <div class="gmNoBtn" v-show="totalMoney == 0">立即购买</div>
+        <div class="gmBtn" v-show="totalMoney>0" @click="gmFn()">立即购买</div>
         <p>
-          选取商品总价:
+          总价:
           <b>{{`￥${totalMoney}`}}</b>
         </p>
-        <div class="gmNoBtn" v-show="shopCarBox.length == 0">立即购买</div>
-        <div class="gmBtn" v-show="shopCarBox.length>0" @click="gmFn()">立即购买</div>
+
+        <p>
+          已选择:
+          <b>{{totalNumber}}</b>
+          件商品
+        </p>
       </div>
     </div>
     <div class="siderBox" v-bind:class="{'siderBoxCurrent':!flag}">
       <silderbar-tab v-on:FixedModel="modelFixed" ref="mychild"></silderbar-tab>
     </div>
-    <payModel-div ref="payChildren"></payModel-div>
+    <payModel-div ref="payChildren" v-on:rushWebCar="webInit"></payModel-div>
   </div>
 </template>
 
@@ -143,124 +157,141 @@ export default {
           }
           if (this.shopCarBox.length > 0) {
             for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
-              this.totalMoney +=
-                Number(this.shopCarBox[j].Goods_price) *
-                Number(this.shopCarBox[j].Goods_amount);
-              this.totalNumber += Number(this.shopCarBox[j].Goods_amount);
-              this.$set(
-                this.shopCarBox[j],
-                "goodsid",
-                this.shopCarBox[j].Goods_id
-              );
+              this.$set(this.shopCarBox[j], "goodsid", false);
             }
           }
-          this.totalMoney = this.totalMoney.toFixed(2);
+          // if (this.shopCarBox.length > 0) {
+          //   for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
+          //     this.totalMoney +=
+          //       Number(this.shopCarBox[j].Goods_price) *
+          //       Number(this.shopCarBox[j].Goods_amount);
+          //     this.totalNumber += Number(this.shopCarBox[j].Goods_amount);
+          //     this.$set(
+          //       this.shopCarBox[j],
+          //       "goodsid",
+          //       false
+          //     );
+          //   }
+          // }
+          // this.totalMoney = this.totalMoney.toFixed(2);
         })
         .catch(error => {
           console.log(error);
         });
     },
-    leftBtn(index) {
-      debugger;
+    webInit() {
+      this._QueryUserWebCartGoods();
+    },
+    leftBtn(gid, id, uid, count) {
+      if (uid == null) {
+        uid = 0;
+      }
       var _that = this;
       if (this.delFlag) {
         this.delFlag = false;
-        this.shopCarBox.forEach(function(obj, i) {
-          if (i == index) {
-            if (obj.goodsid) {
-              if (obj.Goods_amount <= 1) {
-                obj.Goods_amount == 1;
-                _that.delFlag = true;
-                return false;
-              } else {
-                obj.Goods_amount = obj.Goods_amount - 1;
-                _that.DeductWebCartGoods(obj.Goods_id);
-              }
-            } else {
-              Toast({
-                message: "请先勾选商品!",
-                iconClass: "icon"
-              });
-              _that.delFlag = true;
-            }
-          }
-        });
-      } else {
-        Toast({
-          message: "操作太频繁了……",
-          iconClass: "icon",
-          duration: 500
-        });
-      }
-    },
-    rightBtn(index) {
-      debugger;
-      var _that = this;
-      if (this.addFlag) {
-        this.addFlag = false;
-        for (var j = 0, len = this.shopCarBox.length; j < len; j++) {
-          if (j == index) {
-            if (this.shopCarBox[j].goodsid) {
-              this.shopCarBox[j].Goods_amount =
-                this.shopCarBox[j].Goods_amount + 1;
-              _that.AddWebCartGoods(this.shopCarBox[j].Goods_id, 1);
-            } else {
-              Toast({
-                message: "请先勾选商品!",
-                iconClass: "icon"
-              });
-              _that.addFlag = true;
-            }
-
+        if (id) {
+          if (count <= 1) {
+            this.delFlag = true;
             return false;
+          } else {
+            this.DeductWebCartGoods(gid, uid);
           }
+        } else {
+          Toast({
+            message: "请先勾选商品!",
+            iconClass: "icon",
+            duration: 1000
+          });
+          this.delFlag = true;
         }
       } else {
         Toast({
           message: "操作太频繁了……",
           iconClass: "icon",
-          duration: 500
+          duration: 1000
         });
+        _that.delFlag = true;
+      }
+    },
+    rightBtn(gid, id, uid) {
+      if (uid == null) {
+        uid = 0;
+      }
+      debugger;
+      var _that = this;
+      if (this.addFlag) {
+        this.addFlag = false;
+        if (id) {
+          _that.AddWebCartGoods(gid, uid);
+        } else {
+          Toast({
+            message: "请先勾选商品!",
+            iconClass: "icon",
+            duration: 1000
+          });
+          _that.addFlag = true;
+        }
+
+        return false;
+      } else {
+        Toast({
+          message: "操作太频繁了……",
+          iconClass: "icon",
+          duration: 1000
+        });
+        _that.addFlag = true;
       }
     },
     modelFixed(val) {
       this.flag = val;
     },
-    AddWebCartGoods(goodsid, count) {
+    AddWebCartGoods(goodsid, uid) {
       debugger;
       this.$axios(
         "get",
         `${
           this.$ports.shopCar.AddWebCartGoods
-        }?beGivenUserId=${0}&goodsId=${goodsid}&count=${count}`
+        }?beGivenUserId=${uid}&goodsId=${goodsid}&count=${1}`
       )
         .then(res => {
           // console.log(res);
           if (res.code == 0) {
             this.addFlag = true;
             this.$refs.mychild.parentHandleclick();
+            this._QueryUserWebCartGoods();
           } else if (res.code < 0) {
             Toast({
-              message:res.msg,
+              message: res.msg,
               iconClass: "icon",
-              duration: 1500
+              duration: 2000
             });
           }
+          this.addFlag = true;
         })
         .catch(error => {
           this.addFlag = true;
         });
     },
-    DeductWebCartGoods(goodsid) {
+    DeductWebCartGoods(gid, uid) {
       //debugger;
       this.$axios(
         "get",
-        `${this.$ports.shopCar.DeductWebCartGoods}?goodsId=${goodsid}`
+        `${this.$ports.shopCar.DeductWebCartGoods}?beGivenUserId=${uid}&goodsId=${gid}`
       )
         .then(res => {
           //  console.log(res);
-          this.delFlag = true;
-          this.$refs.mychild.parentHandleclick();
+          if (res.code == 0) {
+            this.delFlag = true;
+            this.$refs.mychild.parentHandleclick();
+            this._QueryUserWebCartGoods();
+          } else if (res.code < 0) {
+            Toast({
+              message: res.msg,
+              iconClass: "icon",
+              duration: 2000
+            });
+            this.delFlag = true;
+          }
         })
         .catch(error => {
           this.delFlag = true;
@@ -277,15 +308,26 @@ export default {
         });
       }
     },
-    RemoveWebCartGoods(goodsid) {
+    RemoveWebCartGoods(goodsid, uid) {
+      if (uid == null) {
+        uid = 0;
+      }
       this.$axios(
         "get",
-        `${this.$ports.shopCar.RemoveWebCartGoods}?goodsId=${goodsid}`
+        `${this.$ports.shopCar.RemoveWebCartGoods}?beGivenUserId=${uid}&goodsId=${goodsid}`
       )
         .then(res => {
-          // console.log(res);
-          this._QueryUserWebCartGoods();
-          this.$refs.mychild.parentHandleclick();
+          // console.log();
+          if (res.code == 0) {
+            this._QueryUserWebCartGoods();
+            this.$refs.mychild.parentHandleclick();
+          } else if (res.code < 0) {
+            Toast({
+              message: res.msg,
+              iconClass: "icon",
+              duration: 2000
+            });
+          }
         })
         .catch(error => {});
     },
@@ -322,7 +364,7 @@ export default {
         Toast({
           message: "请勾选商品!",
           iconClass: "icon",
-          duration: 500
+          duration: 1000
         });
       } else {
         this.$refs.payChildren.payChildrenLists(jsonStr);
@@ -349,7 +391,7 @@ export default {
   width: 100%;
   overflow: hidden;
   zoom: 1;
-  padding-bottom: 90px;
+  padding-bottom: 49px;
   background-color: #f0f0f0;
   position: relative;
 }
@@ -537,38 +579,44 @@ export default {
   cursor: pointer;
 }
 .gmBtn {
-  width: 92px;
-  line-height: 25px;
-  height: 25px;
+  width: 108px;
+  line-height: 49px;
+  height: 49px;
   text-align: center;
   background-color: #ff4a00;
   color: #fff;
   font-size: 12px;
   font-family: "微软雅黑";
-  border-radius: 4px;
   cursor: pointer;
+  float: right;
+  margin-left: 20px;
 }
 .gmNoBtn {
-  width: 92px;
-  line-height: 25px;
-  height: 25px;
+  width: 108px;
+  line-height: 49px;
+  height: 49px;
   text-align: center;
   background-color: #b8b8b8;
   color: #fff;
   font-size: 12px;
   font-family: "微软雅黑";
-  border-radius: 4px;
   cursor: pointer;
+  float: right;
+  margin-left: 20px;
 }
 .shopCarBt {
+  width: 100%;
   position: absolute;
-  bottom: 15px;
-  right: 40px;
+  bottom: 0px;
+  right: 0px;
 }
 .shopCarBt p {
+  height: 49px;
+  line-height: 49px;
   font-size: 12px;
   color: #3d3d3d;
-  margin-bottom: 5px;
+  float: right;
+  margin-left: 20px;
 }
 .shopCarBt p b {
   font-size: 18px;

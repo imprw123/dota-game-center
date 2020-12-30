@@ -122,7 +122,7 @@ export default {
         `${this.$ports.detail.QueryGoodsById}?goodsId=${this.goodsid}`
       )
         .then(res => {
-          console.log(res);
+         // console.log(res);
           if (res.code == 0) {
             this.detailObj = res.data;
           }
@@ -161,7 +161,7 @@ export default {
             Toast({
               message: res.msg,
               iconClass: "icon",
-              duration: 1500
+              duration: 2000
             });
           }
         })
