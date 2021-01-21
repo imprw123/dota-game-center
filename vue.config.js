@@ -60,7 +60,7 @@ module.exports = {
             */
             '/api': {
                 /* 目标代理服务器地址 */
-                target: 'https://shop.5211game.com/',
+                target: 'http://test.shop.5211game.com/',
                 /* 允许跨域 */
                 changeOrigin: true,
                 pathRewrite: {

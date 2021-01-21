@@ -51,7 +51,7 @@
                 </div>
                 <div class="row01-number">{{`*${item.Goods_count}`}}</div>
               </div>
-              <div class="row02">{{`￥${item.Order_Pay_price}`}}</div>
+              <div class="row02">{{`￥${item.Goods_price}`}}</div>
               <div class="row3">{{item.Order_Send_status == 0? '未发放':'发放'}}</div>
               <div class="row4">{{item.Receiver}}</div>
             </li>

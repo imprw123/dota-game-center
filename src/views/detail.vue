@@ -28,7 +28,7 @@
           <div class="rows">
             <span style="letter-spacing: 32px;">价格</span>
             <div style="float:left;" class="saleCount">
-              <b class="price">{{`￥${(detailObj.Goods_price/100).toFixed(2)}`}}</b>
+              <b class="price">{{`￥${detailObj.Goods_price}`}}</b>
               <i>{{detailObj.Unit}}</i>
             </div>
           </div>

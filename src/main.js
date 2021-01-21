@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
             axios.get('Login/GetNowUser')
                 .then(function(response) {
                     if (response.data.code < 0) {
-                        window.location.href = `http://test.shop.5211game.com/Login?returnUrl=${escape(window.location.href)}`;
+                        window.location.href = `http://shop.5211game.com/Login?returnUrl=${escape(window.location.href)}`;
                     } else {
                         window.sessionStorage.setItem('loginInfo', `${response.data.data.UserId}|${response.data.data.Token}`);
                         next();
@@ -55,11 +55,10 @@ Vue.filter('myDateFilter', function(timestamp) {
     var h =
         (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":";
     var m =
-        (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
-        ":";
+        (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes());
     var s =
         date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
-    return Y + M + '-' + D + h + s
+    return Y + M + '-' + D + h + m
 
 })
 

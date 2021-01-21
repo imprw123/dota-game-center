@@ -12,25 +12,43 @@
       <div class="indetail-infor">
         <div class="detail-name">
           <span>{{modelobjContainer.Class_name}}</span>
-          <div class="scGame" v-if="rpg == 'RPG'" @click="AddCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected == 0"></div>
-      <div class="ysc" v-if="rpg == 'RPG'" @click="RemoveCollectedRPG(modelobjContainer.Class_id)" v-show="modelobjContainer.IsCollected != 0"></div>
+          <div
+            class="scGame"
+            v-if="rpg == 'RPG'"
+            @click="AddCollectedRPG(modelobjContainer.Class_id)"
+            v-show="modelobjContainer.IsCollected == 0"
+          ></div>
+          <div
+            class="ysc"
+            v-if="rpg == 'RPG'"
+            @click="RemoveCollectedRPG(modelobjContainer.Class_id)"
+            v-show="modelobjContainer.IsCollected != 0"
+          ></div>
         </div>
         <div class="quanBox">
           <!--  <em class="quan">满100-10</em>
-          <em class="quan">满200八折</em> -->
+          <em class="quan">满200八折</em>-->
         </div>
         <div class="detailtypeName">
           <span v-if="modelobjContainer.Class_category">{{modelobjContainer.Class_category}}</span>
         </div>
         <div class="num-infor">
           <span>{{`普通商品(${commonShopCount})`}}</span>
-          <span v-if="msg"> {{`定制商品(${orderShopCount})`}}</span>
+          <span v-if="msg">{{`定制商品(${orderShopCount})`}}</span>
         </div>
       </div>
-      
-      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=1" v-if="this.$route.name == 'DOTA'"></a>
-      <a class="jryx" href="qfyygame:///type=enter_game_channel/?channelId=6" v-if="this.$route.name == 'IMBA'"></a>
-       <a class="jryx" v-bind:href="modelobjContainer.Agreement" v-if="this.$route.name == 'RPG'"></a>
+
+      <a
+        class="jryx"
+        href="qfyygame:///type=enter_game_channel/?channelId=1"
+        v-if="this.$route.name == 'DOTA'"
+      ></a>
+      <a
+        class="jryx"
+        href="qfyygame:///type=enter_game_channel/?channelId=6"
+        v-if="this.$route.name == 'IMBA'"
+      ></a>
+      <a class="jryx" v-bind:href="modelobjContainer.Agreement" v-if="this.$route.name == 'RPG'"></a>
     </div>
     <!-- 热门推荐 -->
     <div class="dota" v-if="modelobjContainer != null && modellistContainer.length>0">
@@ -60,9 +78,13 @@
         <span @click="isCustomShop('普通商品')" v-bind:class="{'current01':shopFlag == 0}">普通商品</span>
         <span @click="isCustomShop('定制商品')" v-bind:class="{'current02':shopFlag == 128}">定制商品</span>
       </div>
-      <div class="tabBox"  v-bind:class="{'tabBoxCurrent01':ptid01 == 1,'tabBoxCurrent02':ptid02 == 5}" v-if="name == 'PT'">
-          <span @click="isCustomShop2('平台服务')" v-bind:class="{'current01':ptid01 == 1}">平台服务</span>
-          <span @click="isCustomShop2('游戏道具')" v-bind:class="{'current01':ptid02 == 5}">游戏道具</span>
+      <div
+        class="tabBox"
+        v-bind:class="{'tabBoxCurrent01':ptid01 == 1,'tabBoxCurrent02':ptid02 == 5}"
+        v-if="name == 'PT'"
+      >
+        <span @click="isCustomShop2('平台服务')" v-bind:class="{'current01':ptid01 == 1}">平台服务</span>
+        <span @click="isCustomShop2('游戏道具')" v-bind:class="{'current01':ptid02 == 5}">游戏道具</span>
       </div>
       <div
         class="in-tab-change-model"
@@ -501,7 +523,7 @@
         </div>
       </div>
       <div class="listContent" v-if="searchlistContainer.length == 0" v-cloak>
-          <span class="noPain"></span>
+        <span class="noPain"></span>
       </div>
       <div class="listContent" v-if="searchlistContainer.length>0">
         <ul class="model01">
@@ -592,12 +614,12 @@ export default {
       shopFlag: 0,
       val: "",
       pages: [],
-      commonShopCount:0,
-      orderShopCount:0,
-      name:this.$route.name,
-      ptid01:1,
-      ptid02:'',
-      rpg:this.$route.name,
+      commonShopCount: 0,
+      orderShopCount: 0,
+      name: this.$route.name,
+      ptid01: 1,
+      ptid02: "",
+      rpg: this.$route.name
     };
   },
   watch: {
@@ -610,7 +632,7 @@ export default {
     },
     pageIndex: {
       handler(newValue, oldValue) {
-      //  console.log(newValue);
+        //  console.log(newValue);
         this.current = newValue;
         var pag = [];
         if (this.current < this.showItem) {
@@ -638,19 +660,19 @@ export default {
     },
     searchlist: {
       handler(newValue, oldValue) {
-      //  console.log(newValue);
+        //  console.log(newValue);
         this.searchlistContainer = newValue;
       },
       immediate: true,
       deep: true
     },
-    $route(){
-      this.val= this.$route.query.searchName
+    $route() {
+      this.val = this.$route.query.searchName;
     },
     modelist01: {
       handler(newValue, oldValue) {
         // console.log('李玉林');
-       // console.log(newValue);
+        // console.log(newValue);
         this.modellistContainer = newValue;
       },
       immediate: true,
@@ -658,7 +680,7 @@ export default {
     },
     modelobj: {
       handler(newValue, oldValue) {
-       // console.log(newValue);
+        // console.log(newValue);
         this.modelobjContainer = newValue;
       },
       immediate: true,
@@ -694,20 +716,20 @@ export default {
   },
 
   mounted() {
-    if(this.$route.query.searchName){
-       this.val=decodeURI(this.$route.query.searchName);
-    }else{
-      this.val='';
+    if (this.$route.query.searchName) {
+      this.val = decodeURI(this.$route.query.searchName);
+    } else {
+      this.val = "";
     }
     var _that = this;
     if (this.modelobjContainer) {
       this.modelobjContainer.Class_GoodsCount.forEach(function(obj, index) {
         if (obj.Flag == 128) {
           _that.msg = true;
-           _that.orderShopCount=obj.Count;
+          _that.orderShopCount = obj.Count;
         } else {
           _that.msg = false;
-          _that.commonShopCount=obj.Count;
+          _that.commonShopCount = obj.Count;
         }
       });
     }
@@ -736,6 +758,8 @@ export default {
     });
 
     $(document).on("click", ".in_boxHero ul li", function() {
+      $(".in_boxHero ul li").removeClass("current");
+      $(this).addClass("current");
       _that.$emit(
         "childrenFn",
         _that.id,
@@ -891,11 +915,11 @@ export default {
         );
       }
     },
-       isCustomShop2(val) {
+    isCustomShop2(val) {
       if (val == "平台服务") {
         this.id = 1;
-        this.ptid01=1;
-        this.ptid02='';
+        this.ptid01 = 1;
+        this.ptid02 = "";
         this.$emit(
           "childrenFn",
           this.id,
@@ -906,7 +930,7 @@ export default {
         );
       } else if (val == "游戏道具") {
         this.id = 5;
-        this.ptid02=5;
+        this.ptid02 = 5;
         this.$emit(
           "childrenFn",
           this.id,
@@ -917,31 +941,28 @@ export default {
         );
       }
     },
-    childrenHand(){
-       this.$emit('parentFind')
+    childrenHand() {
+      this.$emit("parentFind");
     },
-    AddCollectedRPG(val){
-        this.$axios(
-        "get",
-        `${this.$ports.myMap.AddCollectedRPG}?classId=${val}`
-      )
+    AddCollectedRPG(val) {
+      this.$axios("get", `${this.$ports.myMap.AddCollectedRPG}?classId=${val}`)
         .then(res => {
-         // console.log('李玉林2')
-         // console.log(res);
-          this.$emit('AddCollected');
-          this.$emit('changeCollected')
+          // console.log('李玉林2')
+          // console.log(res);
+          this.$emit("AddCollected");
+          this.$emit("changeCollected");
         })
         .catch(error => {});
     },
-    RemoveCollectedRPG(val){
-        this.$axios(
+    RemoveCollectedRPG(val) {
+      this.$axios(
         "get",
         `${this.$ports.myMap.RemoveCollectedRPG}?classId=${val}`
       )
         .then(res => {
-        //  console.log(res); 
-           this.$emit('AddCollected');
-         this.$emit('changeCollected')
+          //  console.log(res);
+          this.$emit("AddCollected");
+          this.$emit("changeCollected");
         })
         .catch(error => {});
     }
@@ -1002,19 +1023,19 @@ export default {
   padding-left: 32px;
 }
 .detail-name {
- height:25px;
+  height: 25px;
 }
-.quanBox{
-  height:20px;
-  width:100%;
-  margin:5px 0px 10px 0px;
+.quanBox {
+  height: 20px;
+  width: 100%;
+  margin: 5px 0px 10px 0px;
 }
 .detail-name span {
   color: #000;
   font-size: 14px;
-  float:left;
+  float: left;
 }
- em.quan {
+em.quan {
   font-size: 12px;
   background-color: #fbdcc7;
   display: inline-block;
@@ -1030,7 +1051,7 @@ export default {
   width: 100%;
   overflow: hidden;
   zoom: 1;
-  margin-bottom:15px;
+  margin-bottom: 15px;
 }
 .detailtypeName span {
   padding: 0 4px;
@@ -1051,20 +1072,20 @@ export default {
   width: 49px;
   height: 15px;
   background: url(../assets/sc.png);
-  float:left;
-  margin-left:10px;
-  position:relative;
-  top:2px;
-  cursor:pointer;
+  float: left;
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+  cursor: pointer;
 }
 .ysc {
   width: 49px;
   height: 15px;
-  float:left;
-  margin-left:10px;
-  position:relative;
-  top:2px;
-  cursor:pointer;
+  float: left;
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+  cursor: pointer;
   background: url(../assets/ysc.png);
 }
 .scGame:hover {
@@ -1223,12 +1244,12 @@ export default {
   overflow: hidden;
   zoom: 1;
 }
-.listContent .noPain{
-  width:137px;
+.listContent .noPain {
+  width: 137px;
   height: 169px;
-  display:block;
+  display: block;
   margin: 0 auto;
-  margin-top:100px;
+  margin-top: 100px;
   background: url(../assets/noPain.png);
 }
 .listContent ul.model01 {
@@ -1361,7 +1382,18 @@ export default {
   background: #ccc;
   cursor: pointer;
 }
-
+.in_boxHero ul li.current {
+  position: relative;
+}
+.in_boxHero ul li.current::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: url(../assets/selectCurrent.png);
+}
 .in_boxHero ul li em {
   width: 30px;
   height: 30px;
