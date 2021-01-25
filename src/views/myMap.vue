@@ -18,7 +18,7 @@
           :key="index"
         >
           <img
-            v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`"
+            v-lazy="`//img.5211game.com/5211/shop/RPG/${item.Class_id}.jpg`"
             class="imgShow"
           />
           <div class="rpg-left">
@@ -27,7 +27,7 @@
               <span class="lf">{{item.Category | typeName}}</span>
             </div>
             <div class="enterShop">
-              <router-link :to="{'name':'RPG',query:{rpgId:item.Class_id}}">进入商店</router-link>
+              <router-link :to="{'name':'RPG',query:{cid:item.Class_id}}">进入商店</router-link>
             </div>
           </div>
         </li>

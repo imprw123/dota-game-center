@@ -95,7 +95,7 @@
           :key="index"
           v-bind:class="(index+1)%4 == 0 ?'current':''"
         >
-          <img   v-lazy="`https://img.5211game.com/5211/shop/RPG/${item.id}.jpg`" class="imgShow" />
+          <img   v-lazy="`//img.5211game.com/5211/shop/RPG/${item.id}.jpg`" class="imgShow" />
 
           <div class="rpg-left">
             <p>{{item.Name}}</p>
@@ -103,7 +103,7 @@
               <span class="lf">{{item.type}}</span>
             </div>
             <div class="enterShop">
-              <router-link :to="{name:'RPG',query:{rpgId:item.id}}">进入商店</router-link>
+              <router-link :to="{name:'RPG',query:{cid:item.id}}">进入商店</router-link>
             </div>
           </div>
         </li>
@@ -248,7 +248,7 @@ export default {
     rpg() {
       var _that = this;
       $.getScript(
-        "http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
+        "//g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
         function() {
           _that.rpgList = rpgObj.data;
           //console.log(_that.rpgList);
@@ -259,7 +259,7 @@ export default {
     HotRank() {
       var _that = this;
       $.getScript(
-        "http://g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
+        "//g.5211game.com/5211/Rpg/Prop/Script/shopHotRank2.js",
         function() {
          // console.log("121");
          // console.log(HotRank);

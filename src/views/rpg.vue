@@ -44,13 +44,13 @@ export default {
       flagid: 0,
       typeChange: "weight",
       searchName: "",
-      classid: this.$route.query.rpgId
+      classid: this.$route.query.cid
     };
   },
   watch: {
     $route: {
       handler() {
-        this.classid = this.$route.query.rpgId;
+        this.classid = this.$route.query.cid;
         this.seachFlagPager();
         this.dotaRecomment();
         this.ClassInfoByCid();
@@ -60,8 +60,8 @@ export default {
     }
   },
   mounted() {
-    // this.classid = this.$route.query.rpgId;
-    // console.log(this.$route.query.rpgId);
+    // this.classid = this.$route.query.cid;
+    // console.log(this.$route.query.cid);
     this.seachFlagPager();
     this.dotaRecomment();
     this.ClassInfoByCid();

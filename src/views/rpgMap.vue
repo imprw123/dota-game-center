@@ -62,7 +62,7 @@
                 <span class="lf">{{item.Category | typeName}}</span>
               </div>
               <div class="enterShop">
-                <router-link :to="{'name':'RPG',query:{rpgId:item.Class_id}}">进入商店</router-link>
+                <router-link :to="{'name':'RPG',query:{cid:item.Class_id}}">进入商店</router-link>
               </div>
             </div>
           </li>

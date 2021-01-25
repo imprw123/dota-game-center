@@ -9,7 +9,7 @@ import ports from './api/port.js'
 import VueLazyLoad from 'vue-lazyload'
 Vue.use(VueLazyLoad, {
     loading: require("./assets/default.jpg"),
-    error: 'https://img.5211game.com/5211/shop/RPG/85.jpg'
+    error: '//img.5211game.com/5211/shop/RPG/85.jpg'
 
 })
 Vue.config.productionTip = false
@@ -25,7 +25,7 @@ router.beforeEach((to, from, next) => {
             axios.get('Login/GetNowUser')
                 .then(function(response) {
                     if (response.data.code < 0) {
-                        window.location.href = `http://shop.5211game.com/Login?returnUrl=${escape(window.location.href)}`;
+                        window.location.href = `//shop.5211game.com/Login?returnUrl=${escape(window.location.href)}`;
                     } else {
                         window.sessionStorage.setItem('loginInfo', `${response.data.data.UserId}|${response.data.data.Token}`);
                         next();
@@ -35,7 +35,6 @@ router.beforeEach((to, from, next) => {
                     console.log(error);
                 })
         }
-
     } else {
         next();
     }
